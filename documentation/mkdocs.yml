@@ -14,7 +14,7 @@ nav:
   - 7 - "Es gibt viel zu tun! Wer macht's": Problem7.md
 
 theme:
-  name: bootstrap4
+  name: material
 
 plugins:
   - search
