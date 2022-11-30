@@ -1,5 +1,8 @@
 # Die Graphschaft Schilda
 
+[![Publish MkDocs via GitHub Pages](https://github.com/thieleju/GraphschaftSchilda/actions/workflows/mkdocs-gh-pages.yml/badge.svg)](https://github.com/thieleju/GraphschaftSchilda/actions/workflows/mkdocs-gh-pages.yml) 
+[![pages-build-deployment](https://github.com/thieleju/GraphschaftSchilda/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/thieleju/GraphschaftSchilda/actions/workflows/pages/pages-build-deployment)
+
 > Ein Projekt für das Modul Programmiertechnik III
 
 ## Dokumentation
