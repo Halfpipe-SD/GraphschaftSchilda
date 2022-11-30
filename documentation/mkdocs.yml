@@ -5,13 +5,13 @@ repo_url: https://github.com/thieleju/GraphschaftSchilda
 
 nav:
   - Startseite: index.md
-  - 1 - "Straßen müssen her!": Problem1.md
-  - 2 - "Wasserversorgung": Problem2.md
-  - 3 - "Stromversorgung": Problem3.md
-  - 4 - "Historische Funde": Problem4.md
-  - 5 - "Die Festhochzeit": Problem5.md
-  - 6 - "Wohin nur mit den Gästen?": Problem6.md
-  - 7 - "Es gibt viel zu tun! Wer macht's": Problem7.md
+  - 1. Straßen müssen her!: Problem1.md
+  - 2. Wasserversorgung: Problem2.md
+  - 3. Stromversorgung: Problem3.md
+  - 4. Historische Funde: Problem4.md
+  - 5. Die Festhochzeit: Problem5.md
+  - 6. Wohin nur mit den Gästen?: Problem6.md
+  - 7. Es gibt viel zu tun! Wer macht's: Problem7.md
 
 theme:
   name: material
