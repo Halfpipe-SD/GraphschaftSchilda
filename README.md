@@ -4,7 +4,7 @@
 
 ## Dokumentation
 
-Die Dokumentation kann unter [schilda.node5.de](https://schilda.node5.de) eingesehen, oder über [diesen](https://github.com/thieleju/GraphschaftSchilda/blob/gh-pages/Dokumentation.pdf) link heruntergeladen werden.
+Die Dokumentation kann unter [schilda.node5.de](https://schilda.node5.de) eingesehen, oder über [diesen](https://github.com/thieleju/GraphschaftSchilda/raw/gh-pages/Dokumentation.pdf) link heruntergeladen werden.
 
 ## Richtlinien für die Dokumentation
 
