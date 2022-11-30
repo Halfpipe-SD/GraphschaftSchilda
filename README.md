@@ -26,3 +26,4 @@ Die Dokumentation kann unter [schilda.node5.de](https://schilda.node5.de) einges
 - Wie berechnet sich die Laufzeit des Algorithmus? 
 - Welchen Einfluss hat die gewählte Datenstruktur auf die Laufzeit? 
 - Wo liegt der Unterschied zwischen Algorithmus A und Algorithmus B? (z.B. Prim und Kruskal, Prim und Dijkstra, Ford-Fulkerson und Edmond Karp ....) 
+- Ausdrücklich sind Fragen zu den übrigen Themen der Lehrveranstaltung (Komplexität, Suchbäume, Sortieralgorithmen, ...) nicht ausgeschlossen. 
