@@ -1,5 +1,7 @@
 site_name: Die Graphschaft Schilda
 site_url: https://schilda.node5.de
+repo_name: Die Graphschaft Schilda
+repo_url: https://github.com/thieleju/GraphschaftSchilda
 
 nav:
   - Startseite: index.md
@@ -12,7 +14,7 @@ nav:
   - 7 - "Es gibt viel zu tun! Wer macht's": Problem7.md
 
 theme:
-  name: bootstrap
+  name: bootstrap4
 
 plugins:
   - search
