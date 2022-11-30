@@ -1,0 +1,29 @@
+site_name: Die Graphschaft Schilda
+site_url: https://schilda.node5.de
+
+nav:
+  - Startseite: index.md
+  - Problem 1 - "Straßen müssen her!": Problem1.md
+  - Problem 2 - "Wasserversorgung": Problem2.md
+  - Problem 3 - "Stromversorgung": Problem3.md
+  - Problem 4 - "Historische Funde": Problem4.md
+  - Problem 5 - "Die Festhochzeit": Problem5.md
+  - Problem 6 - "Wohin nur mit den Gästen?": Problem6.md
+  - Problem 7 - "Es gibt viel zu tun! Wer macht's": Problem7.md
+
+theme:
+  name: material
+
+plugins:
+  - search
+  - with-pdf:
+      author: Felix Möhler und Julian Thiele
+      copyright: © 2022 Felix Möhler und Julian Thiele
+      cover_title: Die Graphschaft Schilda
+      cover_subtitle: Felix Möhler und Julian Thiele
+      toc_title: Inhaltsverzeichnis
+      heading_shift: true
+      #toc_level: 3
+      #ordered_chapter_level: 2
+      #two_columns_level: 3
+      output_path: Dokumentation.pdf
