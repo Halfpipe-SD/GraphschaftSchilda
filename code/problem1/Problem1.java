@@ -19,10 +19,16 @@ public class Problem1 extends BasicWindow {
 
     Dimension size = new Dimension(getWidth() / 2, getHeight());
 
-    GraphData graph_data = new GraphData("town_water.json");
+    GraphData graph_input = new GraphData("town_streets.json");
 
-    JGraphPanel p1 = new JGraphPanel(size, graph_data);
-    JGraphPanel p2 = new JGraphPanel(size, graph_data);
+    // initialize algorithm instance
+    Alrogithm algorithm = new Alrogithm(graph_input);
+
+    // use the prim algorithm to get the minimum spanning tree
+    GraphData graph_output = algorithm.get_output_graph();
+
+    JGraphPanel p1 = new JGraphPanel(size, graph_input);
+    JGraphPanel p2 = new JGraphPanel(size, graph_output);
 
     add(p1);
     add(p2);

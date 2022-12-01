@@ -16,6 +16,7 @@ public class GraphData {
 
   private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+  // graph properties
   private ArrayList<GraphVertex> vertices;
   private ArrayList<GraphEdge> edges;
   private boolean directed_edges;
@@ -39,10 +40,6 @@ public class GraphData {
 
     this.directed_edges = readJsonData(filepath, "directed_edges",
         TypeToken.getParameterized(Boolean.class).getType());
-
-    System.out.println(this.vertices);
-    System.out.println(this.edges);
-    System.out.println(this.directed_edges);
   }
 
   public ArrayList<GraphVertex> getVertices() {

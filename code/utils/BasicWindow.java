@@ -10,7 +10,6 @@ public class BasicWindow extends JFrame {
     super(title);
     setResizable(true);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    setResizable(false);
     setVisible(true);
   }
 
