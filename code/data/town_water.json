@@ -1,0 +1,99 @@
+{
+  "directed_edges": true,
+  "vertices": [
+    {
+      "label": "Wasserwerk"
+    },
+    {
+      "label": "Thoma"
+    },
+    {
+      "label": "Dogan"
+    },
+    {
+      "label": "Adler"
+    },
+    {
+      "label": "Bogart"
+    },
+    {
+      "label": "Ilona"
+    },
+    {
+      "label": "Club"
+    },
+    {
+      "label": "Holler"
+    },
+    {
+      "label": "Supermarkt"
+    }
+  ],
+  "edges": [
+    {
+      "source": "Wasserwerk",
+      "target": "Thoma",
+      "weight": 15
+    },
+    {
+      "source": "Wasserwerk",
+      "target": "Ilona",
+      "weight": 6
+    },
+    {
+      "source": "Wasserwerk",
+      "target": "Club",
+      "weight": 12
+    },
+    {
+      "source": "Dogan",
+      "target": "Adler",
+      "weight": 5
+    },
+    {
+      "source": "Dogan",
+      "target": "Bogart",
+      "weight": 6
+    },
+    {
+      "source": "Ilona",
+      "target": "Bogart",
+      "weight": 3
+    },
+    {
+      "source": "Ilona",
+      "target": "Holler",
+      "weight": 1
+    },
+    {
+      "source": "Club",
+      "target": "Adler",
+      "weight": 5
+    },
+    {
+      "source": "Club",
+      "target": "Holler",
+      "weight": 5
+    },
+    {
+      "source": "Adler",
+      "target": "Supermarkt",
+      "weight": 10
+    },
+    {
+      "source": "Bogart",
+      "target": "Supermarkt",
+      "weight": 10
+    },
+    {
+      "source": "Holler",
+      "target": "Supermarkt",
+      "weight": 7
+    },
+    {
+      "source": "Thoma",
+      "target": "Dogan",
+      "weight": 8
+    }
+  ]
+}
