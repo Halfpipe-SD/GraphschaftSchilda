@@ -48,12 +48,12 @@ public class JGraphPanel extends JPanel {
         WeightedEdgeLabel.class);
 
     // add vertices from graph data
-    for (Vertex v : graph_data.getVertices()) {
+    for (GraphVertex v : graph_data.getVertices()) {
       g.addVertex(v.getLabel());
     }
 
     // add edges from graph data
-    for (Edge e : graph_data.getEdges()) {
+    for (GraphEdge e : graph_data.getEdges()) {
       WeightedEdgeLabel edge = g.addEdge(e.getSource(), e.getTarget());
       g.setEdgeWeight(edge, e.getWeight());
     }

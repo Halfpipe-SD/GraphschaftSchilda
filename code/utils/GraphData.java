@@ -16,11 +16,11 @@ public class GraphData {
 
   private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-  private ArrayList<Vertex> vertices;
-  private ArrayList<Edge> edges;
+  private ArrayList<GraphVertex> vertices;
+  private ArrayList<GraphEdge> edges;
   private boolean directed_edges;
 
-  public GraphData(ArrayList<Vertex> vertices, ArrayList<Edge> edges, boolean directed_edges) {
+  public GraphData(ArrayList<GraphVertex> vertices, ArrayList<GraphEdge> edges, boolean directed_edges) {
     this.vertices = vertices;
     this.edges = edges;
     this.directed_edges = directed_edges;
@@ -40,11 +40,11 @@ public class GraphData {
     System.out.println(this.directed_edges);
   }
 
-  public ArrayList<Vertex> getVertices() {
+  public ArrayList<GraphVertex> getVertices() {
     return vertices;
   }
 
-  public ArrayList<Edge> getEdges() {
+  public ArrayList<GraphEdge> getEdges() {
     return edges;
   }
 
@@ -52,25 +52,25 @@ public class GraphData {
     return directed_edges;
   }
 
-  private ArrayList<Vertex> readVertices(String filepath) throws FileNotFoundException {
+  private ArrayList<GraphVertex> readVertices(String filepath) throws FileNotFoundException {
     FileReader fr = new FileReader(filepath);
     JsonObject json = gson.fromJson(fr, JsonObject.class);
     JsonElement json_element = json.get("vertices");
 
     // Define the type of the object to be read from the json file
-    Type t = new TypeToken<ArrayList<Vertex>>() {
+    Type t = new TypeToken<ArrayList<GraphVertex>>() {
     }.getType();
 
     return gson.fromJson(json_element, t);
   }
 
-  private ArrayList<Edge> readEdges(String filepath) throws FileNotFoundException {
+  private ArrayList<GraphEdge> readEdges(String filepath) throws FileNotFoundException {
     FileReader fr = new FileReader(filepath);
     JsonObject json = gson.fromJson(fr, JsonObject.class);
     JsonElement json_element = json.get("edges");
 
     // Define the type of the object to be read from the json file
-    Type t = new TypeToken<ArrayList<Edge>>() {
+    Type t = new TypeToken<ArrayList<GraphEdge>>() {
     }.getType();
 
     return gson.fromJson(json_element, t);

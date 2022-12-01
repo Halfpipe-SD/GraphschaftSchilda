@@ -1,6 +1,6 @@
 package code.utils;
 
-public class Vertex {
+public class GraphVertex {
   private String label;
 
   public String getLabel() {

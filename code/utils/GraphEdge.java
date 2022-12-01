@@ -1,6 +1,6 @@
 package code.utils;
 
-public class Edge {
+public class GraphEdge {
   private String source;
   private String target;
   private double weight;
