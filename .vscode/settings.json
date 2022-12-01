@@ -1,0 +1,13 @@
+{
+  "java.project.referencedLibraries": [
+    "lib/*.jar",
+    "libs/gson-2.9.0.jar",
+    "libs/jgrapht-core-1.5.1.jar",
+    "libs/jgrapht-ext-1.5.1.jar",
+    "libs/jgrapht-guava-1.5.1.jar",
+    "libs/jgrapht-io-1.5.1.jar",
+    "libs/jgrapht-opt-1.5.1.jar",
+    "libs/jgrapht-unimi-dsi-1.5.1.jar",
+    "libs/jgraphx-4.1.0.jar"
+  ]
+}
