@@ -31,9 +31,14 @@ public class GraphData {
     String filepath = new File("").getAbsolutePath() + "\\code\\data\\" + filename;
 
     // read data from json file with gson library
-    this.vertices = readVertices(filepath);
-    this.edges = readEdges(filepath);
-    this.directed_edges = readDirected(filepath);
+    this.vertices = readJsonData(filepath, "vertices",
+        TypeToken.getParameterized(ArrayList.class, GraphVertex.class).getType());
+
+    this.edges = readJsonData(filepath, "edges",
+        TypeToken.getParameterized(ArrayList.class, GraphEdge.class).getType());
+
+    this.directed_edges = readJsonData(filepath, "directed_edges",
+        TypeToken.getParameterized(Boolean.class).getType());
 
     System.out.println(this.vertices);
     System.out.println(this.edges);
@@ -52,40 +57,10 @@ public class GraphData {
     return directed_edges;
   }
 
-  private ArrayList<GraphVertex> readVertices(String filepath) throws FileNotFoundException {
-    FileReader fr = new FileReader(filepath);
-    JsonObject json = gson.fromJson(fr, JsonObject.class);
-    JsonElement json_element = json.get("vertices");
-
-    // Define the type of the object to be read from the json file
-    Type t = new TypeToken<ArrayList<GraphVertex>>() {
-    }.getType();
-
-    return gson.fromJson(json_element, t);
-  }
-
-  private ArrayList<GraphEdge> readEdges(String filepath) throws FileNotFoundException {
-    FileReader fr = new FileReader(filepath);
-    JsonObject json = gson.fromJson(fr, JsonObject.class);
-    JsonElement json_element = json.get("edges");
-
-    // Define the type of the object to be read from the json file
-    Type t = new TypeToken<ArrayList<GraphEdge>>() {
-    }.getType();
-
-    return gson.fromJson(json_element, t);
-  }
-
-  private boolean readDirected(String filepath) throws FileNotFoundException {
-    FileReader fr = new FileReader(filepath);
-    JsonObject json = gson.fromJson(fr, JsonObject.class);
-    JsonElement json_element = json.get("directed_edges");
-
-    // Define the type of the object to be read from the json file
-    Type t = new TypeToken<Boolean>() {
-    }.getType();
-
-    return gson.fromJson(json_element, t);
+  private <T> T readJsonData(String filepath, String key, Type type) throws FileNotFoundException {
+    JsonElement json = gson.fromJson(new FileReader(filepath), JsonElement.class);
+    JsonObject jsonObject = json.getAsJsonObject();
+    return gson.fromJson(jsonObject.get(key), type);
   }
 
 }
