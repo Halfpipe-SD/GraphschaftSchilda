@@ -5,6 +5,12 @@ public class GraphEdge {
   private String target;
   private double weight;
 
+  public GraphEdge(String source, String target, double weight) {
+    this.source = source;
+    this.target = target;
+    this.weight = weight;
+  }
+
   public String getSource() {
     return source;
   }

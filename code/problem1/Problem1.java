@@ -13,7 +13,7 @@ public class Problem1 extends BasicWindow {
   public Problem1(String title) throws FileNotFoundException {
     super(title);
 
-    setSize(new Dimension(450, 350));
+    setSize(new Dimension(480, 490));
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
@@ -24,7 +24,7 @@ public class Problem1 extends BasicWindow {
     // initialize algorithm instance
     Alrogithm algorithm = new Alrogithm(graph_input);
 
-    // use the prim algorithm to get the minimum spanning tree
+    // use the algorithm to get the minimum spanning tree
     GraphData graph_output = algorithm.get_output_graph();
 
     JGraphPanel p1 = new JGraphPanel(size, graph_input);
