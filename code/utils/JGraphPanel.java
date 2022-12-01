@@ -28,8 +28,7 @@ public class JGraphPanel extends JPanel {
 
     mxGraphComponent component = new mxGraphComponent(graphAdapter);
 
-    // set scale of graph
-    component.zoomAndCenter();
+    // TODO fix spacing or scale of graph
 
     // set size from constructor parameter
     component.setPreferredSize(size);
