@@ -13,7 +13,7 @@ public class Problem1 extends BasicWindow {
   public Problem1(String title) throws FileNotFoundException {
     super(title);
 
-    setSize(new Dimension(480, 490));
+    setSize(new Dimension(480, 450));
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 

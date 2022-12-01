@@ -2,13 +2,13 @@ package code.utils;
 
 public class GraphVertex {
   private String label;
-  private int key;
+  private int value;
 
   private GraphVertex predecessor;
   private GraphVertex next;
 
-  public GraphVertex(int key) {
-    this.key = key;
+  public GraphVertex(int value) {
+    this.value = value;
   }
 
   public void setNext(GraphVertex next) {
@@ -27,12 +27,12 @@ public class GraphVertex {
     return predecessor;
   }
 
-  public void setValue(int key) {
-    this.key = key;
+  public void setValue(int value) {
+    this.value = value;
   }
 
   public int getValue() {
-    return key;
+    return value;
   }
 
   public String getLabel() {
@@ -41,7 +41,7 @@ public class GraphVertex {
 
   @Override
   public String toString() {
-    return label + "(" + key + ")";
+    return label + "(" + value + ")";
   }
 
 }

@@ -31,36 +31,36 @@ public class Alrogithm {
 
     // Starte mit beliebigem Startknoten
     // Startknoten bekommt den Wert 0
-    GraphVertex start = vertices.get(0);
+    GraphVertex start = vertices.get(6);
     start.setValue(0);
 
     // Speichere alle Knoten in einer geeigneten Datenstruktur Q
     // -> Prioritätswarteschlange
-    PriorityQueue<GraphVertex> q = new PriorityQueue<GraphVertex>(vertices.size(), new VertexComparator());
-    q.addAll(vertices);
+    PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(vertices.size(), new VertexComparator());
+    queue.addAll(vertices);
 
     // Solange es noch Knoten in Q gibt...
-    while (!q.isEmpty()) {
+    while (!queue.isEmpty()) {
       // Wähle den Knoten aus Q mit dem kleinsten Schlüssel (v)
-      GraphVertex v = q.poll();
-      System.out.println(" -> Polled vertex: " + v.getLabel() + " with value: " +
-          v.getValue());
+      GraphVertex vertex = queue.poll();
+      System.out.println(" -> Polled vertex: " + vertex.getLabel() + " with value: " +
+          vertex.getValue());
 
-      // Speichere alle Nachbarn von u in neighbours
-      ArrayList<GraphVertex> neighbors = GraphData.getNeighbors(v, vertices, edges);
+      // Speichere alle Nachbarn von v in neighbours
+      ArrayList<GraphVertex> neighbors = GraphData.getNeighbors(vertex, vertices, edges);
 
       for (GraphVertex n : neighbors) {
         // Finde Kante zwischen v und n
-        for (GraphEdge e : GraphData.getEdgesBetweenTwoVertices(v, n, edges)) {
+        for (GraphEdge edge : GraphData.getEdgesBetweenTwoVertices(vertex, n, edges)) {
           // Wenn der Wert der Kante kleiner ist als der Wert des Knotens
           // prüfe ob der Knoten noch in Q ist
-          if (e.getWeight() < n.getValue() && q.contains(n)) {
+          if (edge.getWeight() < n.getValue() && queue.contains(n)) {
             // Speichere v als vorgänger von n und passe wert von n an
-            n.setValue((int) e.getWeight());
-            n.setPredecessor(v);
+            n.setValue((int) edge.getWeight());
+            n.setPredecessor(vertex);
             // Aktualisiere die Prioritätswarteschlange
-            q.remove(n);
-            q.add(n);
+            queue.remove(n);
+            queue.add(n);
             System.out.println("vertex " + n + " updated key to " + n.getValue());
           }
         }
@@ -75,12 +75,6 @@ public class Alrogithm {
         new_edges.add(new GraphEdge(v.getPredecessor().getLabel(), v.getLabel(), v.getValue()));
       }
     }
-
-    // gebe gesamtes gewicht der kanten aus
-    System.out.println("Anzahl Knoten: " + vertices.size());
-    System.out.println("Anzahl Kanten: " + new_edges.size());
-    System.out
-        .println("Gesamtes Gewicht des Graphen: " + new_edges.stream().mapToDouble(e -> e.getWeight()).sum());
 
     return new GraphData(this.vertices, new_edges, false);
   }

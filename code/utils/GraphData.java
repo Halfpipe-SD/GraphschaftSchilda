@@ -131,4 +131,20 @@ public class GraphData {
   public void setDirected(boolean directed) {
     this.directed_edges = directed;
   }
+
+  public String getVerticesCount() {
+    return String.valueOf(vertices.size());
+  }
+
+  public String getEdgesCount() {
+    return String.valueOf(edges.size());
+  }
+
+  public double getVerticesValue() {
+    return vertices.stream().mapToDouble(GraphVertex::getValue).sum();
+  }
+
+  public double getEdgesWeight() {
+    return edges.stream().mapToDouble(GraphEdge::getWeight).sum();
+  }
 }

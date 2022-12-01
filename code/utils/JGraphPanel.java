@@ -1,13 +1,17 @@
 package code.utils;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.util.Collection;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.swing.mxGraphComponent;
@@ -51,7 +55,20 @@ public class JGraphPanel extends JPanel {
     // disable connecting edges to nothing
     component.getGraph().setAllowDanglingEdges(false);
 
-    add(component);
+    // set layout of jpanel
+    setLayout(new BorderLayout());
+
+    // set graph description
+    String html_content = "<html><br>"
+        + "Anzahl der Knoten: " + graph_data.getVerticesCount() + "<br>"
+        + "Anzahl der Kanten: " + graph_data.getEdgesCount() + "<br>"
+        + "Summe der Kantengewichte: " + graph_data.getEdgesWeight() + "<br>"
+        + "</html>";
+
+    JLabel description = new JLabel("<html>" + html_content + "</html>");
+
+    add(description, BorderLayout.NORTH);
+    add(component, BorderLayout.CENTER);
   }
 
   public SimpleDirectedWeightedGraph<String, WeightedEdgeLabel> buildGraph() {
