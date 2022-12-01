@@ -19,7 +19,8 @@ public class Problem1 extends BasicWindow {
 
     Dimension size = new Dimension(getWidth() / 2, getHeight());
 
-    GraphData graph_input = new GraphData("town_streets.json");
+    GraphData graph_input = new GraphData("town_water.json");
+    graph_input.setDirected(false);
 
     // initialize algorithm instance
     Alrogithm algorithm = new Alrogithm(graph_input);

@@ -127,4 +127,8 @@ public class GraphData {
   public boolean isDirected() {
     return directed_edges;
   }
+
+  public void setDirected(boolean directed) {
+    this.directed_edges = directed;
+  }
 }

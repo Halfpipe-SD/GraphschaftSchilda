@@ -77,7 +77,6 @@ public class Alrogithm {
     }
 
     // gebe gesamtes gewicht der kanten aus
-
     System.out.println("Anzahl Knoten: " + vertices.size());
     System.out.println("Anzahl Kanten: " + new_edges.size());
     System.out
