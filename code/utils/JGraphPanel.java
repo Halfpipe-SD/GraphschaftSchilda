@@ -1,8 +1,7 @@
 package code.utils;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.Collection;
 
 import javax.swing.JLabel;
@@ -13,6 +12,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
+import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
@@ -23,7 +23,7 @@ public class JGraphPanel extends JPanel {
   private GraphData graph_data;
 
   @SuppressWarnings("deprecation")
-  public JGraphPanel(Dimension size, GraphData graph_data) {
+  public JGraphPanel(String title, Dimension size, GraphData graph_data) {
 
     this.graph_data = graph_data;
 
@@ -37,14 +37,20 @@ public class JGraphPanel extends JPanel {
     layout.execute(graphAdapter.getDefaultParent());
     mxGraphComponent component = new mxGraphComponent(graphAdapter);
 
-    // ignore graph directions (arrows)
-    if (!graph_data.isDirected()) {
-      mxGraphModel graphModel = (mxGraphModel) component.getGraph().getModel();
-      Collection<Object> cells = graphModel.getCells().values();
-      mxUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ENDARROW, mxConstants.NONE);
-    }
+    // adjust graph style
+    mxGraphModel graphModel = (mxGraphModel) component.getGraph().getModel();
+    Collection<Object> cells = graphModel.getCells().values();
 
-    // TODO fix spacing or scale of graph
+    mxUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FONTCOLOR, "#000000");
+    mxUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FONTSTYLE, "1");
+
+    // ignore graph directions (arrows)
+    if (!graph_data.isDirected())
+      mxUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ENDARROW, mxConstants.NONE);
+
+    // set new geometry
+    component.getGraph().getModel().setGeometry(component.getGraph().getModel().getRoot(),
+        new mxGeometry(10, 10, 0, 0));
 
     // set size from constructor parameter
     component.setPreferredSize(size);
@@ -59,7 +65,7 @@ public class JGraphPanel extends JPanel {
     setLayout(new BorderLayout());
 
     // set graph description
-    String html_content = "<html><br>"
+    String html_content = "<html><h3>" + title + "</h3>"
         + "Anzahl der Knoten: " + graph_data.getVerticesCount() + "<br>"
         + "Anzahl der Kanten: " + graph_data.getEdgesCount() + "<br>"
         + "Summe der Kantengewichte: " + graph_data.getEdgesWeight() + "<br>"

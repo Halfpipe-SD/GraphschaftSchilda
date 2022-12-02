@@ -28,8 +28,8 @@ public class Problem1 extends BasicWindow {
     // use the algorithm to get the minimum spanning tree
     GraphData graph_output = algorithm.get_output_graph();
 
-    JGraphPanel p1 = new JGraphPanel(size, graph_input);
-    JGraphPanel p2 = new JGraphPanel(size, graph_output);
+    JGraphPanel p1 = new JGraphPanel("Rohdaten", size, graph_input);
+    JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", size, graph_output);
 
     add(p1);
     add(p2);
