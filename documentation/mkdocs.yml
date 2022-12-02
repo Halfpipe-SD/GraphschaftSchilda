@@ -17,7 +17,7 @@ theme:
   name: material
   
 markdown_extensions:
-  - codehilite(linenums=true)
+  - codehilite
   - pymdownx.superfences
   - pymdownx.highlight:
       use_pygments: true
