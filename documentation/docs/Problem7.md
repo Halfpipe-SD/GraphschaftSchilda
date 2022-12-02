@@ -10,4 +10,4 @@
 
 ## Die Laufzeit des Algorithmus
 
-## Die Implementation des Algorithmus
+## Die Implementierung des Algorithmus
