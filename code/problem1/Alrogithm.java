@@ -35,7 +35,7 @@ public class Alrogithm {
 
     // Speichere alle Knoten in einer geeigneten Datenstruktur Q
     // -> Prioritätswarteschlange
-    PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(vertices.size(), new VertexComparator());
+    PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(new VertexComparator());
     queue.addAll(vertices);
 
     // Solange es noch Knoten in Q gibt...
@@ -51,8 +51,8 @@ public class Alrogithm {
       for (GraphVertex n : neighbors) {
         // Finde Kante zwischen v und n
         for (GraphEdge edge : GraphData.getEdgesBetweenTwoVertices(vertex, n, edges)) {
-          // Wenn der Wert der Kante kleiner ist als der Wert des Knotens
-          // prüfe ob der Knoten noch in Q ist
+          // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
+          // noch in Q enthalten ist
           if (edge.getWeight() < n.getValue() && queue.contains(n)) {
             // Speichere v als vorgänger von n und passe wert von n an
             n.setValue((int) edge.getWeight());

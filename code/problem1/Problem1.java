@@ -13,13 +13,13 @@ public class Problem1 extends BasicWindow {
   public Problem1(String title) throws FileNotFoundException {
     super(title);
 
-    setSize(new Dimension(480, 450));
+    setSize(new Dimension(510, 600));
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
     Dimension size = new Dimension(getWidth() / 2, getHeight());
 
-    GraphData graph_input = new GraphData("town_water.json");
+    GraphData graph_input = new GraphData("town_streets.json");
     graph_input.setDirected(false);
 
     // initialize algorithm instance

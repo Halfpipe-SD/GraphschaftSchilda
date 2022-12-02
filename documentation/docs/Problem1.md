@@ -19,19 +19,14 @@ Die Eingabe besteht aus einem Graphen, der aus Kanten und Knoten besteht. Diese 
 {
   "directed_edges": false,
   "vertices": [
-    {
-      "label": "Wasserwerk"
-    }, {
-      "label": "Thoma"
-    }
+    { "label": "House 0" },
+    { "label": "House 1" },
     ...
   ],
   "edges": [
-    {
-      "source": "Wasserwerk",
-      "target": "Thoma",
-      "weight": 15
-    },
+    { "source": "House 0", "target": "House 1", "weight": 5 },
+    { "source": "House 0", "target": "House 2", "weight": 3 },
+    { "source": "House 0", "target": "House 4", "weight": 4 },
     ...
   ]
 }
@@ -61,8 +56,8 @@ TODO (Wie haben Sie den Algorithmus umgesetzt? Welche Datenstruktur haben Sie ve
 
 Zur Lösung des Problems wurde der Algorithmus von Prim implementiert. Als Datenstruktur wurde eine Prioritätswarteschlange verwendet, die Instanzen der Klasse `GraphVertex` beinhaltet: 
 
-``` js
-PriorityQueue<GraphVertex> q = new PriorityQueue<GraphVertex>(size, new VertexComparator());
+``` java
+PriorityQueue<GraphVertex> q = new PriorityQueue<GraphVertex>(new VertexComparator());
 ```
 
 Für den Umgang mit Knoten und Kanten wurden drei Klassen implementiert:
@@ -70,7 +65,7 @@ Für den Umgang mit Knoten und Kanten wurden drei Klassen implementiert:
 - `GraphEdge.java`: Beinhaltet die Eigenschaften `String source`, `String target` und `double weight`.
 - `GraphData.java`: Behinhaltet die Listen `ArrayList<GraphEdge>` und `ArrayList<GraphVertex>`
 
-``` js
+``` java
 // Initialisiere alle Knoten mit ∞, setze den Vorgänger auf null
 for (GraphVertex v : vertices) {
   v.setValue(Integer.MAX_VALUE);
