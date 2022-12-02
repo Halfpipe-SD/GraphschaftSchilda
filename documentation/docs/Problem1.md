@@ -47,12 +47,10 @@ TODO Beschreibung MST mit Prim kruskal
 
 ## Die Laufzeit des Algorithmus
 
-TODO Laufzeitberechnung
+TODO Laufzeitberechnung `O(|E| + |V| log |V|)`
 TODO (Hier bitte auch eine Begründung einfügen, ein ausführlicher Beweis ist nicht notwendig.)
 
 ## Die Implementierung des Algorithmus
-
-TODO (Wie haben Sie den Algorithmus umgesetzt? Welche Datenstruktur haben Sie verwendet? Gibt es in Ihrer Implementierung etwas Besonderes?  ) 
 
 Zur Lösung des Problems wurde der Algorithmus von Prim implementiert. Als Datenstruktur wurde eine Prioritätswarteschlange verwendet, die Instanzen der Klasse `GraphVertex` beinhaltet: 
 
@@ -61,9 +59,14 @@ PriorityQueue<GraphVertex> q = new PriorityQueue<GraphVertex>(new VertexComparat
 ```
 
 Für den Umgang mit Knoten und Kanten wurden drei Klassen implementiert:
+
 - `GraphVertex.java`: Beinhaltet die Eigenschaft `int value`, welche den Key für den Algorithmus von Prim darstellt und das Objekt `GraphVertex predecessor`, der vom Algorithmus gesetzt wird.
 - `GraphEdge.java`: Beinhaltet die Eigenschaften `String source`, `String target` und `double weight`.
 - `GraphData.java`: Behinhaltet die Listen `ArrayList<GraphEdge>` und `ArrayList<GraphVertex>`
+
+> Aufgrund der Struktur der `GraphVertex` und `GraphEdge` Klassen werden die zusätzlichen Funktionen `getNeighbors()` und `getEdgesBetweenTwoVertices()` benötigt. Diese Funktionen benötigen zusätzlicehe Laufzeit und werden in der Klasse `GraphData` implementiert.
+
+
 
 ``` java
 // Initialisiere alle Knoten mit ∞, setze den Vorgänger auf null
