@@ -26,6 +26,7 @@ jobs:
           pip install mkdocs-gen-files
           pip install mkdocs-material
           pip install mkdocs-with-pdf
+          pip install Pygments
 
       - name: Setup Git Config
         run: |
