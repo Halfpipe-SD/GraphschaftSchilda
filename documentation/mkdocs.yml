@@ -22,7 +22,8 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.superfences 
   - pymdownx.inlinehilite
-
+  - codehilite
+ 
 plugins:
   - search
   - with-pdf:
