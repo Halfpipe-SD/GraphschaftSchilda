@@ -18,6 +18,7 @@ theme:
   
 markdown_extensions:
   - pymdownx.highlight:
+      use_pygments: true
       anchor_linenums: true
   - pymdownx.superfences 
   - pymdownx.inlinehilite
