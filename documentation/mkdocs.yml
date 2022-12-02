@@ -17,10 +17,12 @@ theme:
   name: material
   
 markdown_extensions:
-  - codehilite
-  - pymdownx.superfences
   - pymdownx.highlight:
       use_pygments: true
+      guess_lang: true
+      linenums: true
+      anchor_linenums: true
+  - pymdownx.superfences
  
 plugins:
   - search
