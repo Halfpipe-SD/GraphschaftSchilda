@@ -27,8 +27,9 @@ public class Problem3 extends BasicWindow {
     // Erzeuge alle möglichen Kanten mit zufälligen Gewichten
     ArrayList<GraphEdge> random_weighted_edges = generate_all_edges(graph_input.getVertices());
     graph_input.setEdges(random_weighted_edges);
+    System.out.println(random_weighted_edges);
 
-    GraphData graph_output = kruskal(graph_input);
+    GraphData graph_output = kruskal(graph_input, 5);
 
     Dimension size = new Dimension(getWidth() / 2, getHeight());
     JGraphPanel p1 = new JGraphPanel("Rohdaten", size, graph_input, "circle");
@@ -38,7 +39,7 @@ public class Problem3 extends BasicWindow {
     add(p2);
   }
 
-  public GraphData kruskal(GraphData input) {
+  public GraphData kruskal(GraphData input, int max_edges) {
 
     // Lese die Knoten und Kanten aus den Rohdaten
     ArrayList<GraphVertex> vertices = input.getVertices();
@@ -81,30 +82,30 @@ public class Problem3 extends BasicWindow {
       // hat
       GraphVertex source = GraphData.getSourceVertexFromEdge(e, vertices);
       GraphVertex target = GraphData.getTargetVertexFromEdge(e, vertices);
-      int maximum_edges = 4;
+      ArrayList<GraphEdge> source_edges = GraphData.getAdjacentEdges(source, output_edges);
+      ArrayList<GraphEdge> target_edges = GraphData.getAdjacentEdges(target, output_edges);
 
-      if (GraphData.getAdjacentEdges(source, output_edges).size() > maximum_edges
-          || GraphData.getAdjacentEdges(target, output_edges).size() > maximum_edges) {
+      System.out.println(source_edges.size() + " " + target_edges.size());
+
+      if (source_edges.size() >= max_edges || target_edges.size() >= max_edges) {
         System.out.println(
-            "Kante " + e + " übersprungen, da sie einen Knoten mit mehr als " + maximum_edges + " Kanten verbindet.");
+            "Kante " + e + " übersprungen, da sie einen Knoten mit mehr als " + max_edges + " Kanten verbindet.");
         continue;
       }
 
-      // wenn u und v in verschiedenen Bäumen sind
-      if (tree_u != tree_v) {
-        // füge kante von u und v zur Ausgabe hinzu
-        output_edges.add(e);
+      // wenn u und v in gleichen Bäumen sind -> skip
+      if (tree_u == tree_v)
+        continue;
 
-        // füge baum von v zu baum von u hinzu (merge)
-        for (GraphVertex v : tree_v)
-          tree_u.add(v);
+      // füge kante von u und v zur Ausgabe hinzu
+      output_edges.add(e);
 
-        forest.remove(tree_v);
-      }
+      // füge baum von v zu baum von u hinzu (merge)
+      for (GraphVertex v : tree_v)
+        tree_u.add(v);
+
+      forest.remove(tree_v);
     }
-
-    System.out.println(output_edges);
-    System.out.println(output_edges.size());
 
     return new GraphData(vertices, output_edges, false);
   }
