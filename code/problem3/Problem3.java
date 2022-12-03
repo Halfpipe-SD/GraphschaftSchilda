@@ -27,13 +27,13 @@ public class Problem3 extends BasicWindow {
     // Erzeuge alle möglichen Kanten mit zufälligen Gewichten
     ArrayList<GraphEdge> random_weighted_edges = generate_all_edges(graph_input.getVertices());
     graph_input.setEdges(random_weighted_edges);
-    System.out.println(random_weighted_edges);
 
-    GraphData graph_output = kruskal(graph_input, 5);
+    int max_edges = 5;
+    GraphData graph_output = kruskal(graph_input, max_edges);
 
     Dimension size = new Dimension(getWidth() / 2, getHeight());
     JGraphPanel p1 = new JGraphPanel("Rohdaten", size, graph_input, "circle");
-    JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Kruskal)", size, graph_output, "circle");
+    JGraphPanel p2 = new JGraphPanel("MST (Kruskal, max " + max_edges + " edges)", size, graph_output, "circle");
 
     add(p1);
     add(p2);
@@ -84,8 +84,6 @@ public class Problem3 extends BasicWindow {
       GraphVertex target = GraphData.getTargetVertexFromEdge(e, vertices);
       ArrayList<GraphEdge> source_edges = GraphData.getAdjacentEdges(source, output_edges);
       ArrayList<GraphEdge> target_edges = GraphData.getAdjacentEdges(target, output_edges);
-
-      System.out.println(source_edges.size() + " " + target_edges.size());
 
       if (source_edges.size() >= max_edges || target_edges.size() >= max_edges) {
         System.out.println(
