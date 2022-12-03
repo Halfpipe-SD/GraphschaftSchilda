@@ -11,6 +11,15 @@ public class GraphVertex {
     this.value = value;
   }
 
+  public GraphVertex(String label) {
+    this.label = label;
+  }
+
+  public GraphVertex(String label, int value) {
+    this.label = label;
+    this.value = value;
+  }
+
   public void setNext(GraphVertex next) {
     this.next = next;
   }

@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import code.problem1.Problem1;
+import code.problem3.Problem3;
 
 public class Main extends JFrame {
 
@@ -69,7 +70,7 @@ public class Main extends JFrame {
           // new Problem2();
           break;
         case 3:
-          // new Problem3();
+          new Problem3(label);
           break;
         case 4:
           // new Problem4();

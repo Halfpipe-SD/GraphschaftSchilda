@@ -116,6 +116,43 @@ public class GraphData {
     return output;
   }
 
+  public static ArrayList<GraphVertex> getAllPredeseccorsForVertex(GraphVertex vertex) {
+    ArrayList<GraphVertex> output = new ArrayList<GraphVertex>();
+
+    GraphVertex current = vertex;
+    while (current.getPredecessor() != null) {
+      output.add(current.getPredecessor());
+      current = current.getPredecessor();
+    }
+    return output;
+  }
+
+  public static GraphVertex getSourceVertexFromEdge(GraphEdge edge, ArrayList<GraphVertex> vertices) {
+    for (GraphVertex v : vertices) {
+      if (v.getLabel().equals(edge.getSource()))
+        return v;
+    }
+    return null;
+  }
+
+  public static GraphVertex getTargetVertexFromEdge(GraphEdge edge, ArrayList<GraphVertex> vertices) {
+    for (GraphVertex v : vertices) {
+      if (v.getLabel().equals(edge.getTarget()))
+        return v;
+    }
+    return null;
+  }
+
+  public static ArrayList<GraphEdge> getAdjacentEdges(GraphVertex vertex, ArrayList<GraphEdge> edges) {
+    ArrayList<GraphEdge> output = new ArrayList<GraphEdge>();
+
+    for (GraphEdge e : edges) {
+      if (e.getSource().equals(vertex.getLabel()) || e.getTarget().equals(vertex.getLabel()))
+        output.add(e);
+    }
+    return output;
+  }
+
   public ArrayList<GraphVertex> getVertices() {
     return vertices;
   }
@@ -130,6 +167,14 @@ public class GraphData {
 
   public void setDirected(boolean directed) {
     this.directed_edges = directed;
+  }
+
+  public void setEdges(ArrayList<GraphEdge> edges) {
+    this.edges = edges;
+  }
+
+  public void setVertices(ArrayList<GraphVertex> vertices) {
+    this.vertices = vertices;
   }
 
   public String getVerticesCount() {

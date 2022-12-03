@@ -11,6 +11,10 @@ public class GraphEdge {
     this.weight = weight;
   }
 
+  public void setWeight(double weight) {
+    this.weight = weight;
+  }
+
   public String getSource() {
     return source;
   }

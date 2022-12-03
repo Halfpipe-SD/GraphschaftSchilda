@@ -11,6 +11,12 @@ import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
+import com.mxgraph.layout.mxCircleLayout;
+import com.mxgraph.layout.mxCompactTreeLayout;
+import com.mxgraph.layout.mxEdgeLabelLayout;
+import com.mxgraph.layout.mxFastOrganicLayout;
+import com.mxgraph.layout.mxGraphLayout;
+import com.mxgraph.layout.mxOrganicLayout;
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxGraphModel;
@@ -23,7 +29,7 @@ public class JGraphPanel extends JPanel {
   private GraphData graph_data;
 
   @SuppressWarnings("deprecation")
-  public JGraphPanel(String title, Dimension size, GraphData graph_data) {
+  public JGraphPanel(String title, Dimension size, GraphData graph_data, String layout) {
 
     this.graph_data = graph_data;
 
@@ -32,9 +38,22 @@ public class JGraphPanel extends JPanel {
     // initialize jgraphx adapter
     JGraphXAdapter<String, WeightedEdgeLabel> graphAdapter = new JGraphXAdapter<String, WeightedEdgeLabel>(graph);
 
+    mxGraphLayout graph_layout = null;
+
+    switch (layout) {
+      case "hierarchical":
+        graph_layout = new mxHierarchicalLayout(graphAdapter);
+        break;
+      case "circle":
+        graph_layout = new mxCircleLayout(graphAdapter);
+        break;
+      default:
+        graph_layout = new mxHierarchicalLayout(graphAdapter);
+        break;
+    }
+
     // initialize graph layout, execute graph on layout and mx graph component
-    mxHierarchicalLayout layout = new mxHierarchicalLayout(graphAdapter);
-    layout.execute(graphAdapter.getDefaultParent());
+    graph_layout.execute(graphAdapter.getDefaultParent());
     mxGraphComponent component = new mxGraphComponent(graphAdapter);
 
     // adjust graph style

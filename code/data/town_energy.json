@@ -1,0 +1,17 @@
+{
+  "directed_edges": false,
+  "vertices": [
+    { "label": "Pole 0" },
+    { "label": "Pole 1" },
+    { "label": "Pole 2" },
+    { "label": "Pole 3" },
+    { "label": "Pole 4" },
+    { "label": "Pole 5" },
+    { "label": "Pole 6" },
+    { "label": "Pole 7" },
+    { "label": "Pole 8" },
+    { "label": "Pole 9" },
+    { "label": "Pole 10" },
+    { "label": "Pole 11" }
+  ]
+}

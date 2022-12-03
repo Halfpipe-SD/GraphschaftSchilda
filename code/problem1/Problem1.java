@@ -24,17 +24,17 @@ public class Problem1 extends BasicWindow {
 
     GraphData graph_input = new GraphData("town_streets.json");
 
-    GraphData graph_output = get_output_graph(graph_input);
+    GraphData graph_output = prim(graph_input);
 
     Dimension size = new Dimension(getWidth() / 2, getHeight());
-    JGraphPanel p1 = new JGraphPanel("Rohdaten", size, graph_input);
-    JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", size, graph_output);
+    JGraphPanel p1 = new JGraphPanel("Rohdaten", size, graph_input, "hierarchical");
+    JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", size, graph_output, "hierarchical");
 
     add(p1);
     add(p2);
   }
 
-  public GraphData get_output_graph(GraphData input) {
+  public GraphData prim(GraphData input) {
 
     // Lese die Knoten und Kanten aus den Rohdaten
     ArrayList<GraphVertex> vertices = input.getVertices();
@@ -53,7 +53,8 @@ public class Problem1 extends BasicWindow {
 
     // Speichere alle Knoten in einer geeigneten Datenstruktur Q
     // -> Prioritätswarteschlange
-    PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(new VertexComparator());
+    PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(
+        Comparator.comparingInt(GraphVertex::getValue));
     queue.addAll(vertices);
 
     // Solange es noch Knoten in Q gibt...
