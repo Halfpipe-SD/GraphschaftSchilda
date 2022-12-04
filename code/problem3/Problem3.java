@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.PriorityQueue;
 
 import code.utils.BasicWindow;
 import code.utils.GraphData;

@@ -97,11 +97,4 @@ public class Problem1 extends BasicWindow {
     return new GraphData(vertices, new_edges, false);
   }
 
-  private class VertexComparator implements Comparator<GraphVertex> {
-    @Override
-    public int compare(GraphVertex v1, GraphVertex v2) {
-      return v1.getValue() - v2.getValue();
-    }
-  }
-
 }
