@@ -59,6 +59,7 @@ public class Main extends JFrame {
 
     // get problem number from button label
     int problem = Integer.parseInt(label.substring(0, 1));
+    System.out.println("Chose menu option: " + label);
 
     try {
       // open problem window

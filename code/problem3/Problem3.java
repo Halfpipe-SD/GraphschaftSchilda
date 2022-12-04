@@ -38,7 +38,7 @@ public class Problem3 extends BasicWindow {
     add(p2);
   }
 
-  public GraphData kruskal(GraphData input, int max_edges) {
+  private GraphData kruskal(GraphData input, int max_edges) {
 
     // Lese die Knoten und Kanten aus den Rohdaten
     ArrayList<GraphVertex> vertices = input.getVertices();
@@ -47,7 +47,7 @@ public class Problem3 extends BasicWindow {
     // Sortiere die Kanten nach Gewicht
     edges.sort(Comparator.comparingDouble(GraphEdge::getWeight));
 
-    // erstelle einen wald 'f0rest' (eine menge von bäumen), wo jeder knoten ein
+    // erstelle einen wald 'forest' (eine menge von bäumen), wo jeder knoten ein
     // eigener baum ist
     ArrayList<ArrayList<GraphVertex>> forest = new ArrayList<ArrayList<GraphVertex>>();
     for (GraphVertex v : vertices) {
@@ -67,7 +67,7 @@ public class Problem3 extends BasicWindow {
       // entferne eine kante (u, v) aus forest
       GraphEdge e = forest_edges.remove(0);
 
-      // Hole bäume von source und target der kante
+      // finde die bäume, die mit der Kante e verbunden sind
       ArrayList<GraphVertex> tree_u = null;
       ArrayList<GraphVertex> tree_v = null;
       for (ArrayList<GraphVertex> t : forest) {
@@ -79,16 +79,11 @@ public class Problem3 extends BasicWindow {
 
       // Prüfe ob die kante e von einem vertex ausgeht, der bereits mehr als 5 kanten
       // hat
-      GraphVertex source = GraphData.getSourceVertexFromEdge(e, vertices);
-      GraphVertex target = GraphData.getTargetVertexFromEdge(e, vertices);
-      ArrayList<GraphEdge> source_edges = GraphData.getAdjacentEdges(source, output_edges);
-      ArrayList<GraphEdge> target_edges = GraphData.getAdjacentEdges(target, output_edges);
+      ArrayList<GraphEdge> source_edges = GraphData.getAdjacentEdges(e.getSource(), output_edges);
+      ArrayList<GraphEdge> target_edges = GraphData.getAdjacentEdges(e.getTarget(), output_edges);
 
-      if (source_edges.size() >= max_edges || target_edges.size() >= max_edges) {
-        System.out.println(
-            "Kante " + e + " übersprungen, da sie einen Knoten mit mehr als " + max_edges + " Kanten verbindet.");
+      if (source_edges.size() >= max_edges || target_edges.size() >= max_edges)
         continue;
-      }
 
       // wenn u und v in gleichen Bäumen sind -> skip
       if (tree_u == tree_v)
@@ -108,23 +103,14 @@ public class Problem3 extends BasicWindow {
   }
 
   private ArrayList<GraphEdge> generate_all_edges(ArrayList<GraphVertex> vertices) {
-    ArrayList<GraphEdge> edges = new ArrayList<GraphEdge>();
-
+    ArrayList<GraphEdge> output = new ArrayList<GraphEdge>();
     for (int i = 0; i < vertices.size(); i++) {
       for (int j = i + 1; j < vertices.size(); j++) {
-        GraphVertex v1 = vertices.get(i);
-        GraphVertex v2 = vertices.get(j);
-
-        // generate random weight and round to 0 decimal places
-        double weight = Math.round(Math.random() * 100.0);
-
-        GraphEdge e = new GraphEdge(v1.getLabel(), v2.getLabel(), weight);
-
-        // check if edge already exists
-        edges.add(e);
-
+        // generate random weight and add new edge to output
+        output.add(new GraphEdge(vertices.get(i).getLabel(),
+            vertices.get(j).getLabel(), Math.round(Math.random() * 100.0)));
       }
     }
-    return edges;
+    return output;
   }
 }

@@ -143,11 +143,11 @@ public class GraphData {
     return null;
   }
 
-  public static ArrayList<GraphEdge> getAdjacentEdges(GraphVertex vertex, ArrayList<GraphEdge> edges) {
+  public static ArrayList<GraphEdge> getAdjacentEdges(String vertex, ArrayList<GraphEdge> edges) {
     ArrayList<GraphEdge> output = new ArrayList<GraphEdge>();
 
     for (GraphEdge e : edges) {
-      if (e.getSource().equals(vertex.getLabel()) || e.getTarget().equals(vertex.getLabel()))
+      if (e.getSource().equals(vertex) || e.getTarget().equals(vertex))
         output.add(e);
     }
     return output;

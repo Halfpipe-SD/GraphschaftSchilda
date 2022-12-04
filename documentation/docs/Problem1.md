@@ -55,7 +55,8 @@ TODO (Hier bitte auch eine Begründung einfügen, ein ausführlicher Beweis ist 
 Zur Lösung des Problems wurde der Algorithmus von Prim implementiert. Als Datenstruktur wurde eine Prioritätswarteschlange verwendet, die Instanzen der Klasse `GraphVertex` beinhaltet: 
 
 ``` java
-PriorityQueue<GraphVertex> q = new PriorityQueue<GraphVertex>(new VertexComparator());
+PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(
+        Comparator.comparingInt(GraphVertex::getValue));
 ```
 
 Für den Umgang mit Knoten und Kanten wurden drei Klassen implementiert:
@@ -65,7 +66,6 @@ Für den Umgang mit Knoten und Kanten wurden drei Klassen implementiert:
 - `GraphData.java`: Behinhaltet die Listen `ArrayList<GraphEdge>` und `ArrayList<GraphVertex>`
 
 > Aufgrund der Struktur der `GraphVertex` und `GraphEdge` Klassen werden die zusätzlichen Funktionen `getNeighbors()` und `getEdgesBetweenTwoVertices()` benötigt. Diese Funktionen benötigen zusätzlicehe Laufzeit und werden in der Klasse `GraphData` implementiert.
-
 
 
 ``` java
@@ -80,7 +80,7 @@ GraphVertex start = vertices.get(6);
 start.setValue(0);
 
 // Speichere alle Knoten in einer geeigneten Datenstruktur Q -> Prioritätswarteschlange
-PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(vertices.size(), new VertexComparator());
+PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(Comparator.comparingInt(GraphVertex::getValue));
 queue.addAll(vertices);
 
 // Solange es noch Knoten in der Warteschlange gibt

@@ -34,7 +34,7 @@ public class Problem1 extends BasicWindow {
     add(p2);
   }
 
-  public GraphData prim(GraphData input) {
+  private GraphData prim(GraphData input) {
 
     // Lese die Knoten und Kanten aus den Rohdaten
     ArrayList<GraphVertex> vertices = input.getVertices();
