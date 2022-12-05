@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 
 import code.problem1.Problem1;
 import code.problem3.Problem3;
+import code.test.Template;
 
 public class Main extends JFrame {
 
@@ -24,7 +25,9 @@ public class Main extends JFrame {
       "4 Planer für historische Funde",
       "5 Festhochzeitsplaner",
       "6 Planer für die nächste Party",
-      "7 Aufgabenplaner" };
+      "7 Aufgabenplaner",
+      "8 Test" };
+
 
   /*
    * #### PROGRAM START ####
@@ -84,6 +87,9 @@ public class Main extends JFrame {
           break;
         case 7:
           // new Problem7();
+          break;
+        case 8:
+          new Template(label);
           break;
       }
     } catch (FileNotFoundException enf) {
