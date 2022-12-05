@@ -29,8 +29,12 @@ public class GraphData {
 
   public GraphData(String filename) throws FileNotFoundException {
 
-    String filepath = new File("").getAbsolutePath() + "\\code\\data\\" + filename;
-
+    //use this path on win
+    // String filepath = new File("").getAbsolutePath() + "\\code\\data\\" + filename;
+    
+    //use this path on mac
+    String filepath = new File("").getAbsolutePath() + "/code/data/" + filename;
+    
     // read data from json file with gson library
     this.vertices = readJsonData(filepath, "vertices",
         TypeToken.getParameterized(ArrayList.class, GraphVertex.class).getType());
