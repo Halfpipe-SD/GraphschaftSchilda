@@ -7,6 +7,8 @@ public class GraphVertex {
   private GraphVertex predecessor;
   private GraphVertex next;
 
+  private boolean visited;
+
   public GraphVertex(int value) {
     this.value = value;
   }
@@ -40,12 +42,20 @@ public class GraphVertex {
     this.value = value;
   }
 
+  public void setVisited(boolean visited) {
+    this.visited = visited;
+  }
+
   public int getValue() {
     return value;
   }
 
   public String getLabel() {
     return label;
+  }
+
+  public boolean isVisited() {
+    return visited;
   }
 
   @Override

@@ -26,9 +26,8 @@ public class Template extends BasicWindow {
 
     GraphData graph_output = prim(graph_input);
 
-    Dimension size = new Dimension(getWidth() / 2, getHeight());
-    JGraphPanel p1 = new JGraphPanel("Rohdaten", size, graph_input, "hierarchical");
-    JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", size, graph_output, "hierarchical");
+    JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "hierarchical");
+    JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", graph_output, "hierarchical");
 
     add(p1);
     add(p2);

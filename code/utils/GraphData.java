@@ -29,12 +29,9 @@ public class GraphData {
 
   public GraphData(String filename) throws FileNotFoundException {
 
-    //use this path on win
-    // String filepath = new File("").getAbsolutePath() + "\\code\\data\\" + filename;
-    
-    //use this path on mac
+    // filepath is apparently compatible with both Windows and Unix systems
     String filepath = new File("").getAbsolutePath() + "/code/data/" + filename;
-    
+
     // read data from json file with gson library
     this.vertices = readJsonData(filepath, "vertices",
         TypeToken.getParameterized(ArrayList.class, GraphVertex.class).getType());
@@ -155,6 +152,17 @@ public class GraphData {
         output.add(e);
     }
     return output;
+  }
+
+  public static double getWeightSum(GraphVertex u, GraphVertex v, ArrayList<GraphEdge> edges) {
+    double sum = 0;
+    for (GraphEdge e : edges) {
+      if ((e.getSource().equals(u.getLabel()) && e.getTarget().equals(v.getLabel()))
+          || (e.getSource().equals(v.getLabel()) && e.getTarget().equals(u.getLabel()))) {
+        sum += e.getWeight();
+      }
+    }
+    return sum;
   }
 
   public ArrayList<GraphVertex> getVertices() {

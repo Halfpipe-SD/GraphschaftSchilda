@@ -1,0 +1,28 @@
+{
+  "directed_edges": false,
+  "vertices": [
+    { "label": "Match" },
+    { "label": "Firecracker 1" },
+    { "label": "Firecracker 2" },
+    { "label": "Firecracker 3" },
+    { "label": "Firecracker 4" },
+    { "label": "Firecracker 5" },
+    { "label": "Firecracker 6" },
+    { "label": "Firecracker 7" },
+    { "label": "Firecracker 8" }
+  ],
+  "edges": [
+    { "source": "Match", "target": "Firecracker 1", "weight": 1 },
+    { "source": "Firecracker 1", "target": "Firecracker 2", "weight": 4 },
+    { "source": "Firecracker 1", "target": "Firecracker 3", "weight": 1 },
+    { "source": "Firecracker 1", "target": "Firecracker 5", "weight": 4 },
+    { "source": "Firecracker 2", "target": "Firecracker 3", "weight": 2 },
+    { "source": "Firecracker 3", "target": "Firecracker 5", "weight": 3 },
+    { "source": "Firecracker 4", "target": "Firecracker 5", "weight": 3 },
+    { "source": "Firecracker 4", "target": "Firecracker 6", "weight": 1 },
+    { "source": "Firecracker 4", "target": "Firecracker 7", "weight": 3 },
+    { "source": "Firecracker 5", "target": "Firecracker 8", "weight": 2 },
+    { "source": "Firecracker 6", "target": "Firecracker 7", "weight": 4 },
+    { "source": "Firecracker 6", "target": "Firecracker 8", "weight": 3 }
+  ]
+}

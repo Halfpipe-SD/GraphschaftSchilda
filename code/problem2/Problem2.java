@@ -24,9 +24,8 @@ public class Problem2 extends BasicWindow {
 
         GraphData graph_output = get_output_graph(graph_input);
 
-        Dimension size = new Dimension(getWidth() / 2, getHeight());
-        JGraphPanel p1 = new JGraphPanel("Rohdaten", size, graph_input, "hierarchical");
-        JGraphPanel p2 = new JGraphPanel("Maximum Flow (Ford-Fulkerson)", size, graph_output, "hierarchical");
+        JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "hierarchical");
+        JGraphPanel p2 = new JGraphPanel("Maximum Flow (Ford-Fulkerson)", graph_output, "hierarchical");
 
         add(p1);
         add(p2);

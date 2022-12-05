@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 
 import code.problem1.Problem1;
 import code.problem3.Problem3;
+import code.problem4.Problem4;
 import code.test.Template;
 
 public class Main extends JFrame {
@@ -22,12 +23,11 @@ public class Main extends JFrame {
       "1 Straßenplaner",
       "2 Wasserversorgungsplaner",
       "3 Stromversorgungsplaner",
-      "4 Planer für historische Funde",
+      "4 Feuerwerksplaner",
       "5 Festhochzeitsplaner",
       "6 Planer für die nächste Party",
       "7 Aufgabenplaner",
       "8 Test" };
-
 
   /*
    * #### PROGRAM START ####
@@ -77,7 +77,7 @@ public class Main extends JFrame {
           new Problem3(label);
           break;
         case 4:
-          // new Problem4();
+          new Problem4(label);
           break;
         case 5:
           // new Problem5();

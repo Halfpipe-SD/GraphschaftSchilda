@@ -1,7 +1,6 @@
 package code.utils;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.Collection;
 
 import javax.swing.JLabel;
@@ -25,7 +24,7 @@ public class JGraphPanel extends JPanel {
   private GraphData graph_data;
 
   @SuppressWarnings("deprecation")
-  public JGraphPanel(String title, Dimension size, GraphData graph_data, String layout) {
+  public JGraphPanel(String title, GraphData graph_data, String layout) {
 
     this.graph_data = graph_data;
 
@@ -66,9 +65,6 @@ public class JGraphPanel extends JPanel {
     // set new geometry
     component.getGraph().getModel().setGeometry(component.getGraph().getModel().getRoot(),
         new mxGeometry(10, 10, 0, 0));
-
-    // set size from constructor parameter
-    component.setPreferredSize(size);
 
     // disable creating new edges
     component.setConnectable(false);

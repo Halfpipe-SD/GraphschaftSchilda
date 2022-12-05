@@ -30,9 +30,8 @@ public class Problem3 extends BasicWindow {
     int max_edges = 5;
     GraphData graph_output = kruskal(graph_input, max_edges);
 
-    Dimension size = new Dimension(getWidth() / 2, getHeight());
-    JGraphPanel p1 = new JGraphPanel("Rohdaten", size, graph_input, "circle");
-    JGraphPanel p2 = new JGraphPanel("MST (Kruskal, max " + max_edges + " edges)", size, graph_output, "circle");
+    JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "circle");
+    JGraphPanel p2 = new JGraphPanel("MST (Kruskal, max " + max_edges + " edges)", graph_output, "circle");
 
     add(p1);
     add(p2);
