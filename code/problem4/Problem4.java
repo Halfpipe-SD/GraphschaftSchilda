@@ -76,13 +76,11 @@ public class Problem4 extends BasicWindow {
 
       // 2. berechne für alle noch unbesuchten Nachbarknoten die Summe des jeweiligen
       // Kantengewichtes und der Distanz im aktuellen Knoten
-      ArrayList<GraphVertex> neighbors = GraphData.getNeighbors(v, vertices, edges);
+      for (GraphVertex n : GraphData.getNeighbors(v, vertices, edges)) {
 
-      for (GraphVertex n : neighbors) {
         // 3. ist dieser Wert für einen Knoten kleiner als die
         // dort gespeicherte Distanz, aktualisiere sie und setze den aktuellen Knoten
         // als Vorgänger. (Dieser Schritt wird auch als Update bezeichnet. )
-
         double sum = v.getValue() + GraphData.getWeightSum(v, n, edges);
 
         if (sum < n.getValue()) {

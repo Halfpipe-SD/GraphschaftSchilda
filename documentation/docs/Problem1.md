@@ -37,6 +37,7 @@ Die Eingabe besteht aus einem Graphen, der aus Kanten und Knoten besteht. Diese 
 Die Ausgabe wird als Graph in einem Fenster dargestellt. Das Fenster besteht aus zwei Hälften. Auf der linken Seite wird der Eingabegraph dargestellt. Auf der rechten Seite wird der berechnete Graph dargestellt. 
 
 Ein korrekte Ausgabe erfüllt folgende Eigenschaften:
+
 - TODO
 
 ![Problem1](images/problem1.png)

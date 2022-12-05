@@ -47,6 +47,7 @@ private ArrayList<GraphEdge> generate_all_edges(ArrayList<GraphVertex> vertices)
 Die Ausgabe wird als Graph in einem Fenster dargestellt. Das Fenster besteht aus zwei Hälften. Auf der linken Seite wird der Eingabegraph dargestellt. Auf der rechten Seite wird der berechnete Graph dargestellt. 
 
 Ein korrekte Ausgabe erfüllt folgende Eigenschaften:
+
 - TODO
 
 ![Problem2](images/problem3.png)
@@ -101,10 +102,10 @@ while (forest_edges.size() > 0) {
     ArrayList<GraphVertex> tree_u = null;
     ArrayList<GraphVertex> tree_v = null;
     for (ArrayList<GraphVertex> t : forest) {
-    if (t.contains(GraphData.getSourceVertexFromEdge(e, vertices)))
-        tree_u = t;
-    if (t.contains(GraphData.getTargetVertexFromEdge(e, vertices)))
-        tree_v = t;
+      if (t.contains(GraphData.getSourceVertexFromEdge(e, vertices)))
+          tree_u = t;
+      if (t.contains(GraphData.getTargetVertexFromEdge(e, vertices)))
+          tree_v = t;
     }
 
     // Prüfe ob die kante e von einem vertex ausgeht, der bereits mehr als 5 kanten
