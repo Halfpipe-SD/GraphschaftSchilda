@@ -29,7 +29,6 @@ public class Problem4 extends BasicWindow {
 
     ArrayList<GraphVertex> vertices_output = dijkstra(graph_input);
 
-    Dimension size = new Dimension(getWidth(), getHeight());
     JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "circle");
 
     add(p1);
@@ -83,13 +82,14 @@ public class Problem4 extends BasicWindow {
         // als Vorgänger. (Dieser Schritt wird auch als Update bezeichnet. )
         double sum = v.getValue() + GraphData.getWeightSum(v, n, edges);
 
-        if (sum < n.getValue()) {
-          n.setValue((int) sum);
-          n.setPredecessor(v);
-          // Aktualisiere die Prioritätswarteschlange
-          queue.remove(n);
-          queue.add(n);
-        }
+        if (sum >= n.getValue())
+          continue;
+
+        n.setValue((int) sum);
+        n.setPredecessor(v);
+        // Aktualisiere die Prioritätswarteschlange
+        queue.remove(n);
+        queue.add(n);
       }
     }
 

@@ -57,11 +57,9 @@ Ein korrekte Ausgabe erfüllt folgende Eigenschaften:
 
 TODO
 
-
-
 ## Die Laufzeit des Algorithmus
 
-
+TODO
 
 ## Die Implementierung des Algorithmus
 
@@ -94,19 +92,20 @@ while (!queue.isEmpty()) {
   // 2. berechne für alle noch unbesuchten Nachbarknoten die Summe des jeweiligen
   // Kantengewichtes und der Distanz im aktuellen Knoten
   for (GraphVertex n : GraphData.getNeighbors(v, vertices, edges)) {
-    
+
     // 3. ist dieser Wert für einen Knoten kleiner als die
     // dort gespeicherte Distanz, aktualisiere sie und setze den aktuellen Knoten
     // als Vorgänger. (Dieser Schritt wird auch als Update bezeichnet. )
     double sum = v.getValue() + GraphData.getWeightSum(v, n, edges);
 
-    if (sum < n.getValue()) {
-      n.setValue((int) sum);
-      n.setPredecessor(v);
-      // Aktualisiere die Prioritätswarteschlange
-      queue.remove(n);
-      queue.add(n);
-    }
+    if (sum >= n.getValue())
+      continue;
+
+    n.setValue((int) sum);
+    n.setPredecessor(v);
+    // Aktualisiere die Prioritätswarteschlange
+    queue.remove(n);
+    queue.add(n);
   }
 }
 
