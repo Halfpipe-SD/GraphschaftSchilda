@@ -73,25 +73,20 @@ public class GraphData {
     return neighbors;
   }
 
-  public static ArrayList<GraphEdge> getEdgesBetweenTwoVertices(
+  public static GraphEdge getEdgeBetweenTwoVertices(
       GraphVertex vertex1,
       GraphVertex vertex2,
       ArrayList<GraphEdge> edges) {
-
-    // Neue Liste für Kanten zwischen den Knoten
-    ArrayList<GraphEdge> output = new ArrayList<GraphEdge>();
 
     for (GraphEdge e : edges) {
       // Prüfe ob die Kante zwischen den beiden Knoten liegt
       if ((e.getSource().equals(vertex1.getLabel()) &&
           e.getTarget().equals(vertex2.getLabel()))
           || (e.getSource().equals(vertex2.getLabel()) &&
-              e.getTarget().equals(vertex1.getLabel()))) {
-        // Füge die Kante zur Liste hinzu
-        output.add(e);
-      }
+              e.getTarget().equals(vertex1.getLabel())))
+        return e;
     }
-    return output;
+    return null;
   }
 
   public static ArrayList<GraphEdge> getEdgesFromVertices(ArrayList<GraphVertex> vertices) {

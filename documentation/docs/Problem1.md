@@ -1,6 +1,8 @@
 # Problem 1 - "Straßen müssen her!"
 
-Lange Zeit gab es in der Graphschaft Schilda einen Reformstau, kein Geld floss mehr in die Infrastruktur. Wie es kommen musste, wurde der Zustand der Stadt zusehends schlechter, bis die Bürger der Graphschaft den Aufbau Ihrer Stadt nun endlich selbst in die Hand nahmen. Zunächst einmal sollen neue Straßen gebaut werden. Zur Zeit gibt es nur einige schlammige Wege zwischen den Häusern. Diese sollen nun gepflastert werden, so dass von jedem Haus jedes andere Haus erreichbar ist. Da die Bürger der Stadt arm sind, soll der Straßenbau insgesamt möglichst wenig kosten. Die Bürger haben bereits einen Plan mit möglichen Wegen erstellt. Ihre Aufgabe ist nun, das kostengünstigste Wegenetz zu berechnen, so dass alle Häuser miteinander verbunden sind (nehmen Sie dabei pro Pflasterstein Kosten von 1 an):
+Lange Zeit gab es in der Graphschaft Schilda einen Reformstau, kein Geld floss mehr in die Infrastruktur. Wie es kommen musste, wurde der Zustand der Stadt zusehends schlechter, bis die Bürger der Graphschaft den Aufbau Ihrer Stadt nun endlich selbst in die Hand nahmen. Zunächst einmal sollen neue Straßen gebaut werden. Zur Zeit gibt es nur einige schlammige Wege zwischen den Häusern. Diese sollen nun gepflastert werden, so dass von jedem Haus jedes andere Haus erreichbar ist. 
+
+Da die Bürger der Stadt arm sind, soll der Straßenbau insgesamt möglichst wenig kosten. Die Bürger haben bereits einen Plan mit möglichen Wegen erstellt. Ihre Aufgabe ist nun, das kostengünstigste Wegenetz zu berechnen, so dass alle Häuser miteinander verbunden sind (nehmen Sie dabei pro Pflasterstein Kosten von 1 an):
 
 ## Modellierung des Problems
 
@@ -66,7 +68,7 @@ Für den Umgang mit Knoten und Kanten wurden drei Klassen implementiert:
 - `GraphEdge.java`: Beinhaltet die Eigenschaften `String source`, `String target` und `double weight`.
 - `GraphData.java`: Behinhaltet die Listen `ArrayList<GraphEdge>` und `ArrayList<GraphVertex>`
 
-> Aufgrund der Struktur der `GraphVertex` und `GraphEdge` Klassen werden die zusätzlichen Funktionen `getNeighbors()` und `getEdgesBetweenTwoVertices()` benötigt. Diese Funktionen benötigen zusätzlicehe Laufzeit und werden in der Klasse `GraphData` implementiert.
+> Aufgrund der Struktur der `GraphVertex` und `GraphEdge` Klassen werden die zusätzlichen Funktionen `getNeighbors()` und `getEdgeBetweenTwoVertices()` benötigt. Diese Funktionen benötigen zusätzlicehe Laufzeit und werden in der Klasse `GraphData` implementiert.
 
 
 ``` java
@@ -92,24 +94,24 @@ while (!queue.isEmpty()) {
   // Wähle den Knoten aus Q mit dem kleinsten Schlüssel (v)
   GraphVertex vertex = queue.poll();
 
-  // Speichere alle Nachbarn von v in neighbours
-  ArrayList<GraphVertex> neighbors = GraphData.getNeighbors(vertex, vertices, edges);
+  // Für jeden Nachbarknoten n von v...
+  for (GraphVertex n : GraphData.getNeighbors(vertex, vertices, edges)) {
 
-  for (GraphVertex n : neighbors) {
     // Finde Kante zwischen v und n
-    for (GraphEdge edge : GraphData.getEdgesBetweenTwoVertices(vertex, n, edges)) {
-      // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
-      // noch in Q enthalten ist
-      if (edge.getWeight() >= n.getValue() || !queue.contains(n))
-        continue;
+    GraphEdge edge = GraphData.getEdgeBetweenTwoVertices(vertex, n, edges);
 
-      // Speichere v als vorgänger von n und passe wert von n an
-      n.setValue((int) edge.getWeight());
-      n.setPredecessor(vertex);
-      // Aktualisiere die Prioritätswarteschlange
-      queue.remove(n);
-      queue.add(n);
-    }
+    // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
+    // noch in Q enthalten ist
+    if (edge.getWeight() >= n.getValue() || !queue.contains(n))
+      continue;
+
+    // Speichere v als vorgänger von n und passe wert von n an
+    n.setValue((int) edge.getWeight());
+    n.setPredecessor(vertex);
+
+    // Aktualisiere die Prioritätswarteschlange
+    queue.remove(n);
+    queue.add(n);
   }
 }
 ```

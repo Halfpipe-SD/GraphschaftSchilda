@@ -68,18 +68,17 @@ public class Template extends BasicWindow {
 
       for (GraphVertex n : neighbors) {
         // Finde Kante zwischen v und n
-        for (GraphEdge edge : GraphData.getEdgesBetweenTwoVertices(vertex, n, edges)) {
-          // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
-          // noch in Q enthalten ist
-          if (edge.getWeight() < n.getValue() && queue.contains(n)) {
-            // Speichere v als vorgänger von n und passe wert von n an
-            n.setValue((int) edge.getWeight());
-            n.setPredecessor(vertex);
-            // Aktualisiere die Prioritätswarteschlange
-            queue.remove(n);
-            queue.add(n);
-            System.out.println("vertex " + n + " updated key to " + n.getValue());
-          }
+        GraphEdge edge = GraphData.getEdgeBetweenTwoVertices(vertex, n, edges);
+        // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
+        // noch in Q enthalten ist
+        if (edge.getWeight() < n.getValue() && queue.contains(n)) {
+          // Speichere v als vorgänger von n und passe wert von n an
+          n.setValue((int) edge.getWeight());
+          n.setPredecessor(vertex);
+          // Aktualisiere die Prioritätswarteschlange
+          queue.remove(n);
+          queue.add(n);
+          System.out.println("vertex " + n + " updated key to " + n.getValue());
         }
       }
     }
