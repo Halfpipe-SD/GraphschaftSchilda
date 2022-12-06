@@ -60,8 +60,6 @@ public class Problem1 extends BasicWindow {
     while (!queue.isEmpty()) {
       // Wähle den Knoten aus Q mit dem kleinsten Schlüssel (v)
       GraphVertex vertex = queue.poll();
-      System.out.println(" -> Polled vertex: " + vertex.getLabel() + " with value: " +
-          vertex.getValue());
 
       // Speichere alle Nachbarn von v in neighbours
       ArrayList<GraphVertex> neighbors = GraphData.getNeighbors(vertex, vertices, edges);
@@ -71,15 +69,15 @@ public class Problem1 extends BasicWindow {
         for (GraphEdge edge : GraphData.getEdgesBetweenTwoVertices(vertex, n, edges)) {
           // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
           // noch in Q enthalten ist
-          if (edge.getWeight() < n.getValue() && queue.contains(n)) {
-            // Speichere v als vorgänger von n und passe wert von n an
-            n.setValue((int) edge.getWeight());
-            n.setPredecessor(vertex);
-            // Aktualisiere die Prioritätswarteschlange
-            queue.remove(n);
-            queue.add(n);
-            System.out.println("vertex " + n + " updated key to " + n.getValue());
-          }
+          if (edge.getWeight() >= n.getValue() || !queue.contains(n))
+            continue;
+
+          // Speichere v als vorgänger von n und passe wert von n an
+          n.setValue((int) edge.getWeight());
+          n.setPredecessor(vertex);
+          // Aktualisiere die Prioritätswarteschlange
+          queue.remove(n);
+          queue.add(n);
         }
       }
     }

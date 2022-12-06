@@ -76,31 +76,39 @@ for (GraphVertex v : vertices) {
   v.setPredecessor(null);
 }
 
-// Starte mit beliebigem Startknoten, Startknoten bekommt den Wert 0
+// Starte mit beliebigem Startknoten
+// Startknoten bekommt den Wert 0
 GraphVertex start = vertices.get(6);
 start.setValue(0);
 
-// Speichere alle Knoten in einer geeigneten Datenstruktur Q -> Prioritätswarteschlange
-PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(Comparator.comparingInt(GraphVertex::getValue));
+// Speichere alle Knoten in einer geeigneten Datenstruktur Q
+// -> Prioritätswarteschlange
+PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(
+    Comparator.comparingInt(GraphVertex::getValue));
 queue.addAll(vertices);
 
-// Solange es noch Knoten in der Warteschlange gibt
+// Solange es noch Knoten in Q gibt...
 while (!queue.isEmpty()) {
   // Wähle den Knoten aus Q mit dem kleinsten Schlüssel (v)
   GraphVertex vertex = queue.poll();
-  // Für jeden Nachbarn von vertex 
-  for (GraphVertex n : GraphData.getNeighbors(vertex, vertices, edges)) {
-    // Für jede Kante zwischen vertex und n
+
+  // Speichere alle Nachbarn von v in neighbours
+  ArrayList<GraphVertex> neighbors = GraphData.getNeighbors(vertex, vertices, edges);
+
+  for (GraphVertex n : neighbors) {
+    // Finde Kante zwischen v und n
     for (GraphEdge edge : GraphData.getEdgesBetweenTwoVertices(vertex, n, edges)) {
-      // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten noch in Q ist
-      if (edge.getWeight() < n.getValue() && queue.contains(n)) {
-        // Speichere vertex als Vorgänger von n und passe den Wert von n an
-        n.setValue((int) edge.getWeight());
-        n.setPredecessor(vertex);
-        // Aktualisiere die Prioritätswarteschlange
-        queue.remove(n);
-        queue.add(n);
-      }
+      // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
+      // noch in Q enthalten ist
+      if (edge.getWeight() >= n.getValue() || !queue.contains(n))
+        continue;
+
+      // Speichere v als vorgänger von n und passe wert von n an
+      n.setValue((int) edge.getWeight());
+      n.setPredecessor(vertex);
+      // Aktualisiere die Prioritätswarteschlange
+      queue.remove(n);
+      queue.add(n);
     }
   }
 }
