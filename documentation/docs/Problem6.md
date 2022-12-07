@@ -18,6 +18,8 @@ sollen.
 
 ## Die Ausgabe
 
+![Problem6](images/problem6.png)
+
 ## Der Alrogithmus
 
 ## Die Laufzeit des Algorithmus

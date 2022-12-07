@@ -13,10 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import code.problem1.Problem1;
+import code.problem2.Problem2;
 import code.problem3.Problem3;
 import code.problem4.Problem4;
 import code.problem6.Problem6;
-import code.test.Template;
 
 public class Main extends JFrame {
 
@@ -27,8 +27,7 @@ public class Main extends JFrame {
       "4 Feuerwerksplaner",
       "5 Festhochzeitsplaner",
       "6 Verkehrsplaner",
-      "7 Aufgabenplaner",
-      "8 Test" };
+      "7 Aufgabenplaner" };
 
   /*
    * #### PROGRAM START ####
@@ -72,7 +71,7 @@ public class Main extends JFrame {
           new Problem1(label);
           break;
         case 2:
-          // new Problem2();
+          new Problem2(label);
           break;
         case 3:
           new Problem3(label);
@@ -88,9 +87,6 @@ public class Main extends JFrame {
           break;
         case 7:
           // new Problem7();
-          break;
-        case 8:
-          new Template(label);
           break;
       }
     } catch (FileNotFoundException enf) {

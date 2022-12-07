@@ -4,7 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Stack;
 
 import code.utils.BasicWindow;
 import code.utils.GraphData;
@@ -14,106 +15,175 @@ import code.utils.JGraphPanel;
 
 public class Problem2 extends BasicWindow {
 
-    public Problem2(String titel) throws FileNotFoundException {
-        super(titel);
-        setSize(new Dimension(510, 600));
-        setLayout(new GridLayout(1, 2));
-        setLocationRelativeTo(null);
+  public Problem2(String title) throws FileNotFoundException {
+    super(title);
 
-        GraphData graph_input = new GraphData("town_water.json");
+    setSize(new Dimension(500, 460));
+    setLayout(new GridLayout(1, 2));
+    setLocationRelativeTo(null);
 
-        GraphData graph_output = get_output_graph(graph_input);
+    GraphData graph_input = new GraphData("town_water.json");
+    GraphData graph_output = graph_input.deepCopy();
 
-        JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "hierarchical");
-        JGraphPanel p2 = new JGraphPanel("Maximum Flow (Ford-Fulkerson)", graph_output, "hierarchical");
+    fordFulkersonMaxFlow(graph_output, "Wasserwerk", "Supermarkt");
 
-        add(p1);
-        add(p2);
+    // entferne alle inversen kanten für den output des graphen
+    ArrayList<GraphEdge> non_inverse = graph_output.getEdges();
+    non_inverse.removeIf(e -> e.getCapacity() == 0);
+    graph_output.setEdges(non_inverse);
+
+    JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "hierarchical");
+    JGraphPanel p2 = new JGraphPanel("Flussnetzwerk mit Ford-Fulkerson", graph_output, "hierarchical");
+
+    add(p1);
+    add(p2);
+  }
+
+  public static double fordFulkersonMaxFlow(GraphData input, String source, String sink) {
+    // Initialisierung des Graphen und des Startflusses
+    GraphData residual_graph = new GraphData(input.getVertices(), input.getEdges(), true);
+    double flow = 0;
+
+    while (true) {
+      // Finde einen Validen Weg im Graphen
+      ArrayList<GraphEdge> augmenting_path = findAugmentingPaths(residual_graph, source, sink);
+
+      // Beende die Schleife wenn kein Weg gefunden wurde
+      if (augmenting_path == null)
+        break;
+
+      // Bestimme die Flaschenhalskapazität des Weges und addiere sie zum Fluss
+      double bottleneck = findBottleneck(residual_graph, augmenting_path);
+      flow += bottleneck;
+
+      // Aktualisiere den Graphen
+      residual_graph = updateResidualGraph(residual_graph, augmenting_path, bottleneck, input.getVertices());
     }
 
-    static final int V = 9; // vertices in graph
+    // Setze den maximalen Fluss des Graphen (für die Ausgabe)
+    input.setMaximumFlow(flow);
 
-    public GraphData get_output_graph(GraphData input) {
-        // Lese die Knoten und Kanten aus den Rohdaten
-        ArrayList<GraphVertex> vertices = input.getVertices();
-        ArrayList<GraphEdge> edges = input.getEdges();
-        return input;
+    return flow;
+  }
+
+  private static GraphData updateResidualGraph(GraphData residual_graph, ArrayList<GraphEdge> augmenting_path,
+      double bottleneck, ArrayList<GraphVertex> vertices) {
+
+    // Aktualisiere alle Kanten des Weges
+    for (GraphEdge edge : augmenting_path) {
+      GraphVertex source = GraphData.getVertexByLabel(vertices, edge.getSource());
+      GraphVertex target = GraphData.getVertexByLabel(vertices, edge.getTarget());
+
+      // Aktualisiere den Fluss der Kante
+      edge.setFlow(edge.getFlow() + bottleneck);
+
+      // Prüfe ob die Inverse Kante bereits im Graphen ist und aktualisiere den Fluss
+      // der Inversen Kante wenn ja
+      boolean is_reverse_edge_in_graph = false;
+      for (GraphEdge reverse_edge : GraphData.getEdgesOfVertex(residual_graph.getEdges(), target)) {
+        if (!reverse_edge.getTarget().equals(source.getLabel()))
+          break;
+        reverse_edge.setFlow(reverse_edge.getFlow() - bottleneck);
+        is_reverse_edge_in_graph = true;
+      }
+
+      // Füge die Inverse Kante zum Graphen hinzu wenn sie noch nicht vorhanden ist
+      if (!is_reverse_edge_in_graph)
+        residual_graph.addEdge(new GraphEdge(target.getLabel(), source.getLabel(), -edge.getFlow(), 0));
     }
 
-    // searching if there is a way form s to t
-    boolean bfs(int rGraph[][], int s, int t, int parent[]) {
-        boolean visited[] = new boolean[V];
-        for (int i = 0; i < V; ++i)
-            visited[i] = false;
+    return residual_graph;
+  }
 
-        // create array with not visitet vertices
-        LinkedList<Integer> queue = new LinkedList<Integer>();
-        queue.add(s);
-        visited[s] = true;
-        parent[s] = -1;
+  private static double findBottleneck(GraphData residual_graph, ArrayList<GraphEdge> augmenting_path) {
+    double bottleneck = Double.MAX_VALUE;
+    // Finde die Flaschenhalskapazität des Weges
+    for (GraphEdge edge : augmenting_path) {
+      if (residual_graph.getEdges().contains(edge))
+        bottleneck = Math.min(bottleneck, edge.getCapacity() - edge.getFlow());
+    }
+    return bottleneck;
+  }
 
-        // bfs loop
-        while (queue.size() != 0) {
-            int u = queue.poll();
+  private static ArrayList<GraphEdge> findAugmentingPaths(GraphData residual_graph, String start, String end) {
 
-            for (int v = 0; v < V; v++) {
-                if (visited[v] == false && rGraph[u][v] > 0) {
+    ArrayList<GraphEdge> path = new ArrayList<GraphEdge>();
+    ArrayList<GraphEdge> augmenting_path = new ArrayList<GraphEdge>();
 
-                    // return true if we reach the end
-                    if (v == t) {
-                        parent[v] = u;
-                        return true;
-                    }
-                    queue.add(v);
-                    parent[v] = u;
-                    visited[v] = true;
-                }
-            }
-        }
-        // return false if we don´t reach the end
-        return false;
+    GraphVertex source = GraphData.getVertexByLabel(residual_graph.getVertices(), start);
+    GraphVertex sink = GraphData.getVertexByLabel(residual_graph.getVertices(), end);
+
+    Stack<GraphVertex> stack = new Stack<GraphVertex>();
+
+    // Füge den Source Knoten zum Stack hinzu und setze alle Knoten außer dem Source
+    // auf nicht besucht
+    stack.push(source);
+    for (GraphVertex vertex : residual_graph.getVertices()) {
+      if (vertex != source)
+        vertex.setVisited(false);
     }
 
-    // return the max flow from s to t
-    int fordFulkerson(int graph[][], int s, int t) {
-        int u, v;
+    while (!stack.isEmpty()) {
+      // Entferne den obersten Knoten vom Stack
+      GraphVertex current_vertex = stack.pop();
 
-        // fill the graph with values
-        int rGraph[][] = new int[V][V];
+      // Prüfe alle Kanten des Knotens
+      for (GraphEdge edge : GraphData.getEdgesOfVertex(residual_graph.getEdges(), current_vertex)) {
+        GraphVertex target_vertex = GraphData.getVertexByLabel(residual_graph.getVertices(), edge.getTarget());
 
-        for (u = 0; u < V; u++)
-            for (v = 0; v < V; v++)
-                rGraph[u][v] = graph[u][v];
+        // Überspringe die Kante wenn der Zielknoten bereits besucht wurde oder die
+        // Kante keine Kapaiztät mehr hat
+        if (target_vertex.isVisited() || edge.getCapacity() - edge.getFlow() <= 0)
+          continue;
 
-        // this array contains the possible pathes of bfs
-        int parent[] = new int[V];
+        target_vertex.setVisited(true);
 
-        int max_flow = 0;
+        // Füge die Kante zum Weg hinzu wenn sie nicht die Inverse Kante zum Source
+        // Knoten ist (behobener Bug)
+        if (!edge.getTarget().equals(source.getLabel()))
+          path.add(edge);
 
-        //
-        while (bfs(rGraph, s, t, parent)) {
+        // Füge den Zielknoten zum Stack hinzu
+        stack.push(target_vertex);
 
-            int path_flow = Integer.MAX_VALUE;
-
-            // find the max flow
-            for (v = t; v != s; v = parent[v]) {
-                u = parent[v];
-                path_flow = Math.min(path_flow, rGraph[u][v]);
-            }
-
-            // update the edges
-            for (v = t; v != s; v = parent[v]) {
-                u = parent[v];
-                rGraph[u][v] -= path_flow;
-                rGraph[v][u] += path_flow;
-            }
-
-            // add path_flow to max_flow
-            max_flow += path_flow;
-        }
-
-        // return the max flow
-        return max_flow;
+        // Prüfe ob der Zielknoten der Sink Knoten ist und füge den Weg zum
+        // Ausgangsweg hinzu
+        if (target_vertex.equals(sink))
+          augmenting_path.addAll(path);
+      }
     }
 
+    // ** Erstelle einen neuen Pfad, der nur die Kanten von Source zu Sink enthält
+    ArrayList<GraphEdge> new_path = new ArrayList<GraphEdge>();
+
+    if (augmenting_path.size() == 0)
+      return null;
+
+    // Finde die Kante zum Sink Knoten und füge sie zum neuen Weg hinzu
+    GraphEdge edge_to_sink = null;
+    for (GraphEdge edge : augmenting_path) {
+      if (edge.getTarget().equals(sink.getLabel()))
+        edge_to_sink = edge;
+    }
+    new_path.add(edge_to_sink);
+
+    // Baue nach und nach den neuen Weg Rückwärts vom Sink Knoten zum Source Knoten
+    GraphEdge last_added = edge_to_sink;
+    boolean reverse_path_complete = false;
+    while (!reverse_path_complete) {
+      for (GraphEdge edge : augmenting_path) {
+        if (!edge.getTarget().equals(last_added.getSource()))
+          continue;
+        new_path.add(edge);
+        last_added = edge;
+        // Neuer Weg ist komplett, wenn die letzte Kante zum Source Knoten führt
+        if (last_added.getSource().equals(source.getLabel()))
+          reverse_path_complete = true;
+      }
+    }
+
+    // Invertiere den neuen Weg
+    Collections.reverse(new_path);
+    return new_path;
+  }
 }
