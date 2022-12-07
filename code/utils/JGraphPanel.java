@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 import com.mxgraph.layout.mxCircleLayout;
@@ -23,15 +23,25 @@ public class JGraphPanel extends JPanel {
 
   private GraphData graph_data;
 
+  private String edge_type;
+
   @SuppressWarnings("deprecation")
   public JGraphPanel(String title, GraphData graph_data, String layout) {
 
     this.graph_data = graph_data;
 
+    // determine edge type based on values set in graph data
+    if (graph_data.getEdges().get(0).getFlow() != 0)
+      edge_type = "flow";
+    else if (graph_data.getEdges().get(0).getCapacity() != 0)
+      edge_type = "capacity";
+    else
+      edge_type = "weight";
+
     // generate graph with directed or undrected edges
-    SimpleDirectedWeightedGraph<String, WeightedEdgeLabel> graph = buildGraph();
+    SimpleDirectedWeightedGraph<String, CustomEdge> graph = buildGraph();
     // initialize jgraphx adapter
-    JGraphXAdapter<String, WeightedEdgeLabel> graphAdapter = new JGraphXAdapter<String, WeightedEdgeLabel>(graph);
+    JGraphXAdapter<String, CustomEdge> graphAdapter = new JGraphXAdapter<String, CustomEdge>(graph);
 
     mxGraphLayout graph_layout = null;
 
@@ -76,11 +86,19 @@ public class JGraphPanel extends JPanel {
     setLayout(new BorderLayout());
 
     // set graph description
-    String html_content = "<html><h3>" + title + "</h3>"
+    String html_content = "<h3>" + title + "</h3>"
         + "Anzahl der Knoten: " + graph_data.getVerticesCount() + "<br>"
-        + "Anzahl der Kanten: " + graph_data.getEdgesCount() + "<br>"
-        + "Summe der Kantengewichte: " + graph_data.getEdgesWeight() + "<br>"
-        + "</html>";
+        + "Anzahl der Kanten: " + graph_data.getEdgesCount() + "<br>";
+
+    switch (edge_type) {
+      case "flow":
+      case "capacity":
+        html_content += "Maximaler Durchfluss: " + graph_data.getMaximumFlow() + "<br>";
+        break;
+      case "weight":
+        html_content += "Summe der Kantengewichte: " + graph_data.getEdgesWeight() + "<br>";
+        break;
+    }
 
     JLabel description = new JLabel("<html>" + html_content + "</html>");
 
@@ -88,9 +106,9 @@ public class JGraphPanel extends JPanel {
     add(component, BorderLayout.CENTER);
   }
 
-  public SimpleDirectedWeightedGraph<String, WeightedEdgeLabel> buildGraph() {
-    SimpleDirectedWeightedGraph<String, WeightedEdgeLabel> g = new SimpleDirectedWeightedGraph<String, WeightedEdgeLabel>(
-        WeightedEdgeLabel.class);
+  public SimpleDirectedWeightedGraph<String, CustomEdge> buildGraph() {
+    SimpleDirectedWeightedGraph<String, CustomEdge> g = new SimpleDirectedWeightedGraph<String, CustomEdge>(
+        CustomEdge.class);
 
     // add vertices from graph data
     for (GraphVertex v : graph_data.getVertices()) {
@@ -99,17 +117,41 @@ public class JGraphPanel extends JPanel {
 
     // add edges from graph data
     for (GraphEdge e : graph_data.getEdges()) {
-      WeightedEdgeLabel edge = g.addEdge(e.getSource(), e.getTarget());
-      g.setEdgeWeight(edge, e.getWeight());
+
+      String edge_label = "";
+
+      switch (edge_type) {
+        case "flow":
+        case "capacity":
+          edge_label = Math.round(e.getFlow()) + "/" + Math.round(e.getCapacity());
+          break;
+        case "weight":
+          edge_label = Double.toString(e.getWeight());
+          break;
+      }
+
+      g.addEdge(e.getSource(), e.getTarget(), new CustomEdge(edge_label));
     }
 
     return g;
   }
 
-  public static class WeightedEdgeLabel extends DefaultWeightedEdge {
+  class CustomEdge extends DefaultEdge {
+
+    private String label;
+
+    public CustomEdge(String label) {
+
+      this.label = label;
+    }
+
+    public String getLabel() {
+      return label;
+    }
+
     @Override
     public String toString() {
-      return String.valueOf(getWeight());
+      return label;
     }
   }
 

@@ -21,6 +21,8 @@ public class GraphData {
   private ArrayList<GraphEdge> edges;
   private boolean directed_edges;
 
+  private double maximum_flow = 0;
+
   public GraphData(ArrayList<GraphVertex> vertices, ArrayList<GraphEdge> edges, boolean directed_edges) {
     this.vertices = vertices;
     this.edges = edges;
@@ -160,6 +162,23 @@ public class GraphData {
     return sum;
   }
 
+  public static GraphVertex getVertexByLabel(ArrayList<GraphVertex> vertices, String target) {
+    for (GraphVertex vertex : vertices) {
+      if (vertex.getLabel().equals(target))
+        return vertex;
+    }
+    return null;
+  }
+
+  public static ArrayList<GraphEdge> getEdgesOfVertex(ArrayList<GraphEdge> edges, GraphVertex current_vertex) {
+    ArrayList<GraphEdge> current_edges = new ArrayList<GraphEdge>();
+    for (GraphEdge edge : edges)
+      if (edge.getSource().equals(current_vertex.getLabel())) {
+        current_edges.add(edge);
+      }
+    return current_edges;
+  }
+
   public ArrayList<GraphVertex> getVertices() {
     return vertices;
   }
@@ -184,6 +203,10 @@ public class GraphData {
     this.vertices = vertices;
   }
 
+  public void setMaximumFlow(double maximumFlow) {
+    this.maximum_flow = maximumFlow;
+  }
+
   public String getVerticesCount() {
     return String.valueOf(vertices.size());
   }
@@ -198,5 +221,32 @@ public class GraphData {
 
   public double getEdgesWeight() {
     return edges.stream().mapToDouble(GraphEdge::getWeight).sum();
+  }
+
+  public double getMaximumFlow() {
+    return maximum_flow;
+  }
+
+  public GraphData deepCopy() {
+    ArrayList<GraphVertex> vertices = new ArrayList<GraphVertex>();
+    ArrayList<GraphEdge> edges = new ArrayList<GraphEdge>();
+
+    for (GraphVertex v : this.vertices) {
+      vertices.add(new GraphVertex(v.getLabel(), v.getValue()));
+    }
+
+    for (GraphEdge e : this.edges) {
+      edges.add(new GraphEdge(e.getSource(), e.getTarget(), e.getFlow(), e.getCapacity()));
+    }
+
+    return new GraphData(vertices, edges, this.directed_edges);
+  }
+
+  public void addVertex(GraphVertex vertex) {
+    this.vertices.add(vertex);
+  }
+
+  public void addEdge(GraphEdge edge) {
+    this.edges.add(edge);
   }
 }

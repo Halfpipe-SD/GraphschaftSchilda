@@ -1,0 +1,30 @@
+{
+  "directed_edges": true,
+  "vertices": [
+    { "label": "Source" },
+    { "label": "Traffic Light 1" },
+    { "label": "Traffic Light 2" },
+    { "label": "Traffic Light 3" },
+    { "label": "Traffic Light 4" },
+    { "label": "Sink" }
+  ],
+  "edges": [
+    { "source": "Source", "target": "Traffic Light 1", "capacity": 14 },
+    { "source": "Source", "target": "Traffic Light 2", "capacity": 16 },
+    { "source": "Traffic Light 2", "target": "Traffic Light 1", "capacity": 6 },
+    {
+      "source": "Traffic Light 1",
+      "target": "Traffic Light 3",
+      "capacity": 15
+    },
+    {
+      "source": "Traffic Light 2",
+      "target": "Traffic Light 4",
+      "capacity": 15
+    },
+    { "source": "Traffic Light 3", "target": "Traffic Light 2", "capacity": 4 },
+    { "source": "Traffic Light 3", "target": "Traffic Light 4", "capacity": 7 },
+    { "source": "Traffic Light 3", "target": "Sink", "capacity": 10 },
+    { "source": "Traffic Light 4", "target": "Sink", "capacity": 17 }
+  ]
+}
