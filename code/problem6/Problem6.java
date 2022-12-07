@@ -41,42 +41,27 @@ public class Problem6 extends BasicWindow {
   }
 
   private double fordFulkersonMaxFlow(GraphData input) {
-
-    // initialize the residual graph to the original graph
+    // Initialisierung des Graphen und des Startflusses
     GraphData residual_graph = new GraphData(input.getVertices(), input.getEdges(), true);
-
-    // initialize the flow to 0
     double flow = 0;
 
-    // while there is an augmenting path
     while (true) {
-
-      // find an augmenting path
+      // Finde einen Validen Weg im Graphen
       ArrayList<GraphEdge> augmenting_path = findAugmentingPaths(residual_graph);
 
-      // if there is no augmenting path, the algorithm terminates
+      // Beende die Schleife wenn kein Weg gefunden wurde
       if (augmenting_path == null)
         break;
 
-      // find the bottleneck of the augmenting path
+      // Bestimme die Flaschenhalskapazität des Weges und addiere sie zum Fluss
       double bottleneck = findBottleneck(residual_graph, augmenting_path);
-      System.out.println("Bottleneck: " + bottleneck);
-      // update the residual graph
-      residual_graph = updateResidualGraph(residual_graph, augmenting_path, bottleneck, input.getVertices());
-
-      // print residual path
-      System.out.println("Residual path: ");
-      for (GraphEdge e : residual_graph.getEdges()) {
-        System.out.println(
-            "-> " + e.getFlow() + "/" + e.getCapacity() + "\t (" + e.getSource() + " -> "
-                + e.getTarget() + ") ");
-      }
-
-      // update the flow
       flow += bottleneck;
+
+      // Aktualisiere den Graphen
+      residual_graph = updateResidualGraph(residual_graph, augmenting_path, bottleneck, input.getVertices());
     }
 
-    // set maximum flow to graph data
+    // Setze den maximalen Fluss des Graphen (für die Ausgabe)
     input.setMaximumFlow(flow);
 
     return flow;
@@ -85,17 +70,16 @@ public class Problem6 extends BasicWindow {
   private GraphData updateResidualGraph(GraphData residual_graph, ArrayList<GraphEdge> augmenting_path,
       double bottleneck, ArrayList<GraphVertex> vertices) {
 
-    // iterate over the edges of the augmenting path
+    // Aktualisiere alle Kanten des Weges
     for (GraphEdge edge : augmenting_path) {
-      // get the source and target vertex of the edge
       GraphVertex source = GraphData.getVertexByLabel(vertices, edge.getSource());
       GraphVertex target = GraphData.getVertexByLabel(vertices, edge.getTarget());
 
-      // update the flow of the edge
+      // Aktualisiere den Fluss der Kante
       edge.setFlow(edge.getFlow() + bottleneck);
 
-      // check if the reverse edge is already in the residual graph
-      // and update the flow of the reverse edge if yes
+      // Prüfe ob die Inverse Kante bereits im Graphen ist und aktualisiere den Fluss
+      // der Inversen Kante wenn ja
       boolean is_reverse_edge_in_graph = false;
       for (GraphEdge reverse_edge : GraphData.getEdgesOfVertex(residual_graph.getEdges(), target)) {
         if (!reverse_edge.getTarget().equals(source.getLabel()))
@@ -104,7 +88,7 @@ public class Problem6 extends BasicWindow {
         is_reverse_edge_in_graph = true;
       }
 
-      // add the reverse edge to the residual graph
+      // Füge die Inverse Kante zum Graphen hinzu wenn sie noch nicht vorhanden ist
       if (!is_reverse_edge_in_graph)
         residual_graph.addEdge(new GraphEdge(target.getLabel(), source.getLabel(), -edge.getFlow(), 0));
     }
@@ -113,17 +97,12 @@ public class Problem6 extends BasicWindow {
   }
 
   private double findBottleneck(GraphData residual_graph, ArrayList<GraphEdge> augmenting_path) {
-
-    // initialize the bottleneck
     double bottleneck = Double.MAX_VALUE;
-
-    // iterate over the edges of the augmenting path
+    // Finde die Flaschenhalskapazität des Weges
     for (GraphEdge edge : augmenting_path) {
-      // if the edge is in the residual graph and update the bottleneck
       if (residual_graph.getEdges().contains(edge))
         bottleneck = Math.min(bottleneck, edge.getCapacity() - edge.getFlow());
     }
-
     return bottleneck;
   }
 
@@ -132,76 +111,80 @@ public class Problem6 extends BasicWindow {
     ArrayList<GraphEdge> path = new ArrayList<GraphEdge>();
     ArrayList<GraphEdge> augmenting_path = new ArrayList<GraphEdge>();
 
-    // initialize the source and sink vertex
     GraphVertex source = GraphData.getVertexByLabel(residual_graph.getVertices(), "Source");
     GraphVertex sink = GraphData.getVertexByLabel(residual_graph.getVertices(), "Sink");
 
-    // initialize the stack
     Stack<GraphVertex> stack = new Stack<GraphVertex>();
 
-    // Push root in our stack
+    // Füge den Source Knoten zum Stack hinzu und setze alle Knoten außer dem Source
+    // auf nicht besucht
     stack.push(source);
-    // set all other vertices as not visited
     for (GraphVertex vertex : residual_graph.getVertices()) {
       if (vertex != source)
         vertex.setVisited(false);
     }
 
-    // While stack is not empty
     while (!stack.isEmpty()) {
-      // Pop current node
+      // Entferne den obersten Knoten vom Stack
       GraphVertex current_vertex = stack.pop();
 
-      // Push right child, then left child to stack
+      // Prüfe alle Kanten des Knotens
       for (GraphEdge edge : GraphData.getEdgesOfVertex(residual_graph.getEdges(), current_vertex)) {
         GraphVertex target_vertex = GraphData.getVertexByLabel(residual_graph.getVertices(), edge.getTarget());
 
-        if (!target_vertex.isVisited() && edge.getCapacity() - edge.getFlow() > 0) {
-          target_vertex.setVisited(true);
+        // Überspringe die Kante wenn der Zielknoten bereits besucht wurde oder die
+        // Kante keine Kapaiztät mehr hat
+        if (target_vertex.isVisited() || edge.getCapacity() - edge.getFlow() <= 0)
+          continue;
 
-          // only add edge to path if it is not a reverse edge with target source
-          if (!edge.getTarget().equals(source.getLabel()))
-            path.add(edge);
+        target_vertex.setVisited(true);
 
-          if (target_vertex.equals(sink))
-            augmenting_path.addAll(path);
+        // Füge die Kante zum Weg hinzu wenn sie nicht die Inverse Kante zum Source
+        // Knoten ist (behobener Bug)
+        if (!edge.getTarget().equals(source.getLabel()))
+          path.add(edge);
 
-          stack.push(target_vertex);
-        }
+        // Füge den Zielknoten zum Stack hinzu
+        stack.push(target_vertex);
+
+        // Prüfe ob der Zielknoten der Sink Knoten ist und füge den Weg zum
+        // Ausgangsweg hinzu
+        if (target_vertex.equals(sink))
+          augmenting_path.addAll(path);
       }
     }
 
-    // generate new path from sink to source
+    // ** Erstelle einen neuen Pfad, der nur die Kanten von Source zu Sink enthält
     ArrayList<GraphEdge> new_path = new ArrayList<GraphEdge>();
 
     if (augmenting_path.size() == 0)
       return null;
 
-    // add edge to sink from augmenting_path to new path
+    // Finde die Kante zum Sink Knoten und füge sie zum neuen Weg hinzu
     GraphEdge edge_to_sink = null;
-
     for (GraphEdge edge : augmenting_path) {
       if (edge.getTarget().equals(sink.getLabel()))
         edge_to_sink = edge;
     }
     new_path.add(edge_to_sink);
 
+    // Baue nach und nach den neuen Weg Rückwärts vom Sink Knoten zum Source Knoten
     GraphEdge last_added = edge_to_sink;
-    boolean keep_going = true;
-
-    while (keep_going) {
+    boolean reverse_path_complete = false;
+    while (!reverse_path_complete) {
       for (GraphEdge edge : augmenting_path) {
-        if (edge.getTarget().equals(last_added.getSource())) {
-          new_path.add(edge);
-          last_added = edge;
-          if (last_added.getSource().equals(source.getLabel()))
-            keep_going = false;
-        }
+        if (!edge.getTarget().equals(last_added.getSource()))
+          continue;
+        new_path.add(edge);
+        last_added = edge;
+        // Neuer Weg ist komplett, wenn die letzte Kante zum Source Knoten führt
+        if (last_added.getSource().equals(source.getLabel()))
+          reverse_path_complete = true;
       }
     }
 
+    // Invertiere den neuen Weg
     Collections.reverse(new_path);
-
     return new_path;
   }
 }
