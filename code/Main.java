@@ -74,13 +74,13 @@ public class Main extends JFrame {
           new Problem4(label);
           break;
         case 5:
-          // new Problem5();
+          new Problem5(label);
           break;
         case 6:
           new Problem6(label);
           break;
         case 7:
-          // new Problem7();
+          new Problem7(label);
           break;
       }
     } catch (FileNotFoundException enf) {
