@@ -12,12 +12,6 @@ import java.io.FileNotFoundException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import code.problem1.Problem1;
-import code.problem2.Problem2;
-import code.problem3.Problem3;
-import code.problem4.Problem4;
-import code.problem6.Problem6;
-
 public class Main extends JFrame {
 
   private final String[] button_labels = {

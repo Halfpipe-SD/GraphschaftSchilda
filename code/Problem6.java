@@ -1,6 +1,6 @@
-package code.problem6;
+package code;
 
-import static code.problem2.Problem2.fordFulkersonMaxFlow;
+import static code.Problem2.fordFulkersonMaxFlow;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;

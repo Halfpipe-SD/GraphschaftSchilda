@@ -1,4 +1,4 @@
-package code.problem3;
+package code;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
