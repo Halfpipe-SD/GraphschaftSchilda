@@ -52,7 +52,7 @@ Ein korrekte Ausgabe erfüllt folgende Eigenschaften:
 
 - TODO
 
-![Problem2](images/problem3.png)
+![Problem3](images/problem3.png)
 
 ## Der Alrogithmus
 
