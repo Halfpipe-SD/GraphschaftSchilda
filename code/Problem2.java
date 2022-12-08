@@ -27,11 +27,6 @@ public class Problem2 extends BasicWindow {
 
     fordFulkersonMaxFlow(graph_output, "Wasserwerk", "Supermarkt");
 
-    // entferne alle inversen kanten für den output des graphen
-    ArrayList<Edge> non_inverse = graph_output.getEdges();
-    non_inverse.removeIf(e -> e.getCapacity() == 0);
-    graph_output.setEdges(non_inverse);
-
     JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "hierarchical");
     JGraphPanel p2 = new JGraphPanel("Flussnetzwerk mit Ford-Fulkerson", graph_output, "hierarchical");
 
@@ -62,6 +57,11 @@ public class Problem2 extends BasicWindow {
 
     // Setze den maximalen Fluss des Graphen (für die Ausgabe)
     input.setMaximumFlow(flow);
+
+    // entferne alle inversen kanten für den output des graphen
+    ArrayList<Edge> non_inverse = input.getEdges();
+    non_inverse.removeIf(e -> e.getCapacity() == 0);
+    input.setEdges(non_inverse);
 
     return flow;
   }

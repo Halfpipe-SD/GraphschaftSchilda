@@ -13,11 +13,11 @@ public class Problem5 extends BasicWindow {
   public Problem5(String title) throws FileNotFoundException {
     super(title);
 
-    setSize(new Dimension(500, 520));
+    setSize(new Dimension(510, 600));
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
-    Graph graph_input = new Graph("town_traffic.json");
+    Graph graph_input = new Graph("town_streets.json");
     Graph graph_output = graph_input.deepCopy();
 
     JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "hierarchical");
