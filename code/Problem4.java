@@ -11,9 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import code.utils.BasicWindow;
-import code.utils.GraphData;
-import code.utils.GraphEdge;
-import code.utils.GraphVertex;
+import code.utils.Graph;
+import code.utils.Edge;
+import code.utils.Vertex;
 import code.utils.JGraphPanel;
 
 public class Problem4 extends BasicWindow {
@@ -25,9 +25,9 @@ public class Problem4 extends BasicWindow {
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
-    GraphData graph_input = new GraphData("town_fireworks.json");
+    Graph graph_input = new Graph("town_fireworks.json");
 
-    ArrayList<GraphVertex> vertices_output = dijkstra(graph_input);
+    ArrayList<Vertex> vertices_output = dijkstra(graph_input);
 
     JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "circle");
 
@@ -46,41 +46,41 @@ public class Problem4 extends BasicWindow {
     add(sidepanel);
   }
 
-  private ArrayList<GraphVertex> dijkstra(GraphData input) {
+  private ArrayList<Vertex> dijkstra(Graph input) {
 
-    ArrayList<GraphVertex> vertices = input.getVertices();
-    ArrayList<GraphEdge> edges = input.getEdges();
+    ArrayList<Vertex> vertices = input.getVertices();
+    ArrayList<Edge> edges = input.getEdges();
 
     // Initialisiere die Distanz im Startknoten mit 0 und in allen anderen Knoten
     // mit ∞.
-    for (GraphVertex vertex : vertices) {
+    for (Vertex vertex : vertices) {
       vertex.setValue(Integer.MAX_VALUE);
       vertex.setPredecessor(null);
     }
     vertices.get(0).setValue(0);
 
     // Speichere alle Knoten in einer Prioritätswarteschlange queue
-    PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(
-        Comparator.comparingInt(GraphVertex::getValue));
+    PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>(
+        Comparator.comparingInt(Vertex::getValue));
     queue.addAll(vertices);
 
     // Solange es noch unbesuchte Knoten gibt, wähle darunter denjenigen mit
     // minimaler Distanz aus und
     while (!queue.isEmpty()) {
       // Nehme den Knoten mit dem kleinsten Wert aus der Warteschlange
-      GraphVertex v = queue.poll();
+      Vertex v = queue.poll();
 
       // 1. speichere, dass dieser Knoten schon besucht wurde
       v.setVisited(true);
 
       // 2. berechne für alle noch unbesuchten Nachbarknoten die Summe des jeweiligen
       // Kantengewichtes und der Distanz im aktuellen Knoten
-      for (GraphVertex n : GraphData.getNeighbors(v, vertices, edges)) {
+      for (Vertex n : Graph.getNeighbors(v, vertices, edges)) {
 
         // 3. ist dieser Wert für einen Knoten kleiner als die
         // dort gespeicherte Distanz, aktualisiere sie und setze den aktuellen Knoten
         // als Vorgänger. (Dieser Schritt wird auch als Update bezeichnet. )
-        double sum = v.getValue() + GraphData.getWeightSum(v, n, edges);
+        double sum = v.getValue() + Graph.getWeightSum(v, n, edges);
 
         if (sum >= n.getValue())
           continue;
@@ -94,7 +94,7 @@ public class Problem4 extends BasicWindow {
     }
 
     // Sortiere Knoten nach Distanz
-    vertices.sort(Comparator.comparingInt(GraphVertex::getValue));
+    vertices.sort(Comparator.comparingInt(Vertex::getValue));
 
     return vertices;
   }

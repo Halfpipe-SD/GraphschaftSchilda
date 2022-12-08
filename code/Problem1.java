@@ -8,9 +8,9 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import code.utils.BasicWindow;
-import code.utils.GraphData;
-import code.utils.GraphEdge;
-import code.utils.GraphVertex;
+import code.utils.Graph;
+import code.utils.Edge;
+import code.utils.Vertex;
 import code.utils.JGraphPanel;
 
 public class Problem1 extends BasicWindow {
@@ -22,9 +22,9 @@ public class Problem1 extends BasicWindow {
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
-    GraphData graph_input = new GraphData("town_streets.json");
+    Graph graph_input = new Graph("town_streets.json");
 
-    GraphData graph_output = prim(graph_input);
+    Graph graph_output = prim(graph_input);
 
     JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "hierarchical");
     JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", graph_output, "hierarchical");
@@ -33,39 +33,39 @@ public class Problem1 extends BasicWindow {
     add(p2);
   }
 
-  private GraphData prim(GraphData input) {
+  private Graph prim(Graph input) {
 
     // Lese die Knoten und Kanten aus den Rohdaten
-    ArrayList<GraphVertex> vertices = input.getVertices();
-    ArrayList<GraphEdge> edges = input.getEdges();
+    ArrayList<Vertex> vertices = input.getVertices();
+    ArrayList<Edge> edges = input.getEdges();
 
     // Initialisiere alle Knoten mit ∞, setze den Vorgänger auf null
-    for (GraphVertex v : vertices) {
+    for (Vertex v : vertices) {
       v.setValue(Integer.MAX_VALUE);
       v.setPredecessor(null);
     }
 
     // Starte mit beliebigem Startknoten
     // Startknoten bekommt den Wert 0
-    GraphVertex start = vertices.get(6);
+    Vertex start = vertices.get(6);
     start.setValue(0);
 
     // Speichere alle Knoten in einer geeigneten Datenstruktur Q
     // -> Prioritätswarteschlange
-    PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(
-        Comparator.comparingInt(GraphVertex::getValue));
+    PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>(
+        Comparator.comparingInt(Vertex::getValue));
     queue.addAll(vertices);
 
     // Solange es noch Knoten in Q gibt...
     while (!queue.isEmpty()) {
       // Wähle den Knoten aus Q mit dem kleinsten Schlüssel (v)
-      GraphVertex vertex = queue.poll();
+      Vertex vertex = queue.poll();
 
       // Für jeden Nachbarknoten n von v...
-      for (GraphVertex n : GraphData.getNeighbors(vertex, vertices, edges)) {
+      for (Vertex n : Graph.getNeighbors(vertex, vertices, edges)) {
 
         // Finde Kante zwischen v und n
-        GraphEdge edge = GraphData.getEdgeBetweenTwoVertices(vertex, n, edges);
+        Edge edge = Graph.getEdgeBetweenTwoVertices(vertex, n, edges);
 
         // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
         // noch in Q enthalten ist
@@ -83,15 +83,15 @@ public class Problem1 extends BasicWindow {
     }
 
     // generiere neue kanten für den graphen anhand der vorgänger der knoten
-    ArrayList<GraphEdge> new_edges = new ArrayList<GraphEdge>();
+    ArrayList<Edge> new_edges = new ArrayList<Edge>();
 
-    for (GraphVertex v : vertices) {
+    for (Vertex v : vertices) {
       if (v.getPredecessor() != null) {
-        new_edges.add(new GraphEdge(v.getPredecessor().getLabel(), v.getLabel(), v.getValue()));
+        new_edges.add(new Edge(v.getPredecessor().getLabel(), v.getLabel(), v.getValue()));
       }
     }
 
-    return new GraphData(vertices, new_edges, false);
+    return new Graph(vertices, new_edges, false);
   }
 
 }

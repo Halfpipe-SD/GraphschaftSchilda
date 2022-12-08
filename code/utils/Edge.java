@@ -1,6 +1,6 @@
 package code.utils;
 
-public class GraphEdge {
+public class Edge {
   private String source;
   private String target;
   private double weight;
@@ -10,13 +10,13 @@ public class GraphEdge {
 
   private boolean isVisited;
 
-  public GraphEdge(String source, String target, double weight) {
+  public Edge(String source, String target, double weight) {
     this.source = source;
     this.target = target;
     this.weight = weight;
   }
 
-  public GraphEdge(String source, String target, double flow, double capacity) {
+  public Edge(String source, String target, double flow, double capacity) {
     this.source = source;
     this.target = target;
     this.flow = flow;

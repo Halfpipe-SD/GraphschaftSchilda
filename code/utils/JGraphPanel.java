@@ -21,12 +21,12 @@ import com.mxgraph.util.mxUtils;
 
 public class JGraphPanel extends JPanel {
 
-  private GraphData graph_data;
+  private Graph graph_data;
 
   private String edge_type;
 
   @SuppressWarnings("deprecation")
-  public JGraphPanel(String title, GraphData graph_data, String layout) {
+  public JGraphPanel(String title, Graph graph_data, String layout) {
 
     this.graph_data = graph_data;
 
@@ -111,12 +111,12 @@ public class JGraphPanel extends JPanel {
         CustomEdge.class);
 
     // add vertices from graph data
-    for (GraphVertex v : graph_data.getVertices()) {
+    for (Vertex v : graph_data.getVertices()) {
       g.addVertex(v.getLabel());
     }
 
     // add edges from graph data
-    for (GraphEdge e : graph_data.getEdges()) {
+    for (Edge e : graph_data.getEdges()) {
 
       String edge_label = "";
 

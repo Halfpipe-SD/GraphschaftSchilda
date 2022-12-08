@@ -1,40 +1,40 @@
 package code.utils;
 
-public class GraphVertex {
+public class Vertex {
   private String label;
   private int value;
 
-  private GraphVertex predecessor;
-  private GraphVertex next;
+  private Vertex predecessor;
+  private Vertex next;
 
   private boolean visited;
 
-  public GraphVertex(int value) {
+  public Vertex(int value) {
     this.value = value;
   }
 
-  public GraphVertex(String label) {
+  public Vertex(String label) {
     this.label = label;
   }
 
-  public GraphVertex(String label, int value) {
+  public Vertex(String label, int value) {
     this.label = label;
     this.value = value;
   }
 
-  public void setNext(GraphVertex next) {
+  public void setNext(Vertex next) {
     this.next = next;
   }
 
-  public GraphVertex getNext() {
+  public Vertex getNext() {
     return next;
   }
 
-  public void setPredecessor(GraphVertex predecessor) {
+  public void setPredecessor(Vertex predecessor) {
     this.predecessor = predecessor;
   }
 
-  public GraphVertex getPredecessor() {
+  public Vertex getPredecessor() {
     return predecessor;
   }
 

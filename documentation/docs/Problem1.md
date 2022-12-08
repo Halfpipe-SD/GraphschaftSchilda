@@ -14,7 +14,7 @@ Um den Graph zu modellieren werden die Java-Bibliotheken `JGraphT` und `JGraphX`
 
 ## Die Eingabe
 
-Die Eingabe besteht aus einem Graphen, der aus Kanten und Knoten besteht. Diese werden aus einer `.json` Datei gelesen und in eine Insanz der Klasse `GraphData.java` geladen. Diese Insanz dient als Basis für die Berechnung des günstigsten Weges.
+Die Eingabe besteht aus einem Graphen, der aus Kanten und Knoten besteht. Diese werden aus einer `.json` Datei gelesen und in eine Insanz der Klasse `Graph.java` geladen. Diese Insanz dient als Basis für die Berechnung des günstigsten Weges.
 
 
 ``` json
@@ -55,50 +55,50 @@ TODO (Hier bitte auch eine Begründung einfügen, ein ausführlicher Beweis ist 
 
 ## Die Implementierung des Algorithmus
 
-Zur Lösung des Problems wurde der Algorithmus von Prim implementiert. Als Datenstruktur wurde eine Prioritätswarteschlange verwendet, die Instanzen der Klasse `GraphVertex` beinhaltet: 
+Zur Lösung des Problems wurde der Algorithmus von Prim implementiert. Als Datenstruktur wurde eine Prioritätswarteschlange verwendet, die Instanzen der Klasse `Vertex` beinhaltet: 
 
 ``` java
-PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(
-        Comparator.comparingInt(GraphVertex::getValue));
+PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>(
+        Comparator.comparingInt(Vertex::getValue));
 ```
 
 Für den Umgang mit Knoten und Kanten wurden drei Klassen implementiert:
 
-- `GraphVertex.java`: Beinhaltet die Eigenschaft `int value`, welche den Key für den Algorithmus von Prim darstellt und das Objekt `GraphVertex predecessor`, der vom Algorithmus gesetzt wird.
-- `GraphEdge.java`: Beinhaltet die Eigenschaften `String source`, `String target` und `double weight`.
-- `GraphData.java`: Behinhaltet die Listen `ArrayList<GraphEdge>` und `ArrayList<GraphVertex>`
+- `Vertex.java`: Beinhaltet die Eigenschaft `int value`, welche den Key für den Algorithmus von Prim darstellt und das Objekt `Vertex predecessor`, der vom Algorithmus gesetzt wird.
+- `Edge.java`: Beinhaltet die Eigenschaften `String source`, `String target` und `double weight`.
+- `Graph.java`: Behinhaltet die Listen `ArrayList<Edge>` und `ArrayList<Vertex>`
 
-> Aufgrund der Struktur der `GraphVertex` und `GraphEdge` Klassen werden die zusätzlichen Funktionen `getNeighbors()` und `getEdgeBetweenTwoVertices()` benötigt. Diese Funktionen benötigen zusätzlicehe Laufzeit und werden in der Klasse `GraphData` implementiert.
+> Aufgrund der Struktur der `Vertex` und `Edge` Klassen werden die zusätzlichen Funktionen `getNeighbors()` und `getEdgeBetweenTwoVertices()` benötigt. Diese Funktionen benötigen zusätzlicehe Laufzeit und werden in der Klasse `Graph` implementiert.
 
 
 ``` java
 // Initialisiere alle Knoten mit ∞, setze den Vorgänger auf null
-for (GraphVertex v : vertices) {
+for (Vertex v : vertices) {
   v.setValue(Integer.MAX_VALUE);
   v.setPredecessor(null);
 }
 
 // Starte mit beliebigem Startknoten
 // Startknoten bekommt den Wert 0
-GraphVertex start = vertices.get(6);
+Vertex start = vertices.get(6);
 start.setValue(0);
 
 // Speichere alle Knoten in einer geeigneten Datenstruktur Q
 // -> Prioritätswarteschlange
-PriorityQueue<GraphVertex> queue = new PriorityQueue<GraphVertex>(
-    Comparator.comparingInt(GraphVertex::getValue));
+PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>(
+    Comparator.comparingInt(Vertex::getValue));
 queue.addAll(vertices);
 
 // Solange es noch Knoten in Q gibt...
 while (!queue.isEmpty()) {
   // Wähle den Knoten aus Q mit dem kleinsten Schlüssel (v)
-  GraphVertex vertex = queue.poll();
+  Vertex vertex = queue.poll();
 
   // Für jeden Nachbarknoten n von v...
-  for (GraphVertex n : GraphData.getNeighbors(vertex, vertices, edges)) {
+  for (Vertex n : Graph.getNeighbors(vertex, vertices, edges)) {
 
     // Finde Kante zwischen v und n
-    GraphEdge edge = GraphData.getEdgeBetweenTwoVertices(vertex, n, edges);
+    Edge edge = Graph.getEdgeBetweenTwoVertices(vertex, n, edges);
 
     // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
     // noch in Q enthalten ist
