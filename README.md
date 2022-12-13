@@ -5,6 +5,8 @@
 
 > Ein Projekt für das Modul Programmiertechnik III
 
+Die Graphschaft Schilda ist ein beschauliches Örtchen irgendwo im Nichts. Lange Zeit blieb diese Graphschaft unbehelligt vom Fortschritt, nichts tat sich in dem Örtchen. Eines Tages jedoch machte sich dort plötzlich das Gerücht breit, dass fernab der Graphschaft intelligente Menschen leben, die (fast) alle Probleme der Welt mit mächtigen Algorithmen lösen könnten. Die Bürger der Graphschaft machten sich also auf den Weg um diese intelligenten Menschen mit der Lösung ihrer Probleme zu beauftragen....
+
 ## Dokumentation
 
 Die Dokumentation kann unter [schilda.node5.de](https://schilda.node5.de) eingesehen, oder über [diesen](https://github.com/thieleju/GraphschaftSchilda/raw/gh-pages/Dokumentation.pdf) link heruntergeladen werden.

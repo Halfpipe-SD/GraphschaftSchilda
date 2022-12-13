@@ -11,6 +11,8 @@ in Ihr Tool – schließlich möchte auch die Graphschaft ihre Kräfte gut einse
 
 ## Die Ausgabe
 
+![Problem7](images/problem7.png)
+
 ## Der Alrogithmus
 
 ## Die Laufzeit des Algorithmus
