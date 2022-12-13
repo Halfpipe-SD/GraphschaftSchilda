@@ -1,0 +1,45 @@
+{
+  "directed_edges": true,
+  "vertices": [
+    { "label": "Herr Maier" },
+    { "label": "Frau Mueller" },
+    { "label": "Frau Augst" },
+    { "label": "Frau Schmidt" },
+    { "label": "Herr Kunze" },
+    { "label": "Herr Hof" },
+    { "label": "Frau Lustig" },
+    { "label": "Strassenbau" },
+    { "label": "Verkehrsplanung" },
+    { "label": "Archaeologie" },
+    { "label": "Gesamtkoordination" },
+    { "label": "Festplanung" },
+    { "label": "Wasserversorgung" },
+    { "label": "Wettkampfausrichtung" }
+  ],
+  "edges": [
+    { "source": "Herr Maier", "target": "Strassenbau", "capacity": 1 },
+    { "source": "Herr Maier", "target": "Verkehrsplanung", "capacity": 1 },
+    { "source": "Herr Maier", "target": "Archaeologie", "capacity": 1 },
+    { "source": "Frau Mueller", "target": "Gesamtkoordination", "capacity": 1 },
+    { "source": "Frau Mueller", "target": "Festplanung", "capacity": 1 },
+    { "source": "Frau Augst", "target": "Strassenbau", "capacity": 1 },
+    { "source": "Frau Augst", "target": "Wasserversorgung", "capacity": 1 },
+    { "source": "Frau Schmidt", "target": "Strassenbau", "capacity": 1 },
+    { "source": "Frau Schmidt", "target": "Verkehrsplanung", "capacity": 1 },
+    {
+      "source": "Frau Schmidt",
+      "target": "Wettkampfausrichtung",
+      "capacity": 1
+    },
+    { "source": "Herr Kunze", "target": "Archaeologie", "capacity": 1 },
+    { "source": "Herr Kunze", "target": "Festplanung", "capacity": 1 },
+    { "source": "Herr Hof", "target": "Strassenbau", "capacity": 1 },
+    { "source": "Herr Hof", "target": "Gesamtkoordination", "capacity": 1 },
+    { "source": "Frau Lustig", "target": "Verkehrsplanung", "capacity": 1 },
+    {
+      "source": "Frau Lustig",
+      "target": "Wettkampfausrichtung",
+      "capacity": 1
+    }
+  ]
+}

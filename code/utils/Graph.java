@@ -91,6 +91,22 @@ public class Graph {
     return null;
   }
 
+  public static ArrayList<Edge> getEdgesBetweenTwoVertices(
+      Vertex vertex1,
+      Vertex vertex2,
+      ArrayList<Edge> edges) {
+    ArrayList<Edge> output = new ArrayList<Edge>();
+    for (Edge e : edges) {
+      // Prüfe ob die Kante zwischen den beiden Knoten liegt
+      if ((e.getSource().equals(vertex1.getLabel()) &&
+          e.getTarget().equals(vertex2.getLabel()))
+          || (e.getSource().equals(vertex2.getLabel()) &&
+              e.getTarget().equals(vertex1.getLabel())))
+        output.add(e);
+    }
+    return output;
+  }
+
   public static ArrayList<Edge> getEdgesFromVertices(ArrayList<Vertex> vertices) {
     ArrayList<Edge> output = new ArrayList<Edge>();
 
