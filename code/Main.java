@@ -67,7 +67,7 @@ public class Main extends JFrame {
           new ProblemTest(label);
           break;
         case 2:
-          new Problem2(label);
+          new ProblemTest2(label);
           break;
         case 3:
           new Problem3(label);
