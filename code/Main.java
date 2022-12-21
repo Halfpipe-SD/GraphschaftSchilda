@@ -8,6 +8,7 @@ package code;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -62,7 +63,8 @@ public class Main extends JFrame {
       // open problem window
       switch (problem) {
         case 1:
-          new Problem1(label);
+          // new Problem1(label);
+          new ProblemTest(label);
           break;
         case 2:
           new Problem2(label);
@@ -85,6 +87,9 @@ public class Main extends JFrame {
       }
     } catch (FileNotFoundException enf) {
       System.out.println("File not found " + enf.getMessage());
+      System.exit(1);
+    } catch (IOException ioe) {
+      System.out.println("IO Exception " + ioe.getMessage());
       System.exit(1);
     }
   }
