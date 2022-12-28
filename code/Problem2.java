@@ -23,7 +23,7 @@ public class Problem2 extends BasicWindow {
         setLayout(new GridLayout(1, 2));
         setLocationRelativeTo(null);
 
-        FileHandler fh = new FileHandler("graph_problem2.txt");
+        FileHandler fh = new FileHandler("problem2.txt");
 
         am_input = new AdjazenzMatrix("Input", fh.getMatrix(), false);
         am_input.printMatrix();
