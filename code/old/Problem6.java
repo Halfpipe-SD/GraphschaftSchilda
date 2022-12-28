@@ -1,13 +1,12 @@
-package code;
+package code.old;
 
-import static code.Problem2.fordFulkersonMaxFlow;
+import static code.old.Problem2.fordFulkersonMaxFlow;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.FileNotFoundException;
 
 import code.utils.BasicWindow;
-import code.utils.Graph;
 import code.utils.JGraphPanel;
 
 public class Problem6 extends BasicWindow {

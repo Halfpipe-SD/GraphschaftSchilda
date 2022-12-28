@@ -1,4 +1,4 @@
-package code;
+package code.old;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import code.utils.BasicWindow;
-import code.utils.Graph;
-import code.utils.Edge;
-import code.utils.Vertex;
 import code.utils.JGraphPanel;
 
 public class Problem5 extends BasicWindow {
@@ -41,7 +38,8 @@ public class Problem5 extends BasicWindow {
     // Sortiere die Kanten nach Gewicht
     edges.sort(Comparator.comparingDouble(Edge::getWeight));
 
-    // erstelle einen wald 'forest' (eine menge von bäumen), wo jeder knoten ein eigener baum ist
+    // erstelle einen wald 'forest' (eine menge von bäumen), wo jeder knoten ein
+    // eigener baum ist
     ArrayList<ArrayList<Vertex>> forest = new ArrayList<ArrayList<Vertex>>();
     for (Vertex v : vertices) {
       ArrayList<Vertex> tree = new ArrayList<Vertex>();
@@ -70,7 +68,8 @@ public class Problem5 extends BasicWindow {
           tree_v = t;
       }
 
-      // Prüfe ob die kante e von einem vertex ausgeht, der bereits mehr als 2 kanten hat
+      // Prüfe ob die kante e von einem vertex ausgeht, der bereits mehr als 2 kanten
+      // hat
       ArrayList<Edge> source_edges = Graph.getAdjacentEdges(e.getSource(), output_edges);
       ArrayList<Edge> target_edges = Graph.getAdjacentEdges(e.getTarget(), output_edges);
 
@@ -90,6 +89,6 @@ public class Problem5 extends BasicWindow {
 
       forest.remove(tree_v);
     }
-    return new Graph (vertices, output_edges, false);
+    return new Graph(vertices, output_edges, false);
   }
 }

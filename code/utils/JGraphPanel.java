@@ -19,6 +19,10 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxUtils;
 
+import code.old.Edge;
+import code.old.Graph;
+import code.old.Vertex;
+
 public class JGraphPanel extends JPanel {
 
   private Graph graph_data;

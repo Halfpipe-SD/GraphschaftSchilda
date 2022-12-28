@@ -64,25 +64,25 @@ public class Main extends JFrame {
       switch (problem) {
         case 1:
           // new Problem1(label);
-          new ProblemTest(label);
+          new Problem1(label);
           break;
         case 2:
-          new ProblemTest2(label);
+          new Problem2(label);
           break;
         case 3:
-          new Problem3(label);
+          // new Problem3(label);
           break;
         case 4:
-          new Problem4(label);
+          // new Problem4(label);
           break;
         case 5:
-          new Problem5(label);
+          // new Problem5(label);
           break;
         case 6:
-          new Problem6(label);
+          // new Problem6(label);
           break;
         case 7:
-          new Problem7(label);
+          // new Problem7(label);
           break;
       }
     } catch (FileNotFoundException enf) {

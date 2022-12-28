@@ -1,4 +1,4 @@
-package code;
+package code.old;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -11,9 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import code.utils.BasicWindow;
-import code.utils.Graph;
-import code.utils.Edge;
-import code.utils.Vertex;
 import code.utils.JGraphPanel;
 
 public class Problem4 extends BasicWindow {

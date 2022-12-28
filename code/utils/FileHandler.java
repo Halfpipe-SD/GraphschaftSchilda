@@ -17,33 +17,35 @@ public class FileHandler {
     // read data from txt file with filereader
     FileReader fr = new FileReader(filepath);
     BufferedReader br = new BufferedReader(fr);
+    try {
+      // get number of vertices in first line
+      String firstline = br.readLine().trim();
+      int vertices = firstline.split(" ").length;
 
-    // get number of vertices in first line
-    String firstline = br.readLine().trim();
-    int vertices = firstline.split(" ").length;
+      System.out.println("Read file: " + filename);
+      System.out.println("Number of vertices: " + vertices);
 
-    System.out.println("Read file: " + filename);
-    System.out.println("Number of vertices: " + vertices);
+      matrix = new int[vertices][vertices];
 
-    matrix = new int[vertices][vertices];
+      String line;
+      int linecount = 0;
+      while ((line = br.readLine()) != null && line.length() > 0) {
+        // skip first line
+        if (line.charAt(0) == ' ' && line.charAt(1) == ' ')
+          continue;
 
-    String line;
-    int linecount = 0;
-    while ((line = br.readLine()) != null && line.length() > 0) {
-      // skip first line
-      if (line.charAt(0) == ' ' && line.charAt(1) == ' ')
-        return;
+        // split line into values
+        String[] values = line.substring(2, line.length()).split(" ");
 
-      // split line into values
-      String[] values = line.substring(2, line.length()).split(" ");
+        // fill matrix
+        for (int i = 0; i < values.length; i++)
+          matrix[linecount][i] = Integer.parseInt(values[i]);
 
-      // fill matrix
-      for (int i = 0; i < values.length; i++)
-        matrix[linecount][i] = Integer.parseInt(values[i]);
-
-      linecount++;
+        linecount++;
+      }
+    } finally {
+      fr.close();
     }
-    br.close();
   }
 
   public int[][] getMatrix() {

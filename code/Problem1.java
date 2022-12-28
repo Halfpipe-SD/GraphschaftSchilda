@@ -3,95 +3,96 @@ package code;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.io.IOException;
 
+import code.utils.AdjazenzMatrix;
 import code.utils.BasicWindow;
-import code.utils.Graph;
-import code.utils.Edge;
-import code.utils.Vertex;
-import code.utils.JGraphPanel;
+import code.utils.FileHandler;
 
 public class Problem1 extends BasicWindow {
 
-  public Problem1(String title) throws FileNotFoundException {
+  private AdjazenzMatrix am_input;
+
+  private int num_vertices = 0;
+
+  public Problem1(String title) throws FileNotFoundException, IOException {
     super(title);
 
     setSize(new Dimension(510, 600));
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
-    Graph graph_input = new Graph("town_streets.json");
+    FileHandler fh = new FileHandler("graph_ungerichtet_gewichtet.txt");
 
-    Graph graph_output = prim(graph_input);
+    am_input = new AdjazenzMatrix("Input", fh.getMatrix(), false);
+    am_input.printMatrix();
 
-    JGraphPanel p1 = new JGraphPanel("Rohdaten", graph_input, "hierarchical");
-    JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", graph_output, "hierarchical");
-
-    add(p1);
-    add(p2);
+    AdjazenzMatrix am_output = new AdjazenzMatrix("Output", prim(), false);
+    am_output.printMatrix();
   }
 
-  private Graph prim(Graph input) {
+  // Function to construct and print MST for a graph
+  // represented using adjacency matrix representation
+  private int[][] prim() {
+    int[][] matrix = am_input.getMatrix();
 
-    // Lese die Knoten und Kanten aus den Rohdaten
-    ArrayList<Vertex> vertices = input.getVertices();
-    ArrayList<Edge> edges = input.getEdges();
+    // number of vertices in graph
+    num_vertices = matrix[0].length;
+
+    int parents[] = new int[num_vertices];
+    int vertices_value[] = new int[num_vertices];
+    Boolean mst_vertices[] = new Boolean[num_vertices];
 
     // Initialisiere alle Knoten mit ∞, setze den Vorgänger auf null
-    for (Vertex v : vertices) {
-      v.setValue(Integer.MAX_VALUE);
-      v.setPredecessor(null);
+    for (int i = 0; i < num_vertices; i++) {
+      vertices_value[i] = Integer.MAX_VALUE;
+      mst_vertices[i] = false;
     }
 
-    // Starte mit beliebigem Startknoten
-    // Startknoten bekommt den Wert 0
-    Vertex start = vertices.get(6);
-    start.setValue(0);
+    // Starte mit beliebigem Startknoten, bekommt den Wert 0 und besitzt keinen
+    // Vorgänger
+    vertices_value[0] = 0;
+    parents[0] = -1;
 
-    // Speichere alle Knoten in einer geeigneten Datenstruktur Q
-    // -> Prioritätswarteschlange
-    PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>(
-        Comparator.comparingInt(Vertex::getValue));
-    queue.addAll(vertices);
+    for (int count = 0; count < num_vertices - 1; count++) {
 
-    // Solange es noch Knoten in Q gibt...
-    while (!queue.isEmpty()) {
-      // Wähle den Knoten aus Q mit dem kleinsten Schlüssel (v)
-      Vertex vertex = queue.poll();
+      int u = minKey(vertices_value, mst_vertices);
 
-      // Für jeden Nachbarknoten n von v...
-      for (Vertex n : Graph.getNeighbors(vertex, vertices, edges)) {
+      // Add the picked vertex to the MST Set
+      mst_vertices[u] = true;
 
-        // Finde Kante zwischen v und n
-        Edge edge = Graph.getEdgeBetweenTwoVertices(vertex, n, edges);
+      for (int v = 0; v < num_vertices; v++)
 
-        // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
-        // noch in Q enthalten ist
-        if (edge.getWeight() >= n.getValue() || !queue.contains(n))
-          continue;
+        if (matrix[v][u] != 0 && mst_vertices[v] == false
+            && matrix[u][v] < vertices_value[v]) {
+          parents[v] = u;
+          vertices_value[v] = matrix[v][u];
+        }
+    }
 
-        // Speichere v als vorgänger von n und passe wert von n an
-        n.setValue((int) edge.getWeight());
-        n.setPredecessor(vertex);
+    for (int i = 1; i < num_vertices; i++) {
+      matrix[i][parents[i]] = matrix[parents[i]][i];
+    }
 
-        // Aktualisiere die Prioritätswarteschlange
-        queue.remove(n);
-        queue.add(n);
+    // print edges
+    for (int i = 1; i < num_vertices; i++)
+      System.out.println(parents[i] + " - " + i + " \t" + matrix[parents[i]][i]);
+
+    return matrix;
+  }
+
+  int minKey(int key[], Boolean mstSet[]) {
+    // Initialize min value
+    int min = Integer.MAX_VALUE;
+    int min_index = -1;
+
+    for (int v = 0; v < num_vertices; v++)
+      if (mstSet[v] == false && key[v] < min) {
+        min = key[v];
+        min_index = v;
       }
-    }
 
-    // generiere neue kanten für den graphen anhand der vorgänger der knoten
-    ArrayList<Edge> new_edges = new ArrayList<Edge>();
-
-    for (Vertex v : vertices) {
-      if (v.getPredecessor() != null) {
-        new_edges.add(new Edge(v.getPredecessor().getLabel(), v.getLabel(), v.getValue()));
-      }
-    }
-
-    return new Graph(vertices, new_edges, false);
+    return min_index;
   }
 
 }

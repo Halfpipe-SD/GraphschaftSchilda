@@ -1,4 +1,4 @@
-package code.utils;
+package code.old;
 
 public class Vertex {
   private String label;
