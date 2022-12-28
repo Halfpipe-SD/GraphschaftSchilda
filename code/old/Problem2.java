@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import code.utils.BasicWindow;
-import code.utils.JGraphPanel;
 
 public class Problem2 extends BasicWindow {
 

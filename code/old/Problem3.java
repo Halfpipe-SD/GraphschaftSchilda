@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import code.utils.BasicWindow;
-import code.utils.JGraphPanel;
 
 public class Problem3 extends BasicWindow {
 

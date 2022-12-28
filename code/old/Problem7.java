@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import code.utils.BasicWindow;
-import code.utils.JGraphPanel;
 
 public class Problem7 extends BasicWindow {
 

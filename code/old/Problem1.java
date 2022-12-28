@@ -8,7 +8,6 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import code.utils.BasicWindow;
-import code.utils.JGraphPanel;
 
 public class Problem1 extends BasicWindow {
 
