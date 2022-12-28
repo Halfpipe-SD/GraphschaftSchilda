@@ -28,8 +28,8 @@ public class Problem2 extends BasicWindow {
         am_input = new AdjazenzMatrix("Input", fh.getMatrix(), false);
         am_input.printMatrix();
 
-        AdjazenzMatrix am_output = new AdjazenzMatrix("Output", fordFulkerson(), false);
-        am_output.printMatrix();
+        AdjazenzMatrix am_output = new AdjazenzMatrix("Output", fordFulkerson(), true);
+        am_output.printAndWriteMatrix(title);
     }
 
     private int fordFulkerson() {

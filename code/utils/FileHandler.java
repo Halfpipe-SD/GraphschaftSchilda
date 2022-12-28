@@ -95,7 +95,7 @@ public class FileHandler {
     bw.close();
     writer.close();
 
-    System.out.println("New file created: " + filename + ".txt in directory " + path_output);
+    System.out.println("\nNew file created or overridden '" + filename + ".txt' in directory '" + path_output + "'");
   }
 
   public int[][] getMatrix() {
