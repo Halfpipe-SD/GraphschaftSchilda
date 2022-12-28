@@ -1,10 +1,14 @@
 package code.utils;
 
+import java.io.IOException;
+
 public class AdjazenzMatrix {
 
-  private int[][] matrix;
   private String label;
+
+  private int[][] matrix;
   private char[] vertex_letters;
+
   private boolean isDirected;
   private int max_flow;
 
@@ -28,15 +32,19 @@ public class AdjazenzMatrix {
     this.isDirected = isDirected;
   }
 
-  public void printMatrix() {
-    String title = "Adjazenzmatrix '" + this.label + "':";
+  public void printMatrix() throws IOException {
+    handleMatrix(false, this.label);
+  }
 
+  public void printAndWriteMatrix(String filename) throws IOException {
+    handleMatrix(true, filename);
+  }
+
+  private void handleMatrix(boolean write_to_file, String filename) throws IOException {
     if (this.isDirected)
-      title = "\nGerichtete " + title;
+      System.out.println("\nGerichtete Adjazenzmatrix '" + this.label + "':");
     else
-      title = "\nUngerichtete " + title;
-
-    System.out.println(title);
+      System.out.println("\nUngerichtete Adjazenzmatrix '" + this.label + "':");
 
     // first line with vertex letters
     if (this.vertex_letters != null) {
@@ -49,10 +57,22 @@ public class AdjazenzMatrix {
     for (int i = 0; i < this.matrix.length; i++) {
       if (this.vertex_letters != null)
         System.out.print(this.vertex_letters[i] + " ");
-      for (int j = 0; j < this.matrix[i].length; j++)
+
+      // print only half of the matrix
+      for (int j = 0; j < this.matrix[i].length; j++) {
+        // skip values on the right side of the diagonal if the matrix is not directed
+        if (!isDirected && j > i)
+          break;
         System.out.print(this.matrix[i][j] + " ");
+      }
       System.out.println();
     }
+
+    if (!write_to_file)
+      return;
+
+    // write matrix to file
+    FileHandler.writeOutputToFile(filename, matrix, vertex_letters, isDirected);
   }
 
   public int[][] getMatrix() {

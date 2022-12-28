@@ -15,11 +15,15 @@ public class FileHandler {
   private int[][] matrix;
   private char[] vertex_letters;
 
-  private String absolute_path = new File("").getAbsolutePath();
-  private final String path_input = absolute_path + "/code/data/";
-  private final String path_output = absolute_path + "/code/output/";
+  private final static String absolute_path = new File("").getAbsolutePath();
+  private final static String path_input = absolute_path + "/code/data/";
+  private final static String path_output = absolute_path + "/code/output/";
 
   public FileHandler(String filename) throws FileNotFoundException, IOException {
+    initialize(filename);
+  }
+
+  private void initialize(String filename) throws FileNotFoundException, IOException {
 
     // read data from txt file with filereader
     FileReader fr = new FileReader(path_input + filename);
@@ -28,6 +32,8 @@ public class FileHandler {
       // get number of vertices in first line
       String firstline = br.readLine().trim();
       int vertices = firstline.split(" ").length;
+
+      // put vertex letters in char array
       vertex_letters = Arrays.stream(firstline.split(" "))
           .collect(Collectors.joining())
           .toCharArray();
@@ -57,24 +63,32 @@ public class FileHandler {
     }
   }
 
-  public void writeOutputToFile(String filename) throws IOException {
+  public static void writeOutputToFile(String filename, int[][] m, char[] l, boolean isDirected) throws IOException {
     File file = new File(path_output + filename + ".txt");
     FileWriter writer = new FileWriter(file);
     BufferedWriter bw = new BufferedWriter(writer);
 
-    // write matrix to file
-    if (this.vertex_letters != null) {
+    // write first line with vertex letters
+    if (l != null) {
       bw.write("  ");
-      for (int i = 0; i < this.vertex_letters.length; i++)
-        bw.write(this.vertex_letters[i] + " ");
+
+      for (int i = 0; i < l.length; i++)
+        bw.write(l[i] + " ");
+
       bw.newLine();
     }
     // other lines
-    for (int i = 0; i < this.matrix.length; i++) {
-      if (this.vertex_letters != null)
-        bw.write(this.vertex_letters[i] + " ");
-      for (int j = 0; j < this.matrix[i].length; j++)
-        bw.write(this.matrix[i][j] + " ");
+    for (int i = 0; i < m.length; i++) {
+      if (l != null)
+        bw.write(l[i] + " ");
+
+      for (int j = 0; j < m[i].length; j++) {
+        // skip values on the right side of the diagonal if the matrix is not directed
+        if (!isDirected && j > i)
+          break;
+
+        bw.write(m[i][j] + " ");
+      }
       bw.newLine();
     }
 
@@ -91,5 +105,4 @@ public class FileHandler {
   public char[] getVertexLetters() {
     return this.vertex_letters;
   }
-
 }
