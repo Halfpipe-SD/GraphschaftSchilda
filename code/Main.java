@@ -63,7 +63,6 @@ public class Main extends JFrame {
       // open problem window
       switch (problem) {
         case 1:
-          // new Problem1(label);
           new Problem1(label);
           break;
         case 2:
@@ -85,8 +84,8 @@ public class Main extends JFrame {
           // new Problem7(label);
           break;
       }
-    } catch (FileNotFoundException enf) {
-      System.out.println("File not found " + enf.getMessage());
+    } catch (FileNotFoundException fnfe) {
+      System.out.println("File not found " + fnfe.getMessage());
       System.exit(1);
     } catch (IOException ioe) {
       System.out.println("IO Exception " + ioe.getMessage());

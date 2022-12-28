@@ -24,11 +24,13 @@ public class Problem1 extends BasicWindow {
 
     FileHandler fh = new FileHandler("graph_ungerichtet_gewichtet.txt");
 
-    am_input = new AdjazenzMatrix("Input", fh.getMatrix(), false);
+    am_input = new AdjazenzMatrix("Input", fh.getMatrix(), fh.getVertexLetters(), false);
     am_input.printMatrix();
 
-    AdjazenzMatrix am_output = new AdjazenzMatrix("Output", prim(), false);
+    AdjazenzMatrix am_output = new AdjazenzMatrix("Output", prim(), fh.getVertexLetters(), false);
     am_output.printMatrix();
+
+    fh.writeOutputToFile(title);
   }
 
   // Function to construct and print MST for a graph
