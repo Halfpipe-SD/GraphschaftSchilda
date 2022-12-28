@@ -8,33 +8,46 @@ import java.io.IOException;
 import code.utils.AdjazenzMatrix;
 import code.utils.BasicWindow;
 import code.utils.FileHandler;
+import code.utils.JGraphPanel;
 
 public class Problem1 extends BasicWindow {
-
-  private AdjazenzMatrix am_input;
 
   private int num_vertices = 0;
 
   public Problem1(String title) throws FileNotFoundException, IOException {
     super(title);
 
-    setSize(new Dimension(510, 600));
+    setSize(new Dimension(480, 650));
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
+    // Initializiere FileHandler und lese die Daten aus der Datei
     FileHandler fh = new FileHandler("problem1.txt");
 
-    am_input = new AdjazenzMatrix("Input", fh.getMatrix(), fh.getVertexLetters(), false);
+    // Erstelle die Adjazenzmatrix und gebe sie in der Konsole aus
+    AdjazenzMatrix am_input = new AdjazenzMatrix("Input", fh.getMatrix(), fh.getVertexLetters(), false);
     am_input.printMatrix();
 
-    AdjazenzMatrix am_output = new AdjazenzMatrix("Output", prim(), fh.getVertexLetters(), false);
+    // Erstelle die Ausgabe-Adjazenzmatrix mit dem Prim Algorithmus
+    int[][] matrix_output = prim(am_input.getMatrixCopy());
+
+    // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe
+    // sie in eine Datei
+    AdjazenzMatrix am_output = new AdjazenzMatrix("Output", matrix_output, fh.getVertexLetters(), false);
     am_output.printAndWriteMatrix(title);
+
+    // Erstelle die Graphen und füge sie dem Fenster hinzu
+    JGraphPanel p1 = new JGraphPanel("Rohdaten", am_input, "hierarchical");
+    JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", am_output,
+        "hierarchical");
+
+    add(p1);
+    add(p2);
   }
 
   // Function to construct and print MST for a graph
   // represented using adjacency matrix representation
-  private int[][] prim() {
-    int[][] matrix = am_input.getMatrix();
+  private int[][] prim(int[][] matrix) {
 
     // number of vertices in graph
     num_vertices = matrix[0].length;
@@ -73,10 +86,6 @@ public class Problem1 extends BasicWindow {
     for (int i = 1; i < num_vertices; i++) {
       matrix[i][parents[i]] = matrix[parents[i]][i];
     }
-
-    // print edges
-    for (int i = 1; i < num_vertices; i++)
-      System.out.println(parents[i] + " - " + i + " \t" + matrix[parents[i]][i]);
 
     return matrix;
   }

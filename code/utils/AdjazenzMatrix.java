@@ -10,7 +10,7 @@ public class AdjazenzMatrix {
   private char[] vertex_letters;
 
   private boolean isDirected;
-  private int max_flow;
+  private int max_flow = 0;
 
   public AdjazenzMatrix(String label, int[][] matrix, boolean isDirected) {
     this.matrix = matrix;
@@ -79,6 +79,22 @@ public class AdjazenzMatrix {
     return this.matrix;
   }
 
+  public int[][] getMatrixCopy() {
+    int[][] copy = new int[this.matrix.length][this.matrix.length];
+
+    for (int i = 0; i < this.matrix.length; i++) {
+      for (int j = 0; j < this.matrix[i].length; j++) {
+        copy[i][j] = this.matrix[i][j];
+      }
+    }
+
+    return copy;
+  }
+
+  public char[] getVertexLetters() {
+    return this.vertex_letters;
+  }
+
   public String getLabel() {
     return this.label;
   }
@@ -87,8 +103,45 @@ public class AdjazenzMatrix {
     return this.isDirected;
   }
 
-  // getter for ProblemTest2
   public int getMaxFlow() {
     return this.max_flow;
+  }
+
+  public int getVerticesCount() {
+    return this.matrix.length;
+  }
+
+  public int getEdgesCount() {
+    int count = 0;
+
+    for (int i = 0; i < this.matrix.length; i++) {
+      for (int j = 0; j < this.matrix[i].length; j++) {
+        // skip values on the right side of the diagonal if the matrix is not directed
+        if (!isDirected && j > i)
+          break;
+
+        if (this.matrix[i][j] != 0)
+          count++;
+      }
+    }
+
+    return count;
+  }
+
+  public int getEdgesWeight() {
+    int weight = 0;
+
+    for (int i = 0; i < this.matrix.length; i++) {
+      for (int j = 0; j < this.matrix[i].length; j++) {
+        // skip values on the right side of the diagonal if the matrix is not directed
+        if (!isDirected && j > i)
+          break;
+
+        if (this.matrix[i][j] != 0)
+          weight += this.matrix[i][j];
+      }
+    }
+
+    return weight;
   }
 }

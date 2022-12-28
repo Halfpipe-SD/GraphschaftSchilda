@@ -19,26 +19,19 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxUtils;
 
-import code.old.Edge;
-import code.old.Graph;
-import code.old.Vertex;
-
 public class JGraphPanel extends JPanel {
 
-  private Graph graph_data;
-
-  private String edge_type;
+  private AdjazenzMatrix ad_matrix;
 
   @SuppressWarnings("deprecation")
-  public JGraphPanel(String title, Graph graph_data, String layout) {
+  public JGraphPanel(String title, AdjazenzMatrix ad_matrix, String layout) {
 
-    this.graph_data = graph_data;
+    this.ad_matrix = ad_matrix;
 
     // determine edge type based on values set in graph data
-    if (graph_data.getEdges().get(0).getFlow() != 0)
+    String edge_type;
+    if (ad_matrix.getMaxFlow() != 0)
       edge_type = "flow";
-    else if (graph_data.getEdges().get(0).getCapacity() != 0)
-      edge_type = "capacity";
     else
       edge_type = "weight";
 
@@ -73,7 +66,7 @@ public class JGraphPanel extends JPanel {
     mxUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_FONTSTYLE, "1");
 
     // ignore graph directions (arrows)
-    if (!graph_data.isDirected())
+    if (!ad_matrix.isDirected())
       mxUtils.setCellStyles(graphModel, cells.toArray(), mxConstants.STYLE_ENDARROW, mxConstants.NONE);
 
     // set new geometry
@@ -91,16 +84,15 @@ public class JGraphPanel extends JPanel {
 
     // set graph description
     String html_content = "<h3>" + title + "</h3>"
-        + "Anzahl der Knoten: " + graph_data.getVerticesCount() + "<br>"
-        + "Anzahl der Kanten: " + graph_data.getEdgesCount() + "<br>";
+        + "Anzahl der Knoten: " + ad_matrix.getVerticesCount() + "<br>"
+        + "Anzahl der Kanten: " + ad_matrix.getEdgesCount() + "<br>";
 
     switch (edge_type) {
       case "flow":
-      case "capacity":
-        html_content += "Maximaler Durchfluss: " + graph_data.getMaximumFlow() + "<br>";
+        html_content += "Maximaler Durchfluss: " + ad_matrix.getMaxFlow() + "<br>";
         break;
       case "weight":
-        html_content += "Summe der Kantengewichte: " + graph_data.getEdgesWeight() + "<br>";
+        html_content += "Summe der Kantengewichte: " + ad_matrix.getEdgesWeight() + "<br>";
         break;
     }
 
@@ -114,29 +106,27 @@ public class JGraphPanel extends JPanel {
     SimpleDirectedWeightedGraph<String, CustomEdge> g = new SimpleDirectedWeightedGraph<String, CustomEdge>(
         CustomEdge.class);
 
-    // add vertices from graph data
-    for (Vertex v : graph_data.getVertices()) {
-      g.addVertex(v.getLabel());
-    }
+    char[] vertex_letters = ad_matrix.getVertexLetters();
 
-    // add edges from graph data
-    for (Edge e : graph_data.getEdges()) {
+    // add vertices
+    for (char c : vertex_letters)
+      g.addVertex("  " + c + "  ");
 
-      String edge_label = "";
+    // add edges
+    int[][] matrix = ad_matrix.getMatrix();
 
-      switch (edge_type) {
-        case "flow":
-        case "capacity":
-          edge_label = Math.round(e.getFlow()) + "/" + Math.round(e.getCapacity());
-          break;
-        case "weight":
-          edge_label = Double.toString(e.getWeight());
-          break;
+    for (int i = 0; i < matrix.length; i++) {
+      for (int j = 0; j < matrix[i].length; j++) {
+        if (matrix[i][j] == 0)
+          continue;
+
+        String source = "  " + vertex_letters[j] + "  ";
+        String target = "  " + vertex_letters[i] + "  ";
+
+        // add edge with weight or flow
+        g.addEdge(source, target, new CustomEdge("  " + matrix[i][j] + "  "));
       }
-
-      g.addEdge(e.getSource(), e.getTarget(), new CustomEdge(edge_label));
     }
-
     return g;
   }
 
