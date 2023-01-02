@@ -4,20 +4,23 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 import code.utils.AdjazenzMatrix;
 import code.utils.BasicWindow;
+import code.utils.Edge;
 import code.utils.FileHandler;
 import code.utils.JGraphPanel;
+import code.utils.Vertex;
 
 public class Problem1 extends BasicWindow {
-
-  private int num_vertices = 0;
 
   public Problem1(String title) throws FileNotFoundException, IOException {
     super(title);
 
-    setSize(new Dimension(480, 650));
+    setSize(new Dimension(510, 650));
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
@@ -29,7 +32,7 @@ public class Problem1 extends BasicWindow {
     am_input.printMatrix();
 
     // Erstelle die Ausgabe-Adjazenzmatrix mit dem Prim Algorithmus
-    int[][] matrix_output = prim(am_input.getMatrixCopy());
+    int[][] matrix_output = prim(am_input);
 
     // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe
     // sie in eine Datei
@@ -45,63 +48,95 @@ public class Problem1 extends BasicWindow {
     add(p2);
   }
 
-  // Function to construct and print MST for a graph
-  // represented using adjacency matrix representation
-  private int[][] prim(int[][] matrix) {
+  private int[][] prim(AdjazenzMatrix input) {
 
-    // number of vertices in graph
-    num_vertices = matrix[0].length;
+    int[][] matrix = input.getMatrixCopy();
+    char[] vertexLetters = input.getVertexLetters();
 
-    int parents[] = new int[num_vertices];
-    int vertices_value[] = new int[num_vertices];
-    Boolean mst_vertices[] = new Boolean[num_vertices];
+    ArrayList<Vertex> vertices = new ArrayList<>();
+    ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
 
-    // Initialisiere alle Knoten mit ∞, setze den Vorgänger auf null
-    for (int i = 0; i < num_vertices; i++) {
-      vertices_value[i] = Integer.MAX_VALUE;
-      mst_vertices[i] = false;
+    // Generiere eine Liste aller Knoten mit dem Wert unendlich und ohne Vorgänger
+    for (int i = 0; i < matrix.length; i++)
+      vertices.add(new Vertex(vertexLetters[i], Integer.MAX_VALUE, null));
+
+    // Speichere alle Knoten in einer geeigneten Datenstruktur Q
+    // -> Prioritätswarteschlange
+    PriorityQueue<Vertex> q = new PriorityQueue<>(Comparator.comparingInt(Vertex::getKey));
+    q.addAll(vertices);
+
+    // Starte mit beliebigem Startknoten, Startknoten bekommt den Wert 0
+    q.peek().setKey(0);
+
+    // Solange es noch Knoten in Q gibt...
+    while (!q.isEmpty()) {
+      // Entnehme den Knoten mit dem kleinsten Wert
+      Vertex u = q.poll();
+
+      // Für jeden Nachbarn n von u
+      for (Vertex n : getNeighbors(u, vertices, edges)) {
+        // Finde die Kante (u, n)
+        Edge e = null;
+        for (Edge edge : edges)
+          if ((edge.getSource() == u.getLetter() && edge.getTarget() == n.getLetter())
+              || (edge.getSource() == n.getLetter() && edge.getTarget() == u.getLetter()))
+            e = edge;
+
+        // Wenn n in Q und das Gewicht der Kante (u, n) kleiner ist als der Wert von n
+        if (!q.contains(n) || e.getWeight() >= n.getKey())
+          continue;
+
+        // Setze den Wert von n auf das Gewicht der Kante (u, n)
+        n.setKey(e.getWeight());
+        // Setze den Vorgänger von n auf u
+        n.setPredecessor(u);
+        // Aktualisiere die Position von n in Q
+        q.remove(n);
+        q.add(n);
+      }
     }
 
-    // Starte mit beliebigem Startknoten, bekommt den Wert 0 und besitzt keinen
-    // Vorgänger
-    vertices_value[0] = 0;
-    parents[0] = -1;
+    // Erstelle die Adjazenzmatrix für den Minimum Spanning Tree
+    int[][] matrix_output = new int[matrix.length][matrix.length];
+    for (Vertex v : vertices) {
+      if (v.getPredecessor() == null)
+        continue;
 
-    for (int count = 0; count < num_vertices - 1; count++) {
-
-      int u = minKey(vertices_value, mst_vertices);
-
-      // Add the picked vertex to the MST Set
-      mst_vertices[u] = true;
-
-      for (int v = 0; v < num_vertices; v++)
-
-        if (matrix[v][u] != 0 && mst_vertices[v] == false
-            && matrix[u][v] < vertices_value[v]) {
-          parents[v] = u;
-          vertices_value[v] = matrix[v][u];
-        }
+      int i = v.getLetter() - 'A';
+      int j = v.getPredecessor().getLetter() - 'A';
+      matrix_output[i][j] = matrix[i][j];
+      matrix_output[j][i] = matrix[j][i];
     }
-
-    for (int i = 1; i < num_vertices; i++) {
-      matrix[i][parents[i]] = matrix[parents[i]][i];
-    }
-
-    return matrix;
+    return matrix_output;
   }
 
-  int minKey(int key[], Boolean mstSet[]) {
-    // Initialize min value
-    int min = Integer.MAX_VALUE;
-    int min_index = -1;
+  private ArrayList<Vertex> getNeighbors(Vertex u, ArrayList<Vertex> vertices, ArrayList<Edge> edges) {
+    // neue Liste für nachbarn
+    ArrayList<Vertex> neighbors = new ArrayList<Vertex>();
 
-    for (int v = 0; v < num_vertices; v++)
-      if (mstSet[v] == false && key[v] < min) {
-        min = key[v];
-        min_index = v;
-      }
+    for (Edge e : edges) {
+      // Überspringe Kanten, die nicht mit dem Knoten verbunden sind
+      if (e.getSource() != u.getLetter() && e.getTarget() != u.getLetter())
+        continue;
+      // Finde vertex v anhand der source/target, der mit u verbunden ist und füge ihn
+      // der Liste hinzu
+      for (Vertex v : vertices)
+        if ((v.getLetter() == e.getSource() || v.getLetter() == e.getTarget()) && v != u)
+          neighbors.add(v);
+    }
+    return neighbors;
+  }
 
-    return min_index;
+  private ArrayList<Edge> getEdges(int[][] matrix, char[] vertexLetters) {
+    ArrayList<Edge> edges = new ArrayList<>();
+
+    // Iteriere über die Adjazenzmatrix und füge alle Kanten der Liste hinzu
+    for (int i = 0; i < matrix.length; i++)
+      for (int j = 0; j < matrix.length; j++)
+        if (matrix[i][j] != 0)
+          edges.add(new Edge(vertexLetters[i], vertexLetters[j], matrix[i][j]));
+
+    return edges;
   }
 
 }
