@@ -42,7 +42,7 @@ public class Problem1 extends BasicWindow {
     // Erstelle die Graphen und füge sie dem Fenster hinzu
     JGraphPanel p1 = new JGraphPanel("Rohdaten", am_input, "hierarchical");
     JGraphPanel p2 = new JGraphPanel("Minimum Spanning Tree (Prim)", am_output,
-        "hierarchical");
+        "circle");
 
     add(p1);
     add(p2);
@@ -60,13 +60,13 @@ public class Problem1 extends BasicWindow {
     for (int i = 0; i < matrix.length; i++)
       vertices.add(new Vertex(vertexLetters[i], Integer.MAX_VALUE, null));
 
+    // Starte mit beliebigem Startknoten, Startknoten bekommt den Wert 0
+    vertices.get(0).setKey(0);
+
     // Speichere alle Knoten in einer geeigneten Datenstruktur Q
     // -> Prioritätswarteschlange
     PriorityQueue<Vertex> q = new PriorityQueue<>(Comparator.comparingInt(Vertex::getKey));
     q.addAll(vertices);
-
-    // Starte mit beliebigem Startknoten, Startknoten bekommt den Wert 0
-    q.peek().setKey(0);
 
     // Solange es noch Knoten in Q gibt...
     while (!q.isEmpty()) {
