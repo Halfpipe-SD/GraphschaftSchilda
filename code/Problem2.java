@@ -19,7 +19,7 @@ public class Problem2 extends BasicWindow {
         super(title);
 
         // layout settings
-        setSize(new Dimension(510, 600));
+        setSize(new Dimension(510, 460));
         setLayout(new GridLayout(1, 2));
         setLocationRelativeTo(null);
 
