@@ -13,10 +13,6 @@ import code.utils.JGraphPanel;
 
 public class Problem2 extends BasicWindow {
 
-    // private AdjazenzMatrix am_input;
-
-    private int num_vertices = 0;
-
     public Problem2(String title) throws FileNotFoundException, IOException {
         super(title);
 
@@ -32,13 +28,10 @@ public class Problem2 extends BasicWindow {
         AdjazenzMatrix am_input = new AdjazenzMatrix("Input", fh.getMatrix(), fh.getVertexLetters(), true);
         am_input.printMatrix();
 
-        //Erstelle die Ausgabe-Adjazenzmatrix mit dem Prim Algorithmus
+        // Erstelle die Ausgabe-Adjazenzmatrix mit dem Prim Algorithmus
         int[][] matrix_output = fordFulkerson(am_input.getMatrixCopy());
 
-        // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe
-        // sie in eine Datei
-        // AdjazenzMatrix am_output = new AdjazenzMatrix("Output", fordFulkerson(), true);
-        // am_output.printAndWriteMatrix(title);
+        // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe sie in eine Datei
         AdjazenzMatrix am_output = new AdjazenzMatrix("Output", matrix_output, fh.getVertexLetters(), true);
         am_output.printAndWriteMatrix(title);
 
@@ -51,25 +44,23 @@ public class Problem2 extends BasicWindow {
         add(p2);
     }
 
-    // function to find the path with the maximum flow
-    private int[][] fordFulkerson(int [][] matrix) {
 
-        // input matrix
-        // int[][] matrix = am_input.getMatrix();
+    private int num_vertices = 0;
+
+    // function to find the path with the maximum flow
+    private int[][] fordFulkerson(int[][] matrix) {
 
         // number of vertices in graph
         num_vertices = matrix[0].length;
 
-        // source and sink
+        // source is the first vertex
         int s = 0;
+        // the sink is always the last vertex
         int t = num_vertices - 1;
-
-        // // output matrix max_flow
-        // int[][] max_flow = matrix;
 
         int u, v;
 
-        // copy the graph
+        // copy the graph to rGraph for out
         int rGraph[][] = new int[num_vertices][num_vertices];
         for (u = 0; u < num_vertices; u++)
             for (v = 0; v < num_vertices; v++)
@@ -78,37 +69,36 @@ public class Problem2 extends BasicWindow {
         // This array is filled by BFS and to store path
         int parent[] = new int[num_vertices];
 
-        int max_flow = 0; // There is no flow initially
+        // There is no flow initially
+        int max_flow = 0;
 
         // add possible path to the flow
         while (bfs(matrix, rGraph, s, t, parent)) {
 
             // find max flow through the possible paths
             int path_flow = Integer.MAX_VALUE;
-            for (v = t; v != s; v = parent[v]) {
-                u = parent[v];
+            for (u = t; u != s; u = parent[u]) {
+                v = parent[u];
 
-                for (int i = 0; i < parent.length; i++) {
-                }
-
-                path_flow = Math.min(path_flow, rGraph[u][v]);
+                path_flow = Math.min(path_flow, rGraph[v][u]);
             }
 
             // update the edges
-            for (v = t; v != s; v = parent[v]) {
-                u = parent[v];
-                rGraph[u][v] -= path_flow;
-                rGraph[v][u] += path_flow;
+            for (u = t; u != s; u = parent[u]) {
+
+                v = parent[u];
+                rGraph[v][u] -= path_flow; // remove path flow from rGraph
+                // rGraph[u][v] += path_flow; // add back path flow to rGraph
             }
 
             // Add path flow to max flow
             max_flow += path_flow;
-            System.out.println("max_path_flow: " + path_flow + " "); // print path flow
         }
 
         // Return the max flow
         System.out.println("max_flow: " + max_flow);
-        return matrix;
+
+        return printMatrix(matrix, rGraph);
     }
 
     boolean bfs(int[][] matrix, int rGraph[][], int s, int t, int parent[]) {
@@ -146,5 +136,15 @@ public class Problem2 extends BasicWindow {
             }
         }
         return false;
+    }
+
+    int[][] printMatrix(int[][] matirx, int[][] rGraph) {
+        int[][] outputGraph = new int[num_vertices][num_vertices];
+        for (int i = 0; i < matirx[0].length; i++) {
+            for (int j = 0; j < matirx[0].length; j++) {
+                outputGraph[i][j] = matirx[i][j] - rGraph[i][j];
+            }
+        }
+        return outputGraph;
     }
 }
