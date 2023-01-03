@@ -12,6 +12,10 @@ public class Vertex {
     this.predecessor = predecessor;
   }
 
+  public Vertex(char letter, int value) {
+    this(letter, value, null);
+  }
+
   public char getLetter() {
     return this.letter;
   }
