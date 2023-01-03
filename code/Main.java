@@ -72,7 +72,7 @@ public class Main extends JFrame {
           new Problem3(label);
           break;
         case 4:
-          // new Problem4(label);
+          new Problem4(label);
           break;
         case 5:
           // new Problem5(label);

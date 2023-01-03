@@ -5,6 +5,7 @@ public class Vertex {
   private char letter;
   private int key;
   private Vertex predecessor;
+  private boolean visited;
 
   public Vertex(char letter, int value, Vertex predecessor) {
     this.letter = letter;
@@ -34,6 +35,14 @@ public class Vertex {
 
   public void setPredecessor(Vertex predecessor) {
     this.predecessor = predecessor;
+  }
+
+  public boolean isVisited() {
+    return this.visited;
+  }
+
+  public void setVisited(boolean visited) {
+    this.visited = visited;
   }
 
   @Override
