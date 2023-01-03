@@ -124,7 +124,7 @@ public class JGraphPanel extends JPanel {
         String target = "  " + vertex_letters[i] + "  ";
 
         // add edge with weight or flow
-        g.addEdge(source, target, new CustomEdge("  " + matrix[i][j] + "  "));
+        g.addEdge(target, source, new CustomEdge("  " + matrix[i][j] + "  "));
       }
     }
     return g;
