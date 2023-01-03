@@ -13,6 +13,8 @@ import code.utils.JGraphPanel;
 
 public class Problem2 extends BasicWindow {
 
+    private int max_flow = 0;
+
     public Problem2(String title) throws FileNotFoundException, IOException {
         super(title);
 
@@ -31,9 +33,13 @@ public class Problem2 extends BasicWindow {
         // Erstelle die Ausgabe-Adjazenzmatrix mit dem Prim Algorithmus
         int[][] matrix_output = fordFulkerson(am_input.getMatrixCopy());
 
-        // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe sie in eine Datei
+        // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe
+        // sie in eine Datei
         AdjazenzMatrix am_output = new AdjazenzMatrix("Output", matrix_output, fh.getVertexLetters(), true);
         am_output.printAndWriteMatrix(title);
+
+        // Setze den Maximalfluss
+        am_output.setMaxFlow(max_flow);
 
         // Erstelle die Graphen und füge sie dem Fenster hinzu
         JGraphPanel p1 = new JGraphPanel("Rohdaten", am_input, "hierarchical");
@@ -43,7 +49,6 @@ public class Problem2 extends BasicWindow {
         add(p1);
         add(p2);
     }
-
 
     private int num_vertices = 0;
 
@@ -70,7 +75,7 @@ public class Problem2 extends BasicWindow {
         int parent[] = new int[num_vertices];
 
         // There is no flow initially
-        int max_flow = 0;
+        max_flow = 0;
 
         // add possible path to the flow
         while (bfs(matrix, rGraph, s, t, parent)) {
@@ -94,9 +99,6 @@ public class Problem2 extends BasicWindow {
             // Add path flow to max flow
             max_flow += path_flow;
         }
-
-        // Return the max flow
-        System.out.println("max_flow: " + max_flow);
 
         return printMatrix(matrix, rGraph);
     }

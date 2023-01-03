@@ -25,13 +25,6 @@ public class AdjazenzMatrix {
     this.isDirected = isDirected;
   }
 
-  // constructor for ProblemTest2
-  public AdjazenzMatrix(String label, int max_flow, boolean isDirected) {
-    this.max_flow = max_flow;
-    this.label = label;
-    this.isDirected = isDirected;
-  }
-
   public void printMatrix() throws IOException {
     handleMatrix(false, this.label);
   }
@@ -143,5 +136,9 @@ public class AdjazenzMatrix {
     }
 
     return weight;
+  }
+
+  public void setMaxFlow(int flow) {
+    this.max_flow = flow;
   }
 }
