@@ -81,7 +81,7 @@ public class Main extends JFrame {
           new Problem6(label);
           break;
         case 7:
-          // new Problem7(label);
+          new Problem7(label);
           break;
       }
     } catch (FileNotFoundException fnfe) {
