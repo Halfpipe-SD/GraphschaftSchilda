@@ -14,12 +14,11 @@ import code.utils.JGraphPanel;
 public class Problem2 extends BasicWindow {
 
   private int max_flow = 0;
-  private int num_vertices = 0;
+  private int nodes = 0;
 
   public Problem2(String title) throws FileNotFoundException, IOException {
     super(title);
 
-    // layout settings
     setSize(new Dimension(510, 460));
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
@@ -57,88 +56,91 @@ public class Problem2 extends BasicWindow {
     add(p2);
   }
 
-  // function to find the path with the maximum flow
   public int[][] fordFulkerson(int[][] matrix) {
 
-    // number of vertices in graph
-    num_vertices = matrix[0].length;
+    // Anzahl der Knoten im Graph
+    nodes = matrix[0].length;
 
-    // source is the first vertex
+    // Die Quelle ist im Beispiel der erste Knoten
     int s = 0;
-    // the sink is always the last vertex
-    int t = num_vertices - 1;
+    // Die Senke ist im Beispiel der lezte Knoten
+    int t = nodes - 1;
 
     int u, v;
 
-    // copy the graph to rGraph for out
-    int rGraph[][] = new int[num_vertices][num_vertices];
-    for (u = 0; u < num_vertices; u++)
-      for (v = 0; v < num_vertices; v++)
-        rGraph[u][v] = matrix[u][v];
+    // Erzeuge echte Kopie der Matrix für Output
+    int output[][] = new int[nodes][nodes];
+    for (u = 0; u < nodes; u++)
+      for (v = 0; v < nodes; v++)
+        output[u][v] = matrix[u][v];
 
-    // This array is filled by BFS and to store path
-    int parent[] = new int[num_vertices];
+    // Erzeuge ein Eltern Array zum speichern der möglichen BFS-Pfade
+    int parent[] = new int[nodes];
 
-    // There is no flow initially
-    max_flow = 0;
+    // // There is no flow initially
+    // max_flow = 0;
 
-    // add possible path to the flow
-    while (bfs(matrix, rGraph, s, t, parent)) {
+    // Wenn für einen Pfad der BFS möglich ist, überprüfe seinen maximalen Fluss
+    while (bfs(matrix, output, s, t, parent)) {
 
-      // find max flow through the possible paths
+      // Setze den Pfad Fluss auf unendlich
       int path_flow = Integer.MAX_VALUE;
+      // Finde den maximalen Fluss durch die möglichen Pfade
       for (u = t; u != s; u = parent[u]) {
         v = parent[u];
-        path_flow = Math.min(path_flow, rGraph[v][u]);
+        path_flow = Math.min(path_flow, output[v][u]);
       }
 
-      // update the edges
+      // aktualisiere die Kanten aus dem Eletern Array
       for (u = t; u != s; u = parent[u]) {
         v = parent[u];
-        rGraph[v][u] -= path_flow; // remove path flow from rGraph
-        rGraph[u][v] += path_flow; // add back path flow to rGraph
+        // Ziehe den Fluss-Pfad den Kanten ab
+        output[v][u] -= path_flow;
+        // Addiere den Fluss-Pfad auf die Inversen Kanten
+        output[u][v] += path_flow;
       }
 
-      // Add path flow to max flow
+      // Addiere die einzelen Flusspafde auf den maximalen Fluss
       max_flow += path_flow;
     }
 
-    int[][] outputGraph = new int[num_vertices][num_vertices];
+    // Ziehe von der Eingabe Matrix die übrigen Flussgewichte ab
+    int[][] outputGraph = new int[nodes][nodes];
     for (int i = 0; i < matrix[0].length; i++)
       for (int j = 0; j < matrix[0].length; j++)
-        outputGraph[i][j] = matrix[i][j] - rGraph[i][j];
+        outputGraph[i][j] = matrix[i][j] - output[i][j];
 
     return outputGraph;
   }
 
-  private boolean bfs(int[][] matrix, int rGraph[][], int s, int t, int parent[]) {
+  private boolean bfs(int[][] matrix, int output[][], int s, int t, int parent[]) {
 
-    // int[][] matrix = am_input.getMatrix();
-    num_vertices = matrix[0].length;
+    // Anzahl der Knoten im Graph
+    nodes = matrix[0].length;
 
-    // array that mark all vertices as not visited
-    boolean visited[] = new boolean[num_vertices];
-    for (int i = 0; i < num_vertices; ++i)
+    // Array das alle Knoten als nicht besucht makiert
+    boolean visited[] = new boolean[nodes];
+    for (int i = 0; i < nodes; ++i)
       visited[i] = false;
 
-    // add start vertex and mark as visited
+    // Warteschlagnel, die besuchte Knoten als true makiert
     LinkedList<Integer> queue = new LinkedList<Integer>();
     queue.add(s);
     visited[s] = true;
     parent[s] = -1;
 
-    // standard bfs loop
+    // Standard BFS-Loob, entfernt Knoten aus der Warteschlange die ungleich 0 sind
     while (queue.size() != 0) {
       int u = queue.poll();
-      // System.out.print(u + " "); //bfs vertices
 
-      for (int v = 0; v < num_vertices; v++) {
-        if (visited[v] == false && rGraph[u][v] > 0) {
-          // If we find a path from s to t we return true
+      for (int v = 0; v < nodes; v++) {
+        if (visited[v] == false && output[u][v] > 0) {
+          // Wenn wir einen möglichen Pfad von s nach t finden geben wir true zurück
           if (v == t) {
             parent[v] = u;
             return true;
           }
+          // Wenn wir keinen möglichen Pfad finden fügen wir den Kntoen zur Warteschlagne und makieren ihn als besichtigt
           queue.add(v);
           parent[v] = u;
           visited[v] = true;
