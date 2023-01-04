@@ -30,7 +30,7 @@ public class Problem2 extends BasicWindow {
     AdjazenzMatrix am_input = new AdjazenzMatrix("Input", fh.getMatrix(), fh.getVertexLetters(), true);
     am_input.printMatrix();
 
-    // Erstelle die Ausgabe-Adjazenzmatrix mit dem Prim Algorithmus
+    // Erstelle die Ausgabe-Adjazenzmatrix mit dem Ford Fulkerson Algorithmus
     int[][] matrix_output = fordFulkerson(am_input.getMatrixCopy());
 
     // Filtere die inversen Kanten
