@@ -29,11 +29,17 @@ Sobald das Programm startet, öffnet sich ein Fenster mit einem Menü für die A
 Jedes Problem besitzt eine eigene Klasse `ProblemX.java`, die sich im Ordner `code` befinden. 
 
 Der Ordner `code/utils` enthält die Klassen:
+
 - `AdjazenzMatrix.java`: Speichert eine `int[][]` Matrix, `char[]` Buchstaben-Array und ob es sich um einen gerichteten oder ungerichteten Graphen handelt.
+
 - `FileHandler.java`: Stellt Methoden zum Einlesen und Schreiben von Dateien bereit.
+
 - `Vertex.java`: Speichert einen Buchstaben, einen Vertex-Vorgänger, einen 'key' und eine Option ob der Vertex bereits besucht wurde.
+
 - `Edge.java`: Speichert zwei Buchstaben für den Start- und Endknoten der Kante und ein Gewicht.
+
 - `JGraphPanel.java`: Eine Klasse, die ein `JPanel` erweitert und mit Hilfe der [mxgraph](https://jgraph.github.io/mxgraph/) und [jgrapht](https://jgrapht.org/) Bibliotheken einen Graphen zeichnet.
+
 - `BasicWindow.java`: Eine Klasse, die ein `JFrame` erweitert und als Grundlage für die Fenster der einzelnen Probleme dient.
 
 #### Die Eingabe
