@@ -14,57 +14,70 @@ Um den Graph zu modellieren werden die Java-Bibliotheken `JGraphT` und `JGraphX`
 
 ## Die Eingabe
 
-Die Eingabe besteht aus Knoten, die aus einer `.json` Datei ausgelesen werden. 
+Die Eingabe besteht aus einem Graphen, der aus Kanten und Knoten besteht. Diese werden aus einer `.txt` Datei gelesen und in eine Instanz der Klasse `AdjazenzMatrix.java` geladen. Diese Instanz dient als Basis für die Berechnung des minimalen Spannbaums.
 
-``` json
-{
-  "directed_edges": false,
-  "vertices": [
-    { "label": "Pole 0" },
-    { "label": "Pole 1" },
-    { "label": "Pole 2" },
-    ...
-  ]
-}
-```
+Der Eingabegraph besteht aus 12 Knoten und 66 Kanten. Die Kanten werden mit aufsteigenden Gewichten generiert. Die Knoten werden mit Buchstaben von A - L bezeichnet.
 
-Mit der Funktion `generate_all_edges()` werden alle möglichen Kanten mit zufälligen Gewichten generiert. Diese werden dann dem Input hinzugefügt. 
+Zusätzlich ist im Code hinterlegt, dass die maximale Anzahl an Nachbarn pro Knoten 5 ist.
 
-``` java
-private ArrayList<Edge> generate_all_edges(ArrayList<Vertex> vertices) {
-  ArrayList<Edge> output = new ArrayList<Edge>();
-  for (int i = 0; i < vertices.size(); i++) {
-    for (int j = i + 1; j < vertices.size(); j++) {
-      // generate random weight and add new edge to output
-      output.add(new Edge(vertices.get(i).getLabel(),
-          vertices.get(j).getLabel(), Math.round(Math.random() * 100.0)));
-    }
-  }
-  return output;
-}
+```js
+// code/data/problem3.txt
+  A B C D E F G H I J K L
+A 0
+B 1 0
+C 2 3 0
+D 4 5 6 0
+E 7 7 9 10 0
+F 11 12 13 14 15 0
+G 16 17 18 19 20 21 0
+H 22 23 24 25 26 27 28 0
+I 29 30 31 32 33 34 35 36 0
+J 37 38 39 40 41 42 43 44 45 0
+K 46 47 48 49 50 51 52 53 54 55 0
+L 56 57 58 59 60 61 62 63 64 65 66 0
 ```
 
 ## Die Ausgabe
 
-Die Ausgabe wird als Graph in einem Fenster dargestellt. Das Fenster besteht aus zwei Hälften. Auf der linken Seite wird der Eingabegraph dargestellt. Auf der rechten Seite wird der berechnete Graph dargestellt. 
+Die Ausgabe wird als Graph in einem Fenster dargestellt und in die Datei `3 Stromversorgung.txt` geschrieben. Das Fenster besteht aus zwei Hälften. Auf der linken Seite wird der Eingabegraph dargestellt. Auf der rechten Seite wird der berechnete Graph dargestellt. 
 
 Ein korrekte Ausgabe erfüllt folgende Eigenschaften:
 
-- TODO
+- Die Summe der Kantengewichte muss minimal sein.
+
+- Die Anzahl der Kanten darf maximal 5 sein.
+
+- Alle Knoten müssen über Kanten erreichbar sein.
+
+- Der Graph muss zusammenhängend und zyklusfrei sein.
+
+- Die Kanten müssen ungerichtet sein.
+
+- Alle Knoten des Eingabe-Graphen müssen im Ausgabe-Graphen enthalten sein.
 
 ![Problem3](images/problem3.png)
 
-## Der Alrogithmus
 
-TODO
-``` java 
-// Überspringe die Kante e, wenn sie von einem Knoten ausgeht, der bereits mehr als 5 Kanten hat
-ArrayList<Edge> source_edges = Graph.getAdjacentEdges(e.getSource(), output_edges);
-ArrayList<Edge> target_edges = Graph.getAdjacentEdges(e.getTarget(), output_edges);
-
-if (source_edges.size() >= max_edges || target_edges.size() >= max_edges)
-    continue;
+```js
+// code/output/3 Stromversorgungsplaner.txt
+  A B C D E F G H I J K L 
+A 0 
+B 1 0 
+C 2 0 0 
+D 4 0 0 0 
+E 7 0 0 0 0 
+F 11 0 0 0 0 0 
+G 0 17 0 0 0 0 0 
+H 0 23 0 0 0 0 0 0 
+I 0 30 0 0 0 0 0 0 0 
+J 0 38 0 0 0 0 0 0 0 0 
+K 0 0 48 0 0 0 0 0 0 0 0 
+L 0 0 58 0 0 0 0 0 0 0 0 0 
 ```
+
+## Geeignete Algorithmen
+
+Für dieses Problem eigenen sich die Algorithmen von Prim und Kruskal. Beide Algorithmen berechnen den minimalen Spannbaum eines Graphen.
 
 ## Die Laufzeit des Algorithmus
 
@@ -72,31 +85,49 @@ TODO
 
 ## Die Implementierung des Algorithmus
 
-``` java
-// Lese die Knoten und Kanten aus den Rohdaten
-ArrayList<Vertex> vertices = input.getVertices();
-ArrayList<Edge> edges = input.getEdges();
+Zur Lösung dieses Problems wurde der Algorithmus von Kruskal verwendet. Der Algorithmus ist ein Greedy-Algorithmus. Er berechnet den minimalen Spannbaum eines Graphen.
 
-// Sortiere die Kanten nach Gewicht
-edges.sort(Comparator.comparingDouble(Edge::getWeight));
+Zuerst wird eine Liste aller Kanten des Graphen erstellt. Diese Liste wird nach Gewicht sortiert. Dann wird ein Wald aus Bäumen erstellt, wobei jeder Knoten ein eigener Baum ist. Dann wird die Liste der Kanten durchlaufen. 
 
-// erstelle einen wald 'forest' (eine menge von bäumen), wo jeder knoten ein
-// eigener baum ist
-ArrayList<ArrayList<Vertex>> forest = new ArrayList<ArrayList<Vertex>>();
-for (Vertex v : vertices) {
+Wenn die Kanten zwei Knoten aus verschiedenen Bäumen verbindet, wird die Kante dem minimalen Spannbaum hinzugefügt. Die Bäume werden dann zusammengeführt.
+
+Die Funktion gibt eine Adjazenmatrix zurück, die aus der Liste der Ausgabe-Kanten erstellt wird.
+
+
+```java
+private int[][] kruskal(AdjazenzMatrix input, int max_edges) {
+
+  int[][] matrix = input.getMatrixCopy();
+  char[] vertexLetters = input.getVertexLetters();
+
+  ArrayList<Vertex> vertices = new ArrayList<>();
+
+  // Generiere eine Liste aller Knoten
+  for (int i = 0; i < matrix.length; i++)
+    vertices.add(new Vertex(vertexLetters[i], 0));
+
+  ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
+
+  // Sortiere die Kanten nach Gewicht
+  edges.sort(Comparator.comparingInt(Edge::getWeight));
+
+  // erstelle einen wald 'forest' (eine menge von bäumen), wo jeder knoten ein
+  // eigener baum ist
+  ArrayList<ArrayList<Vertex>> forest = new ArrayList<ArrayList<Vertex>>();
+  for (Vertex v : vertices) {
     ArrayList<Vertex> tree = new ArrayList<Vertex>();
     tree.add(v);
     forest.add(tree);
-}
+  }
 
-// erstelle eine liste mit den kanten des minimum spanning trees
-ArrayList<Edge> forest_edges = new ArrayList<Edge>(edges);
+  // erstelle eine liste mit den kanten des minimum spanning trees
+  ArrayList<Edge> forest_edges = new ArrayList<Edge>(edges);
 
-// erstelle eine liste für die Ausgabe
-ArrayList<Edge> output_edges = new ArrayList<Edge>();
+  // erstelle eine liste für die Ausgabe
+  ArrayList<Edge> output_edges = new ArrayList<Edge>();
 
-// solange der wald nicht leer ist und der baum noch nicht alle knoten enthält
-while (forest_edges.size() > 0) {
+  // solange der wald nicht leer ist und der baum noch nicht alle knoten enthält
+  while (forest_edges.size() > 0) {
     // entferne eine kante (u, v) aus forest
     Edge e = forest_edges.remove(0);
 
@@ -104,31 +135,43 @@ while (forest_edges.size() > 0) {
     ArrayList<Vertex> tree_u = null;
     ArrayList<Vertex> tree_v = null;
     for (ArrayList<Vertex> t : forest) {
-      if (t.contains(Graph.getSourceVertexFromEdge(e, vertices)))
-          tree_u = t;
-      if (t.contains(Graph.getTargetVertexFromEdge(e, vertices)))
-          tree_v = t;
+      if (t.contains(getSourceVertexFromEdge(e, vertices)))
+        tree_u = t;
+      if (t.contains(getTargetVertexFromEdge(e, vertices)))
+        tree_v = t;
     }
 
     // Prüfe ob die kante e von einem vertex ausgeht, der bereits mehr als 5 kanten
     // hat
-    ArrayList<Edge> source_edges = Graph.getAdjacentEdges(e.getSource(), output_edges);
-    ArrayList<Edge> target_edges = Graph.getAdjacentEdges(e.getTarget(), output_edges);
+    ArrayList<Edge> source_edges = getAdjacentEdges(e.getSource(), output_edges);
+    ArrayList<Edge> target_edges = getAdjacentEdges(e.getTarget(), output_edges);
 
     if (source_edges.size() >= max_edges || target_edges.size() >= max_edges)
-        continue;
+      continue;
 
     // wenn u und v in gleichen Bäumen sind -> skip
     if (tree_u == tree_v)
-        continue;
+      continue;
 
     // füge kante von u und v zur Ausgabe hinzu
     output_edges.add(e);
 
     // füge baum von v zu baum von u hinzu (merge)
     for (Vertex v : tree_v)
-        tree_u.add(v);
+      tree_u.add(v);
 
     forest.remove(tree_v);
+  }
+
+  // erstelle die Ausgabe-Adjazenzmatrix
+  int[][] output_matrix = new int[matrix.length][matrix.length];
+  for (Edge e : output_edges) {
+    int source = e.getSource() - 'A';
+    int target = e.getTarget() - 'A';
+    output_matrix[source][target] = matrix[source][target];
+    output_matrix[target][source] = matrix[target][source];
+  }
+  return output_matrix;
 }
 ```
+
