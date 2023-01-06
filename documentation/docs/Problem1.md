@@ -8,110 +8,148 @@ Da die Bürger der Stadt arm sind, soll der Straßenbau insgesamt möglichst wen
 
 Das Problem lässt sich als Graphenmodell mit ungerichteten Kanten darstellen. Jedes Haus ist ein Knoten, die Straßen sind die Kanten. Die Kosten der Kanten sind die Kosten für die Pflastersteine. 
 
-Es wird eine Konfiguration an Kanten gesucht, die eine minimale anzahl an Pflastersteinen benötigt.
+Es wird eine Konfiguration an Kanten gesucht, die eine minimale Anzahl an Pflastersteinen benötigt.
 
 Um den Graph zu modellieren werden die Java-Bibliotheken `JGraphT` und `JGraphX` verwendet. Mit `JGraphT` wird der Graph als Datenstruktur modelliert. Mit `JGraphX` wird der Graph als Grafik dargestellt und auf dem Bildschirm dargestellt.
 
 ## Die Eingabe
 
-Die Eingabe besteht aus einem Graphen, der aus Kanten und Knoten besteht. Diese werden aus einer `.json` Datei gelesen und in eine Insanz der Klasse `Graph.java` geladen. Diese Insanz dient als Basis für die Berechnung des günstigsten Weges.
+Die Eingabe besteht aus einem Graphen, der aus Kanten und Knoten besteht. Diese werden aus einer `.txt` Datei gelesen und in eine Instanz der Klasse `AdjazenzMatrix.java` geladen. Diese Instanz dient als Basis für die Berechnung des minimalen Spannbaums.
+
+Das Bild aus der Aufgabenstellung wurde mit Buchstaben von A bis J beschriftet und daraus wurde die Datei `problem1.txt` erstellt.
+
+![problem1_input](images/problem1_input.png)
 
 
-``` json
-{
-  "directed_edges": false,
-  "vertices": [
-    { "label": "House 0" },
-    { "label": "House 1" },
-    ...
-  ],
-  "edges": [
-    { "source": "House 0", "target": "House 1", "weight": 5 },
-    { "source": "House 0", "target": "House 2", "weight": 3 },
-    { "source": "House 0", "target": "House 4", "weight": 4 },
-    ...
-  ]
-}
+```js
+// code/data/problem1.txt
+  A B C D E F G H I J
+A 0
+B 5 0
+C 3 3 0
+D 0 3 0 0
+E 4 0 5 0 0
+F 0 2 3 0 0 0
+G 0 0 4 0 4 4 0
+H 0 0 0 0 2 0 3 0
+I 0 0 0 0 0 3 2 4 0
+J 0 4 0 2 0 3 0 0 4 0
 ```
 
 ## Die Ausgabe
 
-Die Ausgabe wird als Graph in einem Fenster dargestellt. Das Fenster besteht aus zwei Hälften. Auf der linken Seite wird der Eingabegraph dargestellt. Auf der rechten Seite wird der berechnete Graph dargestellt. 
+Die Ausgabe wird als Graph in einem Fenster dargestellt und in die Datei `1 Straßenplaner.txt` geschrieben. Das Fenster besteht aus zwei Hälften. Auf der linken Seite wird der Eingabegraph dargestellt. Auf der rechten Seite wird der berechnete Graph dargestellt. 
 
 Ein korrekte Ausgabe erfüllt folgende Eigenschaften:
 
-- TODO
+- Die Summe der Kantengewichte muss minimal sein.
+
+- Alle Knoten müssen über Kanten erreichbar sein.
+
+- Der Graph muss zusammenhängend und zyklusfrei sein.
+
+- Die Kanten müssen ungerichtet sein.
+
+- Alle Knoten des Eingabe-Graphen müssen im Ausgabe-Graphen enthalten sein.
 
 ![Problem1](images/problem1.png)
 
+```js
+// code/output/1 Straßenplaner.txt
+  A B C D E F G H I J 
+A 0 
+B 0 0 
+C 3 3 0 
+D 0 3 0 0 
+E 0 0 0 0 0 
+F 0 2 0 0 0 0 
+G 0 0 0 0 0 0 0 
+H 0 0 0 0 2 0 3 0 
+I 0 0 0 0 0 3 2 0 0 
+J 0 0 0 2 0 0 0 0 0 0 
+```
+
 ## Geeignete Algorithmen
 
-TODO Beschreibung MST mit Prim kruskal 
+Für dieses Problem eigenen sich die Algorithmen von Prim und Kruskal. Beide Algorithmen berechnen den minimalen Spannbaum eines Graphen.
 
 ## Die Laufzeit des Algorithmus
 
 TODO Laufzeitberechnung `O(|E| + |V| log |V|)`
-TODO (Hier bitte auch eine Begründung einfügen, ein ausführlicher Beweis ist nicht notwendig.)
+(Hier bitte auch eine Begründung einfügen, ein ausführlicher Beweis ist nicht notwendig.)
 
 ## Die Implementierung des Algorithmus
 
-Zur Lösung des Problems wurde der Algorithmus von Prim implementiert. Als Datenstruktur wurde eine Prioritätswarteschlange verwendet, die Instanzen der Klasse `Vertex` beinhaltet: 
+Zur Lösung des Problems wurde der Algorithmus von Prim implementiert. Der Algorithmus von Prim ist ein Greedy-Algorithmus. Als Datenstruktur wurde eine Prioritätswarteschlange verwendet, die Instanzen der Klasse `Vertex` beinhaltet: 
 
-``` java
-PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>(
-        Comparator.comparingInt(Vertex::getValue));
-```
+Zuerst wird eine Liste aller Knoten und Kanten erstellt. Die Knoten werden mit dem maximalen Wert für Integer und ohne Vorgänger initialisiert. Anschließend wird ein beliebiger Knoten als Startknoten gewählt (In diesem Fall der Erste). Der Startknoten bekommt den Wert `0`. Alle Knoten werden in eine Prioritätswarteschlange `Q` eingefügt.
 
-Für den Umgang mit Knoten und Kanten wurden drei Klassen implementiert:
+Danach wird eine while-Schleife verwendet um alle Knoten zu durchlaufen. In der Schleife wird der Knoten mit dem kleinsten Wert aus der Warteschlange `Q` entfernt. Anschließend wird für jeden Nachbarknoten des aktuellen Knotens überprüft, ob der Wert des Nachbarknotens größer als der Wert des aktuellen Knotens plus der Kosten der Kante ist. Wenn dies der Fall ist, wird der Wert des Nachbarknotens auf den Wert des aktuellen Knotens plus die Kosten der Kante gesetzt und der Vorgänger des Nachbarknotens auf den aktuellen Knoten gesetzt.
 
-- `Vertex.java`: Beinhaltet die Eigenschaft `int value`, welche den Key für den Algorithmus von Prim darstellt und das Objekt `Vertex predecessor`, der vom Algorithmus gesetzt wird.
-- `Edge.java`: Beinhaltet die Eigenschaften `String source`, `String target` und `double weight`.
-- `Graph.java`: Behinhaltet die Listen `ArrayList<Edge>` und `ArrayList<Vertex>`
-
-> Aufgrund der Struktur der `Vertex` und `Edge` Klassen werden die zusätzlichen Funktionen `getNeighbors()` und `getEdgeBetweenTwoVertices()` benötigt. Diese Funktionen benötigen zusätzlicehe Laufzeit und werden in der Klasse `Graph` implementiert.
+Am Ende wird die Liste aller Knoten in eine Adjazenzmatrix umgewandelt und zurückgegeben.
 
 
-``` java
-// Initialisiere alle Knoten mit ∞, setze den Vorgänger auf null
-for (Vertex v : vertices) {
-  v.setValue(Integer.MAX_VALUE);
-  v.setPredecessor(null);
-}
+```java
+private int[][] prim(AdjazenzMatrix input) {
 
-// Starte mit beliebigem Startknoten
-// Startknoten bekommt den Wert 0
-Vertex start = vertices.get(6);
-start.setValue(0);
+  int[][] matrix = input.getMatrixCopy();
+  char[] vertexLetters = input.getVertexLetters();
 
-// Speichere alle Knoten in einer geeigneten Datenstruktur Q
-// -> Prioritätswarteschlange
-PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>(
-    Comparator.comparingInt(Vertex::getValue));
-queue.addAll(vertices);
+  ArrayList<Vertex> vertices = new ArrayList<>();
+  ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
 
-// Solange es noch Knoten in Q gibt...
-while (!queue.isEmpty()) {
-  // Wähle den Knoten aus Q mit dem kleinsten Schlüssel (v)
-  Vertex vertex = queue.poll();
+  // Generiere eine Liste aller Knoten mit dem Wert unendlich und ohne Vorgänger
+  for (int i = 0; i < matrix.length; i++)
+    vertices.add(new Vertex(vertexLetters[i], Integer.MAX_VALUE, null));
 
-  // Für jeden Nachbarknoten n von v...
-  for (Vertex n : Graph.getNeighbors(vertex, vertices, edges)) {
+  // Starte mit beliebigem Startknoten, Startknoten bekommt den Wert 0
+  vertices.get(0).setKey(0);
 
-    // Finde Kante zwischen v und n
-    Edge edge = Graph.getEdgeBetweenTwoVertices(vertex, n, edges);
+  // Speichere alle Knoten in einer geeigneten Datenstruktur Q
+  // -> Prioritätswarteschlange
+  PriorityQueue<Vertex> q = new PriorityQueue<>(Comparator.comparingInt(Vertex::getKey));
+  q.addAll(vertices);
 
-    // Wenn der Wert der Kante kleiner ist als der Wert des Knotens und der Knoten
-    // noch in Q enthalten ist
-    if (edge.getWeight() >= n.getValue() || !queue.contains(n))
+  // Solange es noch Knoten in Q gibt...
+  while (!q.isEmpty()) {
+    // Entnehme den Knoten mit dem kleinsten Wert
+    Vertex u = q.poll();
+
+    // Für jeden Nachbarn n von u
+    for (Vertex n : getNeighbors(u, vertices, edges)) {
+      // Finde die Kante (u, n)
+      Edge e = null;
+      for (Edge edge : edges)
+        if ((edge.getSource() == u.getLetter() && edge.getTarget() == n.getLetter())
+            || (edge.getSource() == n.getLetter() && edge.getTarget() == u.getLetter()))
+          e = edge;
+
+      // Wenn n in Q und das Gewicht der Kante (u, n) kleiner ist als der Wert von n
+      if (!q.contains(n) || e.getWeight() >= n.getKey())
+        continue;
+
+      // Setze den Wert von n auf das Gewicht der Kante (u, n)
+      n.setKey(e.getWeight());
+      // Setze den Vorgänger von n auf u
+      n.setPredecessor(u);
+      // Aktualisiere die Position von n in Q
+      q.remove(n);
+      q.add(n);
+    }
+  }
+
+  // Erstelle die Adjazenzmatrix für den Minimum Spanning Tree
+  int[][] matrix_output = new int[matrix.length][matrix.length];
+  for (Vertex v : vertices) {
+    if (v.getPredecessor() == null)
       continue;
 
-    // Speichere v als vorgänger von n und passe wert von n an
-    n.setValue((int) edge.getWeight());
-    n.setPredecessor(vertex);
-
-    // Aktualisiere die Prioritätswarteschlange
-    queue.remove(n);
-    queue.add(n);
+    int i = v.getLetter() - 'A';
+    int j = v.getPredecessor().getLetter() - 'A';
+    matrix_output[i][j] = matrix[i][j];
+    matrix_output[j][i] = matrix[j][i];
   }
+  return matrix_output;
 }
 ```
+

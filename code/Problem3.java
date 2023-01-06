@@ -62,7 +62,7 @@ public class Problem3 extends BasicWindow {
     ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
 
     // Sortiere die Kanten nach Gewicht
-    edges.sort(Comparator.comparingDouble(Edge::getWeight));
+    edges.sort(Comparator.comparingInt(Edge::getWeight));
 
     // erstelle einen wald 'forest' (eine menge von bäumen), wo jeder knoten ein
     // eigener baum ist
