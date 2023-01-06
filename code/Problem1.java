@@ -24,7 +24,7 @@ public class Problem1 extends BasicWindow {
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
-    // Initializiere FileHandler und lese die Daten aus der Datei
+    // Initialisiere FileHandler und lese die Daten aus der Datei
     FileHandler fh = new FileHandler("problem1.txt");
 
     // Erstelle die Adjazenzmatrix und gebe sie in der Konsole aus

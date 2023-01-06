@@ -23,7 +23,7 @@ public class Problem2 extends BasicWindow {
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
-    // Initializiere FileHandler und lese die Daten aus der Datei
+    // Initialisiere FileHandler und lese die Daten aus der Datei
     FileHandler fh = new FileHandler("problem2.txt");
 
     // Erstelle die Adjazenzmatrix und gebe sie in der Konsole aus
@@ -56,14 +56,14 @@ public class Problem2 extends BasicWindow {
     add(p2);
   }
 
-  public int[][] fordFulkerson(int[][] matrix) {
+  private int[][] fordFulkerson(int[][] matrix) {
 
     // Anzahl der Knoten im Graph
     nodes = matrix[0].length;
 
     // Die Quelle ist im Beispiel der erste Knoten
     int s = 0;
-    // Die Senke ist im Beispiel der lezte Knoten
+    // Die Senke ist im Beispiel der letzte Knoten
     int t = nodes - 1;
 
     int u, v;
@@ -91,7 +91,7 @@ public class Problem2 extends BasicWindow {
         path_flow = Math.min(path_flow, output[v][u]);
       }
 
-      // aktualisiere die Kanten aus dem Eletern Array
+      // aktualisiere die Kanten aus dem Eltern Array
       for (u = t; u != s; u = parent[u]) {
         v = parent[u];
         // Ziehe den Fluss-Pfad den Kanten ab
@@ -100,7 +100,7 @@ public class Problem2 extends BasicWindow {
         output[u][v] += path_flow;
       }
 
-      // Addiere die einzelen Flusspafde auf den maximalen Fluss
+      // Addiere die einzelen Flusspafade auf den maximalen Fluss
       max_flow += path_flow;
     }
 
@@ -118,12 +118,12 @@ public class Problem2 extends BasicWindow {
     // Anzahl der Knoten im Graph
     nodes = matrix[0].length;
 
-    // Array das alle Knoten als nicht besucht makiert
+    // Array das alle Knoten als nicht besucht markiert
     boolean visited[] = new boolean[nodes];
     for (int i = 0; i < nodes; ++i)
       visited[i] = false;
 
-    // Warteschlagnel, die besuchte Knoten als true makiert
+    // Warteschlange, die besuchte Knoten als true markiert
     LinkedList<Integer> queue = new LinkedList<Integer>();
     queue.add(s);
     visited[s] = true;
@@ -140,7 +140,8 @@ public class Problem2 extends BasicWindow {
             parent[v] = u;
             return true;
           }
-          // Wenn wir keinen möglichen Pfad finden fügen wir den Kntoen zur Warteschlagne und makieren ihn als besichtigt
+          // Wenn wir keinen möglichen Pfad finden fügen wir den Knoten zur Warteschlange
+          // und markieren ihn als besichtigt
           queue.add(v);
           parent[v] = u;
           visited[v] = true;
