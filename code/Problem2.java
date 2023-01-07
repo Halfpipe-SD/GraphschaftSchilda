@@ -14,7 +14,6 @@ import code.utils.JGraphPanel;
 public class Problem2 extends BasicWindow {
 
   private int max_flow = 0;
-  private int nodes = 0;
 
   public Problem2(String title) throws FileNotFoundException, IOException {
     super(title);
@@ -31,7 +30,7 @@ public class Problem2 extends BasicWindow {
     am_input.printMatrix();
 
     // Erstelle die Ausgabe-Adjazenzmatrix mit dem Ford Fulkerson Algorithmus
-    int[][] matrix_output = fordFulkerson(am_input.getMatrixCopy());
+    int[][] matrix_output = fordFulkerson(am_input.getMatrix());
 
     // Filtere die inversen Kanten
     for (int i = 0; i < matrix_output.length; i++)
@@ -56,15 +55,22 @@ public class Problem2 extends BasicWindow {
     add(p2);
   }
 
+  /**
+   * Laufzeit: O(V * E^2 + V^2)
+   * 
+   * @param matrix
+   * @return
+   */
   private int[][] fordFulkerson(int[][] matrix) {
 
     // Anzahl der Knoten im Graph
-    nodes = matrix[0].length;
-
-    // Die Quelle ist im Beispiel der erste Knoten
-    int s = 0;
-    // Die Senke ist im Beispiel der letzte Knoten
-    int t = nodes - 1;
+    int nodes = matrix[0].length;
+    // Die Quelle is der erste Knoten
+    int source = 0;
+    // Die Senke ist der letzte Knoten
+    int sink = nodes - 1;
+    // Flow ist zu Beginn 0
+    max_flow = 0;
 
     int u, v;
 
@@ -77,22 +83,19 @@ public class Problem2 extends BasicWindow {
     // Erzeuge ein Eltern Array zum speichern der möglichen BFS-Pfade
     int parent[] = new int[nodes];
 
-    // // There is no flow initially
-    // max_flow = 0;
-
     // Wenn für einen Pfad der BFS möglich ist, überprüfe seinen maximalen Fluss
-    while (bfs(matrix, output, s, t, parent)) {
+    while (bfs(matrix, output, source, sink, parent)) {
 
       // Setze den Pfad Fluss auf unendlich
       int path_flow = Integer.MAX_VALUE;
       // Finde den maximalen Fluss durch die möglichen Pfade
-      for (u = t; u != s; u = parent[u]) {
+      for (u = sink; u != source; u = parent[u]) {
         v = parent[u];
         path_flow = Math.min(path_flow, output[v][u]);
       }
 
       // aktualisiere die Kanten aus dem Eltern Array
-      for (u = t; u != s; u = parent[u]) {
+      for (u = sink; u != source; u = parent[u]) {
         v = parent[u];
         // Ziehe den Fluss-Pfad den Kanten ab
         output[v][u] -= path_flow;
@@ -100,7 +103,7 @@ public class Problem2 extends BasicWindow {
         output[u][v] += path_flow;
       }
 
-      // Addiere die einzelen Flusspafade auf den maximalen Fluss
+      // Addiere die einzelnen Flusspfade auf den maximalen Fluss
       max_flow += path_flow;
     }
 
@@ -113,10 +116,20 @@ public class Problem2 extends BasicWindow {
     return outputGraph;
   }
 
+  /**
+   * Laufzeit: O(V + E)
+   * 
+   * @param matrix
+   * @param output
+   * @param s
+   * @param t
+   * @param parent
+   * @return
+   */
   private boolean bfs(int[][] matrix, int output[][], int s, int t, int parent[]) {
 
     // Anzahl der Knoten im Graph
-    nodes = matrix[0].length;
+    int nodes = matrix[0].length;
 
     // Array das alle Knoten als nicht besucht markiert
     boolean visited[] = new boolean[nodes];
@@ -129,7 +142,7 @@ public class Problem2 extends BasicWindow {
     visited[s] = true;
     parent[s] = -1;
 
-    // Standard BFS-Loob, entfernt Knoten aus der Warteschlange die ungleich 0 sind
+    // Standard BFS-Loop, entfernt Knoten aus der Warteschlange die ungleich 0 sind
     while (queue.size() != 0) {
       int u = queue.poll();
 
