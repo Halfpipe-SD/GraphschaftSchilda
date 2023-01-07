@@ -77,11 +77,32 @@ L 0 0 58 0 0 0 0 0 0 0 0 0
 
 ## Geeignete Algorithmen
 
-Für dieses Problem eigenen sich die Algorithmen von Prim und Kruskal. Beide Algorithmen berechnen den minimalen Spannbaum eines Graphen.
+Es gibt verschiedene Algorithmen, die verwendet werden können, um den minimalen Spannbaum eines ungerichteten Graphen zu berechnen. Einige dieser Algorithmen sind:
+
+**Kruskal-Algorithmus**: Dieser Algorithmus sortiert alle Kanten des Graphen nach ihrem Gewicht und fügt sie dann eine nach der anderen dem minimalen Spannbaum hinzu, wobei sichergestellt wird, dass keine Schleife entsteht. Der Algorithmus endet, wenn alle Knoten des Graphen Teil des Spannbaums sind.
+
+**Prim-Algorithmus**: Dieser Algorithmus beginnt mit einem beliebigen Knoten des Graphen und fügt nacheinander Kanten hinzu, die den aktuellen minimalen Spannbaum mit einem neuen Knoten verbinden. Der Algorithmus endet, wenn alle Knoten des Graphen Teil des Spannbaums sind.
+
+**Borůvka-Algorithmus**: Dieser Algorithmus ist eine Variation des Kruskal-Algorithmus und wird häufig verwendet, wenn der Graph sehr groß ist. Der Algorithmus sortiert die Kanten des Graphen nicht nach ihrem Gewicht, sondern sucht in jedem Schritt nach der leichtesten Kante, die einen Knoten mit dem minimalen Spannbaum verbindet. Der Algorithmus endet, wenn alle Knoten des Graphen Teil des Spannbaums sind.
+
+Allerdings müssen diese Algorithmen modifiziert werden, da die maximale Anzahl an Nachbarn pro Knoten maximal 5 betragen darf.
 
 ## Die Laufzeit des Algorithmus
 
-TODO
+Die Funktion `getEdges()` hat eine Laufzeit von O(V^2), da sie jedes Element der Adjazenzmatrix durchläuft.
+
+Die Funktionen `getSourceVertexFromEdge()` und `getTargetVertexFromEdge()` haben beide eine Laufzeit von O(V), da sie durch die Liste der Vertices iterieren und den gesuchten Vertex suchen.
+
+Die Funktion `getAdjacentEdges()` hat eine Laufzeit von O(E), da sie durch die Liste der Edges iteriert und jede Kante überprüft, ob sie den angegebenen Vertex enthält.
+
+Die Hauptschleife in `kruskal()` wird so lange ausgeführt, wie es noch Kanten in forest_edges gibt, wodurch sie eine Laufzeit von O(E) hat. 
+
+Innerhalb dieser Schleife werden in einem For-Loop die Funktionen `getSourceVertexFromEdge()` und `getTargetVertexFromEdge()` aufgerufen, die jeweils eine Laufzeit von O(V) haben. 
+
+In der Hauptschleife wird zusätzlich die Funktion `getAdjacentEdges()` aufgerufen, die eine Laufzeit von O(E) hat und ein weiterer For-Loop mit der Laufzeit O(V).
+
+Daraus resultiert eine Laufzeit von O(V^2 + E * ( V^3 + E )). 
+Dies kann auf O(V^3 * E) vereinfacht werden. 
 
 ## Die Implementierung des Algorithmus
 
@@ -95,10 +116,7 @@ Die Funktion gibt eine Adjazenmatrix zurück, die aus der Liste der Ausgabe-Kant
 
 
 ```java
-private int[][] kruskal(AdjazenzMatrix input, int max_edges) {
-
-  int[][] matrix = input.getMatrixCopy();
-  char[] vertexLetters = input.getVertexLetters();
+private int[][] kruskal(int[][] matrix, char[] vertexLetters, int max_edges) {
 
   ArrayList<Vertex> vertices = new ArrayList<>();
 
@@ -106,7 +124,7 @@ private int[][] kruskal(AdjazenzMatrix input, int max_edges) {
   for (int i = 0; i < matrix.length; i++)
     vertices.add(new Vertex(vertexLetters[i], 0));
 
-  ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
+  ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
 
   // Sortiere die Kanten nach Gewicht
   edges.sort(Comparator.comparingInt(Edge::getWeight));
@@ -135,16 +153,16 @@ private int[][] kruskal(AdjazenzMatrix input, int max_edges) {
     ArrayList<Vertex> tree_u = null;
     ArrayList<Vertex> tree_v = null;
     for (ArrayList<Vertex> t : forest) {
-      if (t.contains(getSourceVertexFromEdge(e, vertices)))
+      if (t.contains(getSourceVertexFromEdge(e, vertices))) // O(V)
         tree_u = t;
-      if (t.contains(getTargetVertexFromEdge(e, vertices)))
+      if (t.contains(getTargetVertexFromEdge(e, vertices))) // O(V)
         tree_v = t;
     }
 
     // Prüfe ob die kante e von einem vertex ausgeht, der bereits mehr als 5 kanten
     // hat
-    ArrayList<Edge> source_edges = getAdjacentEdges(e.getSource(), output_edges);
-    ArrayList<Edge> target_edges = getAdjacentEdges(e.getTarget(), output_edges);
+    ArrayList<Edge> source_edges = getAdjacentEdges(e.getSource(), output_edges); // O(E)
+    ArrayList<Edge> target_edges = getAdjacentEdges(e.getTarget(), output_edges); // O(E)
 
     if (source_edges.size() >= max_edges || target_edges.size() >= max_edges)
       continue;

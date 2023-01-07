@@ -31,7 +31,7 @@ public class Problem3 extends BasicWindow {
     am_input.printMatrix();
 
     int max_edges = 5;
-    int[][] matrix_output = kruskal(am_input, max_edges);
+    int[][] matrix_output = kruskal(am_input.getMatrix(), am_input.getVertexLetters(), max_edges);
 
     // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe
     // sie in eine Datei
@@ -48,10 +48,15 @@ public class Problem3 extends BasicWindow {
     add(p2);
   }
 
-  private int[][] kruskal(AdjazenzMatrix input, int max_edges) {
-
-    int[][] matrix = input.getMatrixCopy();
-    char[] vertexLetters = input.getVertexLetters();
+  /**
+   * Laufzeit: O(V^3 * E)
+   * 
+   * @param matrix
+   * @param vertexLetters
+   * @param max_edges
+   * @return
+   */
+  private int[][] kruskal(int[][] matrix, char[] vertexLetters, int max_edges) {
 
     ArrayList<Vertex> vertices = new ArrayList<>();
 
@@ -59,7 +64,7 @@ public class Problem3 extends BasicWindow {
     for (int i = 0; i < matrix.length; i++)
       vertices.add(new Vertex(vertexLetters[i], 0));
 
-    ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
+    ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
 
     // Sortiere die Kanten nach Gewicht
     edges.sort(Comparator.comparingInt(Edge::getWeight));
@@ -88,16 +93,16 @@ public class Problem3 extends BasicWindow {
       ArrayList<Vertex> tree_u = null;
       ArrayList<Vertex> tree_v = null;
       for (ArrayList<Vertex> t : forest) {
-        if (t.contains(getSourceVertexFromEdge(e, vertices)))
+        if (t.contains(getSourceVertexFromEdge(e, vertices))) // O(V)
           tree_u = t;
-        if (t.contains(getTargetVertexFromEdge(e, vertices)))
+        if (t.contains(getTargetVertexFromEdge(e, vertices))) // O(V)
           tree_v = t;
       }
 
       // Prüfe ob die kante e von einem vertex ausgeht, der bereits mehr als 5 kanten
       // hat
-      ArrayList<Edge> source_edges = getAdjacentEdges(e.getSource(), output_edges);
-      ArrayList<Edge> target_edges = getAdjacentEdges(e.getTarget(), output_edges);
+      ArrayList<Edge> source_edges = getAdjacentEdges(e.getSource(), output_edges); // O(E)
+      ArrayList<Edge> target_edges = getAdjacentEdges(e.getTarget(), output_edges); // O(E)
 
       if (source_edges.size() >= max_edges || target_edges.size() >= max_edges)
         continue;
@@ -127,6 +132,13 @@ public class Problem3 extends BasicWindow {
     return output_matrix;
   }
 
+  /**
+   * Laufzeit: O(E)
+   * 
+   * @param vertex
+   * @param edges
+   * @return
+   */
   private ArrayList<Edge> getAdjacentEdges(char vertex, ArrayList<Edge> edges) {
     ArrayList<Edge> adjacent_edges = new ArrayList<Edge>();
     for (Edge e : edges)
@@ -135,6 +147,13 @@ public class Problem3 extends BasicWindow {
     return adjacent_edges;
   }
 
+  /**
+   * Laufzeit: O(V)
+   * 
+   * @param e
+   * @param vertices
+   * @return
+   */
   private Vertex getSourceVertexFromEdge(Edge e, ArrayList<Vertex> vertices) {
     for (Vertex v : vertices)
       if (v.getLetter() == e.getSource())
@@ -142,6 +161,13 @@ public class Problem3 extends BasicWindow {
     return null;
   }
 
+  /**
+   * Laufzeit: O(V)
+   * 
+   * @param e
+   * @param vertices
+   * @return
+   */
   private Vertex getTargetVertexFromEdge(Edge e, ArrayList<Vertex> vertices) {
     for (Vertex v : vertices)
       if (v.getLetter() == e.getTarget())
@@ -149,6 +175,13 @@ public class Problem3 extends BasicWindow {
     return null;
   }
 
+  /**
+   * Laufzeit: O(V^2)
+   * 
+   * @param matrix
+   * @param vertexLetters
+   * @return
+   */
   private ArrayList<Edge> getEdges(int[][] matrix, char[] vertexLetters) {
     ArrayList<Edge> edges = new ArrayList<>();
 
