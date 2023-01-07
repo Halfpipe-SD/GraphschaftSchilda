@@ -80,7 +80,20 @@ Der A* Algorithmus ist ein Best-First-Suchalgorithmus, der dazu verwendet wird, 
 
 ## Die Laufzeit des Algorithmus
 
-TODO
+Die Laufzeit der Funktion `dijkstra()` hängt von der Anzahl der Knoten (V) und der Anzahl der Kanten (E) im Graph ab. 
+
+Die Funktion `getEdges(matrix, vertexLetters)` hat eine Laufzeit von O(V^2), da sie eine Schleife über alle V^2 möglichen Kanten des Graphs durchführt. 
+
+Die Funktion `getNeighbors(u, vertices, edges)` hat eine Laufzeit von O(V * E), da sie eine Schleife über alle V Vertices und eine Schleife über alle E Kanten durchführt, um alle Nachbarn von u zu finden.
+
+Die Funktion `getWeightSum(u, v, edges)` hat eine Laufzeit von O(E), da sie eine Schleife über alle E Kanten durchführt, um die Gewichte zu addieren.
+
+Die while-Schleife hat eine Laufzeit von O(V), da alle Knoten in der Prioritätswarteschlange einmal durchlaufen werden können. Innerhalb der while-Schleife wird ein Element aus der Warteschlange genommen O(log(V)) und die Funktion `getNeighbors()` aufgerufen. Für jeden Nachbarn wird die Funktion `getWeightSum()` aufgerufen.
+
+Daraus resultiert eine Laufzeit von O(V^2) + O(V) * ( O(log(V) + ( O(V * E) * O(E) ) ).
+Umgeformt ergibt sich eine Laufzeit von O(V^2 + V * log(V) + V^3 * E).
+
+Dies kann auf O(V^3 * E) vereinfacht werden.
 
 ## Die Implementierung des Algorithmus
 
@@ -92,16 +105,13 @@ Dadurch bekommt jeder Knoten einen Wert, der die Entfernung vom Startknoten angi
 
 
 ```java
-private int[][] dijkstra(AdjazenzMatrix input) {
-
-  int[][] matrix = input.getMatrixCopy();
-  char[] vertexLetters = input.getVertexLetters();
+private int[][] dijkstra(int[][] matrix, char[] vertexLetters) {
 
   // Generiere eine Liste aller Knoten
   for (int i = 0; i < matrix.length; i++)
     vertices.add(new Vertex(vertexLetters[i], 0));
 
-  ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
+  ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
 
   // Initialisiere die Distanz im Startknoten mit 0 und in allen anderen Knoten
   // mit ∞.

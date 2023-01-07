@@ -36,7 +36,7 @@ public class Problem4 extends BasicWindow {
     AdjazenzMatrix am_input = new AdjazenzMatrix("Input", fh.getMatrix(), fh.getVertexLetters(), false);
     am_input.printMatrix();
 
-    int[][] matrix_output = dijkstra(am_input);
+    int[][] matrix_output = dijkstra(am_input.getMatrix(), am_input.getVertexLetters());
 
     // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe
     // sie in eine Datei
@@ -53,7 +53,7 @@ public class Problem4 extends BasicWindow {
 
     JPanel sidepanel = new JPanel();
     String info = "<h3>Bestimmung des kürzesten Weges mit Dijkstra</h3><br><br>"
-        + "<h3>Reihenfolge bei Zündung des Steichholzes:</h3>" + "<br>";
+        + "<h3>Reihenfolge bei Zündung des Streichholzes:</h3>" + "<br>";
 
     for (int i = 0; i < vertices.size(); i++)
       info += i + 1 + ". " + vertices.get(i).getLetter() + " mit einer Distanz von => "
@@ -63,16 +63,20 @@ public class Problem4 extends BasicWindow {
     add(sidepanel);
   }
 
-  private int[][] dijkstra(AdjazenzMatrix input) {
-
-    int[][] matrix = input.getMatrixCopy();
-    char[] vertexLetters = input.getVertexLetters();
+  /**
+   * Laufzeit: O(V^3 * E)
+   * 
+   * @param matrix
+   * @param vertexLetters
+   * @return
+   */
+  private int[][] dijkstra(int[][] matrix, char[] vertexLetters) {
 
     // Generiere eine Liste aller Knoten
     for (int i = 0; i < matrix.length; i++)
       vertices.add(new Vertex(vertexLetters[i], 0));
 
-    ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
+    ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
 
     // Initialisiere die Distanz im Startknoten mit 0 und in allen anderen Knoten
     // mit ∞.
@@ -133,6 +137,13 @@ public class Problem4 extends BasicWindow {
     return matrix_output;
   }
 
+  /**
+   * Laufzeit: O(V^2)
+   * 
+   * @param matrix
+   * @param vertexLetters
+   * @return
+   */
   private ArrayList<Edge> getEdges(int[][] matrix, char[] vertexLetters) {
     ArrayList<Edge> edges = new ArrayList<>();
 
@@ -145,6 +156,14 @@ public class Problem4 extends BasicWindow {
     return edges;
   }
 
+  /**
+   * Laufzeit: O(V * E)
+   * 
+   * @param u
+   * @param vertices
+   * @param edges
+   * @return
+   */
   private ArrayList<Vertex> getNeighbors(Vertex u, ArrayList<Vertex> vertices, ArrayList<Edge> edges) {
     // neue Liste für nachbarn
     ArrayList<Vertex> neighbors = new ArrayList<Vertex>();
@@ -162,6 +181,14 @@ public class Problem4 extends BasicWindow {
     return neighbors;
   }
 
+  /**
+   * Laufzeit: O(E)
+   * 
+   * @param u
+   * @param v
+   * @param edges
+   * @return
+   */
   private int getWeightSum(Vertex u, Vertex v, ArrayList<Edge> edges) {
     int sum = 0;
     for (Edge e : edges) {
