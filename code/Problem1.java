@@ -32,7 +32,7 @@ public class Problem1 extends BasicWindow {
     am_input.printMatrix();
 
     // Erstelle die Ausgabe-Adjazenzmatrix mit dem Prim Algorithmus
-    int[][] matrix_output = prim(am_input);
+    int[][] matrix_output = prim(am_input.getMatrix(), am_input.getVertexLetters());
 
     // Erstelle die Ausgabe-Adjazenzmatrix, gebe sie in der Konsole aus und schreibe
     // sie in eine Datei
@@ -48,13 +48,17 @@ public class Problem1 extends BasicWindow {
     add(p2);
   }
 
-  private int[][] prim(AdjazenzMatrix input) {
-
-    int[][] matrix = input.getMatrixCopy();
-    char[] vertexLetters = input.getVertexLetters();
+  /**
+   * Laufzeit: O(V^2 * E)
+   * 
+   * @param matrix
+   * @param vertexLetters
+   * @return
+   */
+  private int[][] prim(int[][] matrix, char[] vertexLetters) {
 
     ArrayList<Vertex> vertices = new ArrayList<>();
-    ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
+    ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
 
     // Generiere eine Liste aller Knoten mit dem Wert unendlich und ohne Vorgänger
     for (int i = 0; i < matrix.length; i++)
@@ -110,8 +114,16 @@ public class Problem1 extends BasicWindow {
     return matrix_output;
   }
 
+  /**
+   * Laufzeit: O(V * E)
+   * 
+   * @param u
+   * @param vertices
+   * @param edges
+   * @return
+   */
   private ArrayList<Vertex> getNeighbors(Vertex u, ArrayList<Vertex> vertices, ArrayList<Edge> edges) {
-    // neue Liste für nachbarn
+    // Neue Liste für Nachbarn
     ArrayList<Vertex> neighbors = new ArrayList<Vertex>();
 
     for (Edge e : edges) {
@@ -127,6 +139,13 @@ public class Problem1 extends BasicWindow {
     return neighbors;
   }
 
+  /**
+   * Laufzeit: O(V^2)
+   * 
+   * @param matrix
+   * @param vertexLetters
+   * @return
+   */
   private ArrayList<Edge> getEdges(int[][] matrix, char[] vertexLetters) {
     ArrayList<Edge> edges = new ArrayList<>();
 

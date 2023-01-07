@@ -71,12 +71,28 @@ J 0 0 0 2 0 0 0 0 0 0
 
 ## Geeignete Algorithmen
 
-Für dieses Problem eigenen sich die Algorithmen von Prim und Kruskal. Beide Algorithmen berechnen den minimalen Spannbaum eines Graphen.
+Es gibt verschiedene Algorithmen, die verwendet werden können, um den minimalen Spannbaum eines ungerichteten Graphen zu berechnen. Einige dieser Algorithmen sind:
+
+**Kruskal-Algorithmus**: Dieser Algorithmus sortiert alle Kanten des Graphen nach ihrem Gewicht und fügt sie dann eine nach der anderen dem minimalen Spannbaum hinzu, wobei sichergestellt wird, dass keine Schleife entsteht. Der Algorithmus endet, wenn alle Knoten des Graphen Teil des Spannbaums sind.
+
+**Prim-Algorithmus**: Dieser Algorithmus beginnt mit einem beliebigen Knoten des Graphen und fügt nacheinander Kanten hinzu, die den aktuellen minimalen Spannbaum mit einem neuen Knoten verbinden. Der Algorithmus endet, wenn alle Knoten des Graphen Teil des Spannbaums sind.
+
+**Borůvka-Algorithmus**: Dieser Algorithmus ist eine Variation des Kruskal-Algorithmus und wird häufig verwendet, wenn der Graph sehr groß ist. Der Algorithmus sortiert die Kanten des Graphen nicht nach ihrem Gewicht, sondern sucht in jedem Schritt nach der leichtesten Kante, die einen Knoten mit dem minimalen Spannbaum verbindet. Der Algorithmus endet, wenn alle Knoten des Graphen Teil des Spannbaums sind.
 
 ## Die Laufzeit des Algorithmus
 
-TODO Laufzeitberechnung `O(|E| + |V| log |V|)`
-(Hier bitte auch eine Begründung einfügen, ein ausführlicher Beweis ist nicht notwendig.)
+Die Laufzeit der Funktion `prim()` hängt von der Anzahl der Knoten (V) und der Anzahl der Kanten (E) im Graph ab. 
+
+Die Funktion `getEdges(matrix, vertexLetters)` hat eine Laufzeit von O(V^2), da sie eine Schleife über alle V^2 möglichen Kanten des Graphs durchführt. 
+
+Die Funktion `getNeighbors(u, vertices, edges)` hat eine Laufzeit von O(V * E), da sie eine Schleife über alle V Vertices und eine Schleife über alle E Kanten durchführt, um alle Nachbarn von u zu finden.
+
+Die while-Schleife hat eine Laufzeit von O(V), da alle Knoten in der Prioritätswarteschlange einmal durchlaufen werden können. Innerhalb der while-Schleife wird ein Element aus der Warteschlange genommen O(log(V)) und die Funktion `getNeighbors()` aufgerufen. 
+
+Daraus resultiert eine Laufzeit von O(V^2) + O(V) * ( O(log(V) + O(V * E) ).
+Umgeformt ergibt sich eine Laufzeit von O(V^2 + V^2 * E + V * log(V)).
+
+Dies kann auf O(V^2 * E) vereinfacht werden.
 
 ## Die Implementierung des Algorithmus
 
@@ -90,13 +106,10 @@ Am Ende wird die Liste aller Knoten in eine Adjazenzmatrix umgewandelt und zurü
 
 
 ```java
-private int[][] prim(AdjazenzMatrix input) {
-
-  int[][] matrix = input.getMatrixCopy();
-  char[] vertexLetters = input.getVertexLetters();
+private int[][] prim(int[][] matrix, char[] vertexLetters) {
 
   ArrayList<Vertex> vertices = new ArrayList<>();
-  ArrayList<Edge> edges = getEdges(matrix, vertexLetters);
+  ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
 
   // Generiere eine Liste aller Knoten mit dem Wert unendlich und ohne Vorgänger
   for (int i = 0; i < matrix.length; i++)
@@ -116,7 +129,7 @@ private int[][] prim(AdjazenzMatrix input) {
     Vertex u = q.poll();
 
     // Für jeden Nachbarn n von u
-    for (Vertex n : getNeighbors(u, vertices, edges)) {
+    for (Vertex n : getNeighbors(u, vertices, edges)) { // O(V * E)
       // Finde die Kante (u, n)
       Edge e = null;
       for (Edge edge : edges)
