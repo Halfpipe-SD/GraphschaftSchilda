@@ -25,7 +25,6 @@ public class Problem5 extends BasicWindow {
     setLayout(new GridLayout(1, 2));
     setLocationRelativeTo(null);
 
-
     // Initializiere FileHandler und lese die Daten aus der Datei
     FileHandler fh = new FileHandler("problem1.txt");
 
@@ -51,7 +50,7 @@ public class Problem5 extends BasicWindow {
   }
 
   private int[][] hierholzer(AdjazenzMatrix input) {
-    int[][] matrix = input.getMatrixCopy();
+    int[][] matrix = input.getMatrix();
     char[] vertexLetters = input.getVertexLetters();
 
     ArrayList<Vertex> vertices = new ArrayList<>();
