@@ -72,18 +72,6 @@ public class AdjazenzMatrix {
     return this.matrix;
   }
 
-  public int[][] getMatrixCopy() {
-    int[][] copy = new int[this.matrix.length][this.matrix.length];
-
-    for (int i = 0; i < this.matrix.length; i++) {
-      for (int j = 0; j < this.matrix[i].length; j++) {
-        copy[i][j] = this.matrix[i][j];
-      }
-    }
-
-    return copy;
-  }
-
   public char[] getVertexLetters() {
     return this.vertex_letters;
   }

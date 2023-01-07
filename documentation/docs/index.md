@@ -32,7 +32,7 @@ Der Ordner `code/utils` enthält die Klassen:
 
 - `AdjazenzMatrix.java`: Speichert eine `int[][]` Matrix, `char[]` Buchstaben-Array und ob es sich um einen gerichteten oder ungerichteten Graphen handelt.
 
-- `FileHandler.java`: Stellt Methoden zum Einlesen und Schreiben von Dateien bereit.
+- `FileHandler.java`: Stellt Methoden zum Einlesen und Schreiben von Dateien bereit. Die Laufzeit um eine Datei einzulesen ist `O(n)` mit n = Anzahl der Zeichen in der Datei. Die Laufzeit des Schreibens ist `O(V^2)` mit V = Anzahl der Knoten des Graphen.
 
 - `Vertex.java`: Speichert einen Buchstaben, einen Vertex-Vorgänger, einen 'key' und eine Option ob der Vertex bereits besucht wurde.
 

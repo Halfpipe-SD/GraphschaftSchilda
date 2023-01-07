@@ -23,6 +23,9 @@ public class FileHandler {
     initialize(filename);
   }
 
+  /**
+   * Laufzeit O(n) mit n = Anzahl der Zeichen der Datei
+   */
   private void initialize(String filename) throws FileNotFoundException, IOException {
 
     // read data from txt file with filereader
@@ -63,6 +66,9 @@ public class FileHandler {
     }
   }
 
+  /**
+   * Laufzeit O(n^2) mit n = Anzahl der Knoten des Graphen
+   */
   public static void writeOutputToFile(String filename, int[][] m, char[] l, boolean isDirected) throws IOException {
     File file = new File(path_output + filename + ".txt");
     FileWriter writer = new FileWriter(file);
