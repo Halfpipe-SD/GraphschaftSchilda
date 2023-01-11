@@ -111,4 +111,20 @@ public class FileHandler {
   public char[] getVertexLetters() {
     return this.vertex_letters;
   }
+
+  /**
+   * Laufzeit: O(1)
+   */
+  public void writeCustomToFile(String filename, String content) throws IOException {
+    File file = new File(path_output + filename + ".txt");
+    FileWriter writer = new FileWriter(file);
+    BufferedWriter bw = new BufferedWriter(writer);
+
+    bw.write(content);
+
+    bw.close();
+    writer.close();
+
+    System.out.println("\nNew file created or overridden '" + filename + ".txt' in directory '" + path_output + "'");
+  }
 }
