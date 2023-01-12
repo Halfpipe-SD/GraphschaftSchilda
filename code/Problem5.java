@@ -66,6 +66,11 @@ public class Problem5 extends BasicWindow {
    * @param vertexLetters
    * @return
    */
+
+  // Todo: Funktion
+  // betimmen ob graph eulerscher Graph ist => Eulerkreis, alle Knotengrade gerade
+  // oder ob graph semi-eulerscher Graph ist => Eulerpfad, genau zwei Knotengrade ungerade
+
   private ArrayList<Character> hierholzerEulerTour(int[][] matrix, char[] vertexLetters) {
     // ArrayList, um den Pfad zu speichern
     ArrayList<Character> path = new ArrayList<>();
