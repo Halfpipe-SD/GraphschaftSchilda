@@ -6,11 +6,13 @@ Da die Stadt nach wie vor kein Geld verschwenden möchte, müssen Sie zunächst 
 
 ## Modellierung des Problems
 
-Das Problem lässt sich als Graphenmodell mit gerichteten Kanten darstellen. Jedes Haus ist ein Knoten, die Wasserleitungen zwischen den Häusern sind die Kanten. Das Gewicht der Kanten wird durch den maximal möglichen Volumenstrom in m^3/s dargestellt.
+Das Problem lässt sich als Graphenmodell mit gerichteten und gewichteten Kanten darstellen. Jedes Haus ist ein Knoten, die Wasserleitungen zwischen den Häusern sind die Kanten. Das Gewicht der Kanten wird durch den maximal möglichen Volumenstrom in m^3/s dargestellt.
 
 Es wird nach dem maximalen Fluss im gegebenen Flussnetzwerk von einer Quelle zu einer Senke gesucht.
 
 Durch die Kombination der Kanten von einer Quelle (Startpunkt) zu einer Senke (Endpunkt) erhält man mögliche Flusspfade. Wenn ein Pfad gefunden wurde, wird das maximal mögliche Kantengewicht (Gewicht der kleinsten Kante) von allen Kanten aus dem Pfad abgezogen. Dieser Vorgang wird so lange wiederholt, bis es keinen möglichen Flusspfad mit freier Kapazität von der Quelle zur Senke mehr gibt. Die einzelnen möglichen Flusspfade werden zu einem Gesamtdurchfluss addiert. Durch Verwenden des Edmonds-Karp-Algorithmus wird stehts der kürzeste Weg mit freien Kapazitäten gewählt und somit auch das schnellstmögliche Abarbeiten des Graphen gewährleistet.
+
+Um den Graph zu modellieren werden die Java-Bibliotheken `JGraphT` und `JGraphX` verwendet. Mit `JGraphT` wird der Graph als Datenstruktur modelliert. Mit `JGraphX` wird der Graph als Grafik dargestellt und auf dem Bildschirm dargestellt.
 
 ## Die Eingabe
 
@@ -21,7 +23,7 @@ Für die Matrix in der Datei `problem2.txt` wurden jeweils die Anfangsbuchstaben
 ![Problem2](images/problem2_input.png)
 
 ```js
-// code/data/problem1.txt
+// code/data/problem2.txt
   W A B C D H I T S
 W 0 0 0 12 0 0 6 15 0
 A 0 0 0 0 0 0 0 0 10
@@ -54,7 +56,7 @@ Eine korrekte Ausgabe erfüllt folgende Eigenschaften:
 ![Problem2](images/problem2.png)
 
 ```js
-// code/data/problem1.txt
+// code/data/2 Wasserversorgungsplaner.txt
   W A B C D H I T S 
 W 0 0 0 10 0 0 4 8 0 
 A 0 0 0 0 0 0 0 0 10 
