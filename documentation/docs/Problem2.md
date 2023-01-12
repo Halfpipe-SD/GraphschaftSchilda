@@ -1,22 +1,71 @@
 # Problem 2 - "Wasserversorgung"
 
-Der Straßenbau in der Graphschaft Schilda war erfolgreich, die Stadt blüht und gedeiht wieder! Selbst ein neuer Supermarkt soll eröffnet werden. Nun muss dieser aber mit Wasser versorgt werden, und da Sie bereits das Straßenbauprojekt so erfolgreich durchgeführt haben, werden Sie nun auch damit beauftragt, den neuen Supermarkt an die Wasserversorgung anzuschließen. 
+Der Straßenbau in der Graphschaft Schilda war erfolgreich, die Stadt blüht und gedeiht wieder! Selbst ein neuer Supermarkt soll eröffnet werden. Nun muss dieser aber mit Wasser versorgt werden, und da Sie bereits das Straßenbauprojekt so erfolgreich durchgeführt haben, werden Sie nun auch damit beauftragt, den neuen Supermarkt an die Wasserversorgung anzuschließen.
 
 Da die Stadt nach wie vor kein Geld verschwenden möchte, müssen Sie zunächst feststellen, ob das bestehende Leitungsnetz noch ausreichend Kapazität für den zusätzlichen Wasserverbrauch hat, oder ob neue Leitungen benötigt werden. Da die Graphschaft Schilda noch keine Pumpen kennt, kann das Wasser nur bergab fließen. Als Vorarbeit haben Ihnen die Bürger die bestehende Wasserversorgung und die Lage des neuen Supermarktes aufgezeichnet:
 
 ## Modellierung des Problems
 
+Das Problem lässt sich als Graphenmodell mit gerichteten Kanten darstellen. Jedes Haus ist ein Knoten, die Wasserleitungen zwischen den Häusern sind die Kanten. Das Gewicht der Kanten wird durch den maximal möglichen Volumenstrom in m^3/s dargestellt.
 
+Es wird nach dem maximalen Fluss im gegebenen Flussnetzwerk von einer Quelle zu einer Senke gesucht.
+
+Durch die Kombination der Kanten von einer Quelle (Startpunkt) zu einer Senke (Endpunkt) erhält man mögliche Flusspfade. Wenn ein Pfad gefunden wurde, wird das maximal mögliche Kantengewicht (Gewicht der kleinsten Kante) von allen Kanten aus dem Pfad abgezogen. Dieser Vorgang wird so lange wiederholt, bis es keinen möglichen Flusspfad mit freier Kapazität von der Quelle zur Senke mehr gibt. Die einzelnen möglichen Flusspfade werden zu einem Gesamtdurchfluss addiert. Durch Verwenden des Edmonds-Karp-Algorithmus wird stehts der kürzeste Weg mit freien Kapazitäten gewählt und somit auch das schnellstmögliche Abarbeiten des Graphen gewährleistet.
 
 ## Die Eingabe
 
+Die Eingabe besteht aus einem Graphen, der aus Kanten und Knoten besteht. Diese werden aus einer `.txt` Datei gelesen und in eine Instanz der Klasse `AdjazenzMatrix.java` geladen. Diese Instanz dient als Basis für die Berechnung des maximalen Flusses von Quelle zu Senke.
 
+Für die Matrix in der Datei `problem2.txt` wurden jeweils die Anfangsbuchstaben W, A, B, C, D, H, I, T, S, der Gebäude aus dem Bild als Bezeichnung genutzt. Wobei W für das Wasserwerk als Quelle steht und S für den Supermarkt als Senke.
+
+![Problem2](images/problem2_input.png)
+
+```js
+// code/data/problem1.txt
+  W A B C D H I T S
+W 0 0 0 12 0 0 6 15 0
+A 0 0 0 0 0 0 0 0 10
+B 0 0 0 0 0 0 0 0 10
+C 0 5 0 0 0 5 0 0 0
+D 0 5 6 0 0 0 0 0 0
+H 0 0 0 0 0 0 0 0 7
+I 0 0 3 0 0 1 0 0 0
+T 0 0 0 0 8 0 0 0 0
+S 0 0 0 0 0 0 0 0 0 
+```
 
 ## Die Ausgabe
 
+Die Ausgabe wird als Graph in einem Fenster dargestellt und in die Datei `2 Wasserversorgungsplaner.txt` geschrieben. Die erzeugte Datei wird im Projekt im Ordner `output` abgelegt und kann mit einem Text Editor geöffnet werden.
+Das Fenster zur Visualisierung der Graphen besteht aus zwei Hälften. Auf der linken Seite wird der Eingabegraph dargestellt. Auf der rechten Seite wird der berechnete Ausgabegraph dargestellt. In diesem Graph entsprechen die Werte der Kanten dem maximal nutzbaren Volumenstrom pro Kante von Wasserwerk zu Supermarkt.
+
+Eine korrekte Ausgabe erfüllt folgende Eigenschaften:
+
+- Der Fluss von Quelle zu Senke muss maximal sein
+
+- Alle nutzbaren Pfade für Flüsse müssen gefunden werden
+
+- Der maximal mögliche Fluss pro Pfad muss von den Pfadkanten abgezogen werden
+
+- Die Kanten müssen gerichtet sein und der Rückfluss aus dem Ausgabegraph entfernt
+
+- Es muss ersichtlich sein welcher Volumenstrom an der Quelle möglich ist
+
 ![Problem2](images/problem2.png)
 
-
+```js
+// code/data/problem1.txt
+  W A B C D H I T S 
+W 0 0 0 10 0 0 4 8 0 
+A 0 0 0 0 0 0 0 0 10 
+B 0 0 0 0 0 0 0 0 6 
+C 0 5 0 0 0 5 0 0 0 
+D 0 5 3 0 0 0 0 0 0 
+H 0 0 0 0 0 0 0 0 6 
+I 0 0 3 0 0 1 0 0 0 
+T 0 0 0 0 8 0 0 0 0 
+S 0 0 0 0 0 0 0 0 0 
+```
 
 ## Geeignete Algorithmen
 
@@ -34,7 +83,7 @@ Es gibt verschiedene Algorithmen, die verwendet werden können, um den maximalen
 
 Die Laufzeit der Funktion `bfs()` ist O(V + E). In jedem Schritt wird ein Knoten aus der Warteschlange entfernt und die Nachbarknoten des Knotens werden in die Warteschlange aufgenommen. Da jeder Knoten nur einmal in die Warteschlange aufgenommen wird und jede Kante nur einmal betrachtet wird, beträgt die Laufzeit O(V + E).
 
-Die Laufzeit des Ford-Fulkerson-Algorithmus ist O(V * E^2). Der Algorithmus wird in jedem Schritt iterativ ausgeführt, bis kein Pfad mehr vom Quellknoten zum Zielknoten verfügbar ist, der dessen Kapazität noch nicht vollständig ausgeschöpft hat. In jedem Schritt wird eine Breitensuche ausgeführt, um einen solchen Pfad zu finden. 
+Die Laufzeit des Ford-Fulkerson-Algorithmus ist O(V * E^2). Der Algorithmus wird in jedem Schritt iterativ ausgeführt, bis kein Pfad mehr vom Quellknoten zum Zielknoten verfügbar ist, der dessen Kapazität noch nicht vollständig ausgeschöpft hat. In jedem Schritt wird eine Breitensuche ausgeführt, um einen solchen Pfad zu finden.
 
 Da am Ende der `fordFulkerson(int[][] matrix)` Funktion noch eine Ausgabematrix erzeugt wird erhöht sich die Laufzeit um O(V^2). Mit der gleichen Laufzeit werden zusätzlich noch die inversen Kanten des Graphen entfernt.
 
