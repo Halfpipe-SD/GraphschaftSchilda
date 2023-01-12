@@ -40,7 +40,7 @@ J 0 4 0 2 0 3 0 0 4 0
 
 Die Ausgabe wird als Graph in einem Fenster dargestellt und in die Datei `1 Straßenplaner.txt` geschrieben. Das Fenster besteht aus zwei Hälften. Auf der linken Seite wird der Eingabegraph dargestellt. Auf der rechten Seite wird der berechnete Graph dargestellt. 
 
-Ein korrekte Ausgabe erfüllt folgende Eigenschaften:
+Eine korrekte Ausgabe erfüllt folgende Eigenschaften:
 
 - Die Summe der Kantengewichte muss minimal sein.
 
