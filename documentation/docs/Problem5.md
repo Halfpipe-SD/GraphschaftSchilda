@@ -68,15 +68,11 @@ Es gibt verschiedene Algorithmen, die verwendet werden können, um eine geschlos
 
 ### Algorithmus von Hierholzer
 
-Dieser Algorithmus basiert auf der Tatsache, dass in einem ungerichteten und unbelichteten Graphen mit genau einer geraden Anzahl von Knoten mit ungerader Gradanzahl eine geschlossene Eulertour existiert. Der Algorithmus startet an einem beliebigen Knoten mit ungerader Gradanzahl und folgt dann den Kanten, bis er wieder zum Ausgangsknoten zurückkehrt. Dieser Prozess wird wiederholt, bis alle Kanten besucht wurden.
+Dieser Algorithmus basiert auf der Tatsache, dass in einem ungerichteten und ungewichteter Graphen, mit Knoten die alle eine gerade Kantenanzahl besitzten eine geschlossene Eulertour existiert. Der Algorithmus startet an einem beliebigen Knoten und folgt dann den Kanten, bis er wieder zum Ausgangsknoten zurückkehrt. Wenn es am aktzellen Knoten keine freien Kanten gibt geht der Algorithmus wieder zu einem Knoten mit frein Kanten zurück. Der Algorithmus endet, wenn alle Kanten besucht wurden und man wieder am Ausgangsknoten angekommen ist.
 
 ### Algorithmus von Fleury
 
-Dieser Algorithmus startet ebenfalls an einem beliebigen Knoten mit ungerader Gradanzahl und wählt dann immer eine Kante aus, die den aktuellen Knoten mit einem anderen Knoten verbindet. Wenn es mehrere mögliche Kanten gibt, wird die Kante gewählt, die nicht zu einem Knoten führt, der bereits besucht wurde. Der Algorithmus endet, wenn alle Kanten besucht wurden und man wieder am Ausgangsknoten angekommen ist.
-
-### Schreier-Sims-Algorithmus
-
-Dieser Algorithmus erstellt zunächst eine Spur (engl. trace) des Graphen, indem er eine beliebige Kante wählt und diese nach und nach verfolgt, bis er wieder am Ausgangspunkt ankommt. Dann sucht er eine weitere Kante, die nicht Teil der Spur ist und fügt sie in die Spur ein, bis er wieder am Ausgangspunkt ankommt. Dieser Prozess wiederholt sich, bis alle Kanten in die Spur eingefügt wurden.
+Dieser Algorithmus basiert ebenfalls auf der Tatsache, dass in einem ungerichteten und ungewichteter Graphen, mit Knoten die alle eine gerade Kantenanzahl besitzten eine geschlossene Eulertour existiert. Der Algorithmus startet ebenfalls an einem beliebigen Knoten, der keine Brückenkanten besitzt und fügt dann immer eine weitere Kante hinzu, die den aktuellen Knoten mit einem anderen Knoten verbindet. Wenn es mehrere mögliche freie Kanten gibt, wird zuerst die Kante gewählt, die keine Brückenkante ist. Wenn es am aktuellen Knoten keine freien Kanten gibt geht der Algorithmus wieder zu einem Knoten mit frein Kanten zurück. Dieser Prozess wird wiederholt, bis alle Kanten besucht wurden.
 
 ## Die Laufzeit des Algorithmus
 
