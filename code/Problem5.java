@@ -78,12 +78,14 @@ public class Problem5 extends BasicWindow {
 
   // Wenn alle Knotengrade gerade sind, dann ist der Graph ein Eulergraph
   private boolean isEulerGraph(int[][] matrix) {
+    // Gehe durch alle Zeilen und zähle die Knotengrade pro Spalte
     for (int i = 0; i < matrix.length; i++) {
       int degree = 0;
       for (int j = 0; j < matrix.length; j++) {
         if (matrix[i][j] == 1)
           degree++;
       }
+      // Teile die Knotengrade durch 2, da die Matrix gespiegelt ist
       if (degree % 2 != 0)
         return false;
     }
