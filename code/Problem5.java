@@ -32,31 +32,40 @@ public class Problem5 extends BasicWindow {
 
     int[][] mirrored = mirrorMatrix(am_input.getMatrix());
 
-    // Erstelle die Ausgabe-Adjazenzmatrix mit dem Hierholzer-Algorithmus
-    ArrayList<Character> tour = hierholzerEulerTour(mirrored, am_input.getVertexLetters());
+    boolean eulerGraph = isEulerGraph(mirrored);
 
-    System.out.println("\nEulerkreis: ");
-    System.out.println(tour);
+    if (!eulerGraph) {
+      System.out.println("Graph ist kein Eulergraph");
+      return;
+    } else {
+      System.out.println("Graph ist ein Eulergraph");
 
-    // Schreibe tour in Datei
-    fh.writeCustomToFile(title, tour.toString());
+      // Erstelle die Ausgabe-Adjazenzmatrix mit dem Hierholzer-Algorithmus
+      ArrayList<Character> tour = hierholzerEulerTour(mirrored, am_input.getVertexLetters());
 
-    // Erstelle den Graphen und füge ihn dem Fenster hinzu
-    JGraphPanel p1 = new JGraphPanel("Rohdaten", am_input, "circle");
+      System.out.println("\nEulerkreis: ");
+      System.out.println(tour);
 
-    add(p1);
+      // Schreibe tour in Datei
+      fh.writeCustomToFile(title, tour.toString());
 
-    String info = "<br>"
-        + "<h3>Weg des Postboten:" + "<br><br>";
+      // Erstelle den Graphen und füge ihn dem Fenster hinzu
+      JGraphPanel p1 = new JGraphPanel("Rohdaten", am_input, "circle");
 
-    for (int i = 0; i < tour.size(); i++) {
-      info += tour.get(i);
-      if (i < tour.size() - 1)
-        info += " ➡️ ";
+      add(p1);
+
+      String info = "<br>"
+          + "<h3>Weg des Postboten:" + "<br><br>";
+
+      for (int i = 0; i < tour.size(); i++) {
+        info += tour.get(i);
+        if (i < tour.size() - 1)
+          info += " ➡️ ";
+      }
+      info += "</h3>";
+
+      add(new JLabel("<html>" + info + "</html>"));
     }
-    info += "</h3>";
-
-    add(new JLabel("<html>" + info + "</html>"));
   }
 
   /**
@@ -67,9 +76,19 @@ public class Problem5 extends BasicWindow {
    * @return
    */
 
-  // Todo: Funktion
-  // betimmen ob graph eulerscher Graph ist => Eulerkreis, alle Knotengrade gerade
-  // oder ob graph semi-eulerscher Graph ist => Eulerpfad, genau zwei Knotengrade ungerade
+  // Wenn alle Knotengrade gerade sind, dann ist der Graph ein Eulergraph
+  private boolean isEulerGraph(int[][] matrix) {
+    for (int i = 0; i < matrix.length; i++) {
+      int degree = 0;
+      for (int j = 0; j < matrix.length; j++) {
+        if (matrix[i][j] == 1)
+          degree++;
+      }
+      if (degree % 2 != 0)
+        return false;
+    }
+    return true;
+  }
 
   private ArrayList<Character> hierholzerEulerTour(int[][] matrix, char[] vertexLetters) {
     // ArrayList, um den Pfad zu speichern
