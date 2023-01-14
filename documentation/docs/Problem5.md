@@ -78,20 +78,42 @@ Dieser Algorithmus basiert ebenfalls auf der Tatsache, dass in einem ungerichtet
 
 Laufzeit Problem 5 = O(V^2)
 
-Die Laufzeit der Funktion `hierholzerEulerTour()` hängt von der Anzahl der Knoten (V) im Graph ab. Die Laufzeit der Schleife, die die Nachbarn eines Knotens durchläuft, beträgt O(V^2), da jeder Knoten mit jedem anderen Knoten verglichen werden Kann. Die Laufzeit des Stacks beträgt normal O(1). Daraus ergibt sich eine Laufzeit von O(V^2)
-
 Die Funktion `mirrorMatrix()` hat eine Laufzeit von O(V^2), da zwei for-Schleifen verschachtelt sind, die jeweils eine Laufzeit von O(V) beistzen.
+
+Die Funktion `isEulerGraph` hat eine Laufzeit von O(V^2), da zwei for-Schleifen verschachtelt sind, die jeweils eine Laufzeit von O(V) beistzen.
+
+Die Laufzeit der Funktion `hierholzerEulerTour()` hängt von der Anzahl der Knoten (V) im Graph ab. Die Laufzeit der Schleife, die die Nachbarn eines Knotens durchläuft, beträgt O(V^2), da jeder Knoten mit jedem anderen Knoten verglichen werden Kann. Die Laufzeit des Stacks beträgt normal O(1). Daraus ergibt sich eine Laufzeit von O(V^2)
 
 Die while-Schleife hat eine Laufzeit von O(V), da alle Knoten in der Prioritätswarteschlange einmal durchlaufen werden können. Innerhalb der while-Schleife wird ein Element aus der Warteschlange genommen O(log(V)) und die Funktion `getNeighbors()` aufgerufen.
 
-Daraus resultiert eine Laufzeit von O(V^2) + O(V^2).
-Umgeformt ergibt sich eine Laufzeit von 2 * O(V^2).
+Daraus resultiert eine Laufzeit von O(V^2) + O(V^2) + O(V^2).
+Umgeformt ergibt sich eine Laufzeit von 3 * O(V^2).
 
 ## Die Implementierung des Algorithmus
 
-asdf
+Zur Lösung des Problems wurde der Algorithmus von Hierholzer implementiert. Der Algorithmus von Hierholzer basiert darauf, dass sich ein eulerscher Graph in paarweise kantendisjunkte Kreise zerlegen lässt. Als Datenstruktur wurde ein Stack verwendet, der Instanzen der Klasse Character beinhaltet, die den Knoten des Graphen entsprechen, sowie eine ArrayList zum Speichern der Eulertour:
+
+Zuerst wir die Matrix des Graphen der Funktion `mirrorMatrix` gespiegelt, damit die Kanten in beide Richtungen verfügbar sind.
+
+Im nächsten Schritt wird mit der Funktion `isEulerGraph` überprüft, ob der Graph ein Eulergraph ist.
+
+Wenn dies der Fall ist, wird die Funktion `hierholzerEulerTour()` aufgerufen, die die Eulertour berechnet. Die Funktion nimmt die Matrix des Graphen und ein Array mit den Buchstaben der Knoten entgegen. Der erste Knoten wird als Startpunkt gewählt und auf den Stack gelegt. Solange der Stack nicht leer ist, wird der oberste Knoten des Stacks betrachtet. Der Algorithmus durchläuft dann alle Nachbarn des aktuellen Knotens und prüft, ob eine Kante zwischen ihnen besteht. Falls ja, wird der Nachbar auf den Stack gelegt und die Kante entfernt. Falls kein weiterer Nachbar gefunden wurde, wird der aktuelle Knoten vom Stack entfernt und dem Pfad hinzugefügt. Am Ende wird der Pfad zurückgegeben.
 
 ```java
+  // Wenn alle Knotengrade gerade sind, dann ist der Graph ein Eulergraph
+  private boolean isEulerGraph(int[][] matrix) {
+    for (int i = 0; i < matrix.length; i++) {
+      int degree = 0;
+      for (int j = 0; j < matrix.length; j++) {
+        if (matrix[i][j] == 1)
+          degree++;
+      }
+      if (degree % 2 != 0)
+        return false;
+    }
+    return true;
+  }
+
  private ArrayList<Character> hierholzerEulerTour(int[][] matrix, char[] vertexLetters) {
     // ArrayList, um den Pfad zu speichern
     ArrayList<Character> path = new ArrayList<>();
@@ -133,6 +155,7 @@ asdf
     }
     return path;
   }
+
   private int[][] mirrorMatrix(int[][] matrix) {
     int[][] mirrored = new int[matrix.length][matrix.length];
     for (int i = 0; i < matrix.length; i++)
