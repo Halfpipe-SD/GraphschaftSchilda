@@ -37,35 +37,34 @@ public class Problem5 extends BasicWindow {
     if (!eulerGraph) {
       System.out.println("Graph ist kein Eulergraph");
       return;
-    } else {
-      System.out.println("Graph ist ein Eulergraph");
-
-      // Erstelle die Ausgabe-Adjazenzmatrix mit dem Hierholzer-Algorithmus
-      ArrayList<Character> tour = hierholzerEulerTour(mirrored, am_input.getVertexLetters());
-
-      System.out.println("\nEulerkreis: ");
-      System.out.println(tour);
-
-      // Schreibe tour in Datei
-      fh.writeCustomToFile(title, tour.toString());
-
-      // Erstelle den Graphen und füge ihn dem Fenster hinzu
-      JGraphPanel p1 = new JGraphPanel("Rohdaten", am_input, "circle");
-
-      add(p1);
-
-      String info = "<br>"
-          + "<h3>Weg des Postboten:" + "<br><br>";
-
-      for (int i = 0; i < tour.size(); i++) {
-        info += tour.get(i);
-        if (i < tour.size() - 1)
-          info += " ➡️ ";
-      }
-      info += "</h3>";
-
-      add(new JLabel("<html>" + info + "</html>"));
     }
+    System.out.println("Graph ist ein Eulergraph");
+
+    // Erstelle die Ausgabe-Adjazenzmatrix mit dem Hierholzer-Algorithmus
+    ArrayList<Character> tour = hierholzerEulerTour(mirrored, am_input.getVertexLetters());
+
+    System.out.println("\nEulerkreis: ");
+    System.out.println(tour);
+
+    // Schreibe tour in Datei
+    fh.writeCustomToFile(title, tour.toString());
+
+    // Erstelle den Graphen und füge ihn dem Fenster hinzu
+    JGraphPanel p1 = new JGraphPanel("Rohdaten", am_input, "circle");
+
+    add(p1);
+
+    String info = "<br>"
+        + "<h3>Weg des Postboten:" + "<br><br>";
+
+    for (int i = 0; i < tour.size(); i++) {
+      info += tour.get(i);
+      if (i < tour.size() - 1)
+        info += " ➡️ ";
+    }
+    info += "</h3>";
+
+    add(new JLabel("<html>" + info + "</html>"));
   }
 
   /**
