@@ -13,8 +13,7 @@ Entwickeln Sie ein Planungstool, dass der Graphschaft Schilda bei der Lösung ih
 
 1. Analysieren Sie jedes der Probleme: Welche Daten sollen verarbeitet werden? Was sind die Eingaben? Was die Ausgaben? Welcher Algorithmus eignet sich? Welche Datenstruktur eignet sich?
 2. Implementieren Sie den Algorithmus (in Java), so dass bei Eingabe der entsprechenden Daten die gewünschte Ausgabe berechnet und ausgegeben wird. 
-3. Geben Sie für jeden implementierten Algorithmus die Laufzeit an. Da Sie sich nun schon so viel Mühe mit dem Tool geben, wollen Sie das Tool natürlich auch an andere 
-Gemeinden verkaufen. Die Eingaben sollen dafür generisch, d.h., für neue Orte, Feiern und Planungen anpassbar sein. Sie können diese Aufgabe ein 2er oder 3er Teams lösen. Bitte geben Sie dann die Arbeitsteilung im Dokument mit an. Die 15minütige Einzelprüfung wird auf die Projektaufgabe eingehen. 
+3. Geben Sie für jeden implementierten Algorithmus die Laufzeit an. Da Sie sich nun schon so viel Mühe mit dem Tool geben, wollen Sie das Tool natürlich auch an andere Gemeinden verkaufen. Die Eingaben sollen dafür generisch, d.h., für neue Orte, Feiern und Planungen anpassbar sein. Sie können diese Aufgabe ein 2er oder 3er Teams lösen. Bitte geben Sie dann die Arbeitsteilung im Dokument mit an. Die 15minütige Einzelprüfung wird auf die Projektaufgabe eingehen.
 
 ## Rahmenbedingungen
 
@@ -36,7 +35,13 @@ Für ungerichtete Graphen werden jeweils nur die Werte unterhalb der Diagonalen 
 
 Die Ausgabe erfolgt in derselben Form wie die Eingabe.
 
+### Abgabe Projekt
+
+Das Projekt ist als PDF-Datei mit folgender Benennung "PT3-2022-NAME1-NAME2-Name3.pdf" bis zum 20.01.2023 abzugeben.
+
 ## Planungstool Aufbau
+
+asdf
 
 ### Das Interface
 
