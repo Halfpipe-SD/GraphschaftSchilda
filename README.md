@@ -7,6 +7,37 @@
 
 Die Graphschaft Schilda ist ein beschauliches Örtchen irgendwo im Nichts. Lange Zeit blieb diese Graphschaft unbehelligt vom Fortschritt, nichts tat sich in dem Örtchen. Eines Tages jedoch machte sich dort plötzlich das Gerücht breit, dass fernab der Graphschaft intelligente Menschen leben, die (fast) alle Probleme der Welt mit mächtigen Algorithmen lösen könnten. Die Bürger der Graphschaft machten sich also auf den Weg um diese intelligenten Menschen mit der Lösung ihrer Probleme zu beauftragen....
 
+### Ordnerstruktur
+
+```js
+GraphschafSchilda/
+├─ code/
+│  ├─ data/
+│  │  └─ Eingabe txt-Dateien
+│  ├─ output/
+│  │  └─ Ausgabe txt-Dateien
+│  ├─ old/
+│  │  └─ Frühere Versionen der Algorithmen
+│  ├─ utils/
+│  │  ├─ AdjazentMatrix.java
+│  │  ├─ BasicWindow.java
+│  │  ├─ Edge.java
+│  │  ├─ FileHandler.java
+│  │  ├─ JGraphPanel.java
+│  │  └─ Vertex.java
+│  ├─ Main.java
+│  ├─ Problem1.java
+│  ├─ Problem2.java
+│  ├─ Problem3.java
+│  ├─ Problem4.java
+│  ├─ Problem5.java
+│  ├─ Problem6.java
+│  └─ Problem7.java
+├─ documentation/
+│  └─ docs/
+└─ libs/
+```
+
 ## Dokumentation
 
 Die Dokumentation kann unter [schilda.node5.de](https://schilda.node5.de) eingesehen, oder über [diesen](https://github.com/thieleju/GraphschaftSchilda/raw/gh-pages/Dokumentation.pdf) link heruntergeladen werden.
