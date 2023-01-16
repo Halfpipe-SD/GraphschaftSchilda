@@ -16,6 +16,7 @@ Um den Graph zu modellieren werden die Java-Bibliotheken `JGraphT` und `JGraphX`
 Die Buchstaben für die Mitarbeiter werden mit A - G bezeichnet und die Kompetenzen mit T - Z. Hierbei ist es wichtig anzumerken, dass die Anzahl der Mitarbeiter gleich der Anzahl der Kompetenzen sein muss und Jede Kompetenz von mindestens einem Mitarbeiter besetzt sein muss.
 
 ```
+Person:             Kompetenz:
 A: Frau Maier       T: Straßenbau
 B: Frau Müller      U: Verkehrsplanung
 C: Frau Augst       V: Archäologie

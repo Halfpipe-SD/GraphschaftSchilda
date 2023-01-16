@@ -7,6 +7,10 @@ Diese Website ist die Dokumentation des Projektes "Graphschaft Schilda" für das
 Die Graphschaft Schilda ist ein beschauliches Örtchen irgendwo im Nichts.
 Lange Zeit blieb diese Graphschaft unbehelligt vom Fortschritt, nichts tat sich in dem  Örtchen. Eines Tages jedoch machte sich dort plötzlich das Gerücht breit, dass fernab der Graphschaft intelligente Menschen leben, die (fast) alle Probleme der Welt mit mächtigen Algorithmen lösen könnten. Die Bürger der Graphschaft machten sich also auf den Weg um diese intelligenten Menschen mit der Lösung ihrer Probleme zu beauftragen....
 
+### Art der Dokumentation
+
+Die Dokumentation des Projekts ist auf der Website [schilda.node5.de](https://schilda.node5.de/) zu finden. Alternativ wird automatisiert aus den Markdown-Dateien eine PDF-Dokumentation erstellt, die über [diesen Link](https://github.com/thieleju/GraphschaftSchilda/raw/gh-pages/Dokumentation.pdf) herunter geladen werden kann.
+
 ## Aufgabenstellung
 
 Entwickeln Sie ein Planungstool, dass der Graphschaft Schilda bei der Lösung ihrer Probleme hilft.  
@@ -37,11 +41,42 @@ Die Ausgabe erfolgt in derselben Form wie die Eingabe.
 
 ### Abgabe Projekt
 
-Das Projekt ist als PDF-Datei mit folgender Benennung "PT3-2022-NAME1-NAME2-Name3.pdf" bis zum 20.01.2023 abzugeben.
+Das Projekt ist als PDF-Datei mit folgender Benennung "PT3-2022-FelixMöhler-JulianThiele.pdf" bis zum 20.01.2023 abzugeben.
 
 ## Planungstool Aufbau
 
-asdf
+In den folgenden Abschnitten wird der Aufbau des Planungstools beschrieben.
+
+### Ordnerstruktur des Projektes
+
+```js
+GraphschafSchilda/
+├─ code/
+│  ├─ data/
+│  │  └─ Eingabe txt-Dateien
+│  ├─ output/
+│  │  └─ Ausgabe txt-Dateien
+│  ├─ old/
+│  │  └─ Frühere Versionen der Algorithmen
+│  ├─ utils/
+│  │  ├─ AdjazentMatrix.java
+│  │  ├─ BasicWindow.java
+│  │  ├─ Edge.java
+│  │  ├─ FileHandler.java
+│  │  ├─ JGraphPanel.java
+│  │  └─ Vertex.java
+│  ├─ Main.java
+│  ├─ Problem1.java
+│  ├─ Problem2.java
+│  ├─ Problem3.java
+│  ├─ Problem4.java
+│  ├─ Problem5.java
+│  ├─ Problem6.java
+│  └─ Problem7.java
+├─ documentation/
+│  └─ docs/
+└─ libs/
+```
 
 ### Das Interface
 
