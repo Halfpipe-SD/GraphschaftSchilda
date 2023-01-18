@@ -98,3 +98,72 @@ Zuerst wir die Matrix des Graphen der Funktion `mirrorMatrix` gespiegelt, damit 
 Im nächsten Schritt wird mit der Funktion `isEulerGraph` überprüft, ob der Graph ein Eulergraph ist.
 
 Wenn dies der Fall ist, wird die Funktion `hierholzerEulerTour()` aufgerufen, die die Eulertour berechnet. Die Funktion nimmt die Matrix des Graphen und ein Array mit den Buchstaben der Knoten entgegen. Der erste Knoten wird als Startpunkt gewählt und auf den Stack gelegt. Solange der Stack nicht leer ist, wird der oberste Knoten des Stacks betrachtet. Der Algorithmus durchläuft dann alle Nachbarn des aktuellen Knotens und prüft, ob eine Kante zwischen ihnen besteht. Falls ja, wird der Nachbar auf den Stack gelegt und die Kante entfernt. Falls kein weiterer Nachbar gefunden wurde, wird der aktuelle Knoten vom Stack entfernt und dem Pfad hinzugefügt. Am Ende wird der Pfad zurückgegeben.
+
+```java
+  // Wenn alle Knotengrade gerade sind, dann ist der Graph ein Eulergraph
+  private boolean isEulerGraph(int[][] matrix) {
+    for (int i = 0; i < matrix.length; i++) {
+      int degree = 0;
+      for (int j = 0; j < matrix.length; j++) {
+        if (matrix[i][j] == 1)
+          degree++;
+      }
+      if (degree % 2 != 0)
+        return false;
+    }
+    return true;
+  }
+
+ private ArrayList<Character> hierholzerEulerTour(int[][] matrix, char[] vertexLetters) {
+    // ArrayList, um den Pfad zu speichern
+    ArrayList<Character> path = new ArrayList<>();
+    // Stack, um die nächsten Knoten zu speichern
+    Stack<Character> stack = new Stack<>();
+
+    // Erster Knoten als Startpunkt
+    char start = vertexLetters[0];
+    stack.push(start);
+
+    // Solange der Stack nicht leer ist
+    while (!stack.isEmpty()) {
+      // Hole aktuellen Knoten aus dem stack
+      char current = stack.peek();
+
+      // Gehe alle Nachbarn durch
+      boolean foundNext = false;
+      for (int i = 0; i < matrix.length; i++) {
+        // Index des aktuellen Knotens
+        int index = current - vertexLetters[0];
+
+        // Wenn der Knoten keinen Nachbarn hat, überspringe ihn
+        if (matrix[index][i] != 1)
+          continue;
+
+        // füge den Nachbarn dem Pfad/Stack hinzu
+        stack.push(vertexLetters[i]);
+
+        // Entferne die Kante zwischen dem aktuellen und nächsten Knoten
+        matrix[index][i] = 0;
+        matrix[i][index] = 0;
+        foundNext = true;
+        break;
+      }
+      // Wenn kein weiterer Nachbar gefunden wurde, entferne den aktuellen Knoten vom
+      // Stack und füge ihn dem Pfad hinzu
+      if (!foundNext)
+        path.add(0, stack.pop());
+    }
+    return path;
+  }
+
+  private int[][] mirrorMatrix(int[][] matrix) {
+    int[][] mirrored = new int[matrix.length][matrix.length];
+    for (int i = 0; i < matrix.length; i++)
+      for (int j = 0; j < matrix.length; j++)
+        if (i < j)
+          mirrored[i][j] = matrix[j][i];
+        else
+          mirrored[i][j] = matrix[i][j];
+    return mirrored;
+  }
+```
