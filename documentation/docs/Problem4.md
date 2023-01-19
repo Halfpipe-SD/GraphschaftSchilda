@@ -103,3 +103,72 @@ Der Algorithmus verwendet dabei eine Prioritätswarteschlange, um die Knoten zu 
 
 Dadurch bekommt jeder Knoten einen Wert, der die Entfernung vom Startknoten angibt. Der Algorithmus wird dann wiederholt, bis alle Knoten in der Prioritätswarteschlange untersucht wurden.
 
+
+```java
+private int[][] dijkstra(int[][] matrix, char[] vertexLetters) {
+
+  // Generiere eine Liste aller Knoten
+  for (int i = 0; i < matrix.length; i++)
+    vertices.add(new Vertex(vertexLetters[i], 0));
+
+  ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
+
+  // Initialisiere die Distanz im Startknoten mit 0 und in allen anderen Knoten
+  // mit ∞.
+  for (Vertex vertex : vertices) {
+    vertex.setKey(Integer.MAX_VALUE);
+    vertex.setPredecessor(null);
+  }
+  vertices.get(0).setKey(0);
+
+  // Speichere alle Knoten in einer Prioritätswarteschlange queue
+  PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>(
+      Comparator.comparingInt(Vertex::getKey));
+  queue.addAll(vertices);
+
+  // Solange es noch unbesuchte Knoten gibt, wähle darunter denjenigen mit
+  // minimaler Distanz aus und
+  while (!queue.isEmpty()) {
+    // Nehme den Knoten mit dem kleinsten Wert aus der Warteschlange
+    Vertex v = queue.poll();
+
+    // 1. speichere, dass dieser Knoten schon besucht wurde
+    v.setVisited(true);
+
+    // 2. berechne für alle noch unbesuchten Nachbarknoten die Summe des jeweiligen
+    // Kantengewichtes und der Distanz im aktuellen Knoten
+    for (Vertex n : getNeighbors(v, vertices, edges)) {
+
+      // 3. ist dieser Wert für einen Knoten kleiner als die
+      // dort gespeicherte Distanz, aktualisiere sie und setze den aktuellen Knoten
+      // als Vorgänger. (Dieser Schritt wird auch als Update bezeichnet. )
+      int sum = v.getKey() + getWeightSum(v, n, edges);
+
+      if (sum >= n.getKey())
+        continue;
+
+      n.setKey((int) sum);
+      n.setPredecessor(v);
+      // Aktualisiere die Prioritätswarteschlange
+      queue.remove(n);
+      queue.add(n);
+    }
+  }
+
+  // Sortiere Knoten nach Distanz
+  vertices.sort(Comparator.comparingInt(Vertex::getKey));
+
+  // Erstelle eine neue Adjazenzmatrix, die den jeweils kürzesten Weg zu jedem
+  // Knoten enthält
+  int[][] matrix_output = new int[matrix.length][matrix.length];
+
+  for (Vertex vertex : vertices) {
+    if (vertex.getPredecessor() == null)
+      continue;
+    matrix_output[vertex.getPredecessor().getLetter() - 'A'][vertex.getLetter() - 'A'] = vertex.getKey();
+    matrix_output[vertex.getLetter() - 'A'][vertex.getPredecessor().getLetter() - 'A'] = vertex.getKey();
+  }
+
+  return matrix_output;
+}
+```
