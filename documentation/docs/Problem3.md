@@ -111,3 +111,83 @@ Zuerst wird eine Liste aller Kanten des Graphen erstellt. Diese Liste wird nach 
 Wenn die Kanten zwei Knoten aus verschiedenen Bäumen verbindet, wird die Kante dem minimalen Spannbaum hinzugefügt. Die Bäume werden dann zusammengeführt.
 
 Die Funktion gibt eine Adjazenmatrix zurück, die aus der Liste der Ausgabe-Kanten erstellt wird.
+
+
+```java
+private int[][] kruskal(int[][] matrix, char[] vertexLetters, int max_edges) {
+
+  ArrayList<Vertex> vertices = new ArrayList<>();
+
+  // Generiere eine Liste aller Knoten
+  for (int i = 0; i < matrix.length; i++)
+    vertices.add(new Vertex(vertexLetters[i], 0));
+
+  ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
+
+  // Sortiere die Kanten nach Gewicht
+  edges.sort(Comparator.comparingInt(Edge::getWeight));
+
+  // erstelle einen wald 'forest' (eine menge von bäumen), wo jeder knoten ein
+  // eigener baum ist
+  ArrayList<ArrayList<Vertex>> forest = new ArrayList<ArrayList<Vertex>>();
+  for (Vertex v : vertices) {
+    ArrayList<Vertex> tree = new ArrayList<Vertex>();
+    tree.add(v);
+    forest.add(tree);
+  }
+
+  // erstelle eine liste mit den kanten des minimum spanning trees
+  ArrayList<Edge> forest_edges = new ArrayList<Edge>(edges);
+
+  // erstelle eine liste für die Ausgabe
+  ArrayList<Edge> output_edges = new ArrayList<Edge>();
+
+  // solange der wald nicht leer ist und der baum noch nicht alle knoten enthält
+  while (forest_edges.size() > 0) {
+    // entferne eine kante (u, v) aus forest
+    Edge e = forest_edges.remove(0);
+
+    // finde die bäume, die mit der Kante e verbunden sind
+    ArrayList<Vertex> tree_u = null;
+    ArrayList<Vertex> tree_v = null;
+    for (ArrayList<Vertex> t : forest) {
+      if (t.contains(getSourceVertexFromEdge(e, vertices))) // O(V)
+        tree_u = t;
+      if (t.contains(getTargetVertexFromEdge(e, vertices))) // O(V)
+        tree_v = t;
+    }
+
+    // Prüfe ob die kante e von einem vertex ausgeht, der bereits mehr als 5 kanten
+    // hat
+    ArrayList<Edge> source_edges = getAdjacentEdges(e.getSource(), output_edges); // O(E)
+    ArrayList<Edge> target_edges = getAdjacentEdges(e.getTarget(), output_edges); // O(E)
+
+    if (source_edges.size() >= max_edges || target_edges.size() >= max_edges)
+      continue;
+
+    // wenn u und v in gleichen Bäumen sind -> skip
+    if (tree_u == tree_v)
+      continue;
+
+    // füge kante von u und v zur Ausgabe hinzu
+    output_edges.add(e);
+
+    // füge baum von v zu baum von u hinzu (merge)
+    for (Vertex v : tree_v)
+      tree_u.add(v);
+
+    forest.remove(tree_v);
+  }
+
+  // erstelle die Ausgabe-Adjazenzmatrix
+  int[][] output_matrix = new int[matrix.length][matrix.length];
+  for (Edge e : output_edges) {
+    int source = e.getSource() - 'A';
+    int target = e.getTarget() - 'A';
+    output_matrix[source][target] = matrix[source][target];
+    output_matrix[target][source] = matrix[target][source];
+  }
+  return output_matrix;
+}
+```
+

@@ -101,3 +101,66 @@ Zuerst wird eine Liste aller Knoten und Kanten erstellt. Die Knoten werden mit d
 Danach wird eine while-Schleife verwendet um alle Knoten zu durchlaufen. In der Schleife wird der Knoten mit dem kleinsten Wert aus der Warteschlange `Q` entfernt. Anschließend wird für jeden Nachbarknoten des aktuellen Knotens überprüft, ob der Wert des Nachbarknotens größer als der Wert des aktuellen Knotens plus der Kosten der Kante ist. Wenn dies der Fall ist, wird der Wert des Nachbarknotens auf den Wert des aktuellen Knotens plus die Kosten der Kante gesetzt und der Vorgänger des Nachbarknotens auf den aktuellen Knoten gesetzt.
 
 Am Ende wird die Liste aller Knoten in eine Adjazenzmatrix umgewandelt und zurückgegeben.
+
+
+```java
+private int[][] prim(int[][] matrix, char[] vertexLetters) {
+
+  ArrayList<Vertex> vertices = new ArrayList<>();
+  ArrayList<Edge> edges = getEdges(matrix, vertexLetters); // O(V^2)
+
+  // Generiere eine Liste aller Knoten mit dem Wert unendlich und ohne Vorgänger
+  for (int i = 0; i < matrix.length; i++)
+    vertices.add(new Vertex(vertexLetters[i], Integer.MAX_VALUE, null));
+
+  // Starte mit beliebigem Startknoten, Startknoten bekommt den Wert 0
+  vertices.get(0).setKey(0);
+
+  // Speichere alle Knoten in einer geeigneten Datenstruktur Q
+  // -> Prioritätswarteschlange
+  PriorityQueue<Vertex> q = new PriorityQueue<>(Comparator.comparingInt(Vertex::getKey));
+  q.addAll(vertices);
+
+  // Solange es noch Knoten in Q gibt...
+  while (!q.isEmpty()) {
+    // Entnehme den Knoten mit dem kleinsten Wert
+    Vertex u = q.poll();
+
+    // Für jeden Nachbarn n von u
+    for (Vertex n : getNeighbors(u, vertices, edges)) { // O(V * E)
+      // Finde die Kante (u, n)
+      Edge e = null;
+      for (Edge edge : edges)
+        if ((edge.getSource() == u.getLetter() && edge.getTarget() == n.getLetter())
+            || (edge.getSource() == n.getLetter() && edge.getTarget() == u.getLetter()))
+          e = edge;
+
+      // Wenn n in Q und das Gewicht der Kante (u, n) kleiner ist als der Wert von n
+      if (!q.contains(n) || e.getWeight() >= n.getKey())
+        continue;
+
+      // Setze den Wert von n auf das Gewicht der Kante (u, n)
+      n.setKey(e.getWeight());
+      // Setze den Vorgänger von n auf u
+      n.setPredecessor(u);
+      // Aktualisiere die Position von n in Q
+      q.remove(n);
+      q.add(n);
+    }
+  }
+
+  // Erstelle die Adjazenzmatrix für den Minimum Spanning Tree
+  int[][] matrix_output = new int[matrix.length][matrix.length];
+  for (Vertex v : vertices) {
+    if (v.getPredecessor() == null)
+      continue;
+
+    int i = v.getLetter() - 'A';
+    int j = v.getPredecessor().getLetter() - 'A';
+    matrix_output[i][j] = matrix[i][j];
+    matrix_output[j][i] = matrix[j][i];
+  }
+  return matrix_output;
+}
+```
+
