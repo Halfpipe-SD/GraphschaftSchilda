@@ -40,7 +40,7 @@ GraphschafSchilda/
 
 ## Dokumentation
 
-Die Dokumentation kann unter [schilda.node5.de](https://schilda.node5.de) eingesehen, oder über [diesen](https://github.com/thieleju/GraphschaftSchilda/raw/gh-pages/Dokumentation.pdf) link heruntergeladen werden.
+Die Dokumentation kann unter [schilda.node5.de](https://schilda.node5.de) eingesehen, oder über [diesen](https://github.com/thieleju/GraphschaftSchilda/raw/2c7422d0e1299eb66cf66ec191cafc6d3b27a4c8/Projektdokumentation.pdf) link heruntergeladen werden.
 
 ## Richtlinien für die Dokumentation
 
