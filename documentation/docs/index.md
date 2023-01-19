@@ -35,6 +35,8 @@ Alle Graphen werden als einfache Textdateien gegeben. Die erste Zeile beginnt mi
 Alle weiteren Zeilen starten mit einem **Knotennamen, gefolgt von einer Folge von Zahlen**, jeweils **getrennt durch ein Leerzeichen**.
 Für ungerichtete Graphen werden jeweils nur die Werte unterhalb der Diagonalen angegeben.
 
+**Wichtig:** Um neue Daten für die Eingabe zu verwenden, muss der Inhalt der txt-Dateien im Ordner "code/data/problemX.txt" ersetzt werden.
+
 ### Ausgabe
 
 Die Ausgabe erfolgt in derselben Form wie die Eingabe.
