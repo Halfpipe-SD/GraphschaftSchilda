@@ -128,7 +128,7 @@ In der Ausgabedatei werden die Graphen in einer Adjazenzmatrix gespeichert, die 
 ## Das Team
 
 Felix Möhler - [GitHub](https://github.com/flexx7)
-- Aufgabenteilung: Dokumentation und Code für Problem 2, 5, 6 und 
+- Aufgabenteilung: Dokumentation und Code für Problem 2, 5, 6 und 7
 
 Julian Thiele - [GitHub](https://github.com/thieleju)
 - Aufgabenteilung: Dokumentation und Code für Problem 1, 3, 4, 6 und 7
